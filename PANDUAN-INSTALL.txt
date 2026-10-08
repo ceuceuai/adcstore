@@ -1,36 +1,43 @@
-ADCStore v1.0.2 - PANDUAN CEPAT
+ADCStore v1.0.3 - PANDUAN CEPAT
+================================
 
-1) SUPABASE
-- Buat project baru.
-- SQL Editor > New Query.
-- Paste seluruh isi sql/INSTALL_ADCSTORE_v1.0.2.sql > Run.
-- Authentication > Users > Add User > buat akun owner.
+A. FRESH INSTALL
+1. Buat project Supabase.
+2. SQL Editor > paste seluruh isi:
+   sql/INSTALL_ADCSTORE_v1.0.3.sql
+3. Authentication > Users > Add user untuk membuat OWNER.
+4. Copy UUID owner dari Supabase Authentication.
+5. SQL Editor jalankan:
+   insert into public.admin_users(user_id)
+   values ('UUID-OWNER')
+   on conflict do nothing;
+6. Upload source ke GitHub.
+7. Import repository ke Vercel.
+8. Tambahkan Environment Variables:
+   NEXT_PUBLIC_SUPABASE_URL
+   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+9. Deploy / Redeploy.
+10. Owner login: https://DOMAIN-ANDA/owner/login
 
-2) GITHUB
-- Buat repository baru.
-- Upload seluruh isi paket ADCStore ke ROOT repository.
-- Commit.
+B. UPGRADE DARI v1.0.2
+1. Jalankan sql/UPGRADE_v1.0.2_TO_v1.0.3.sql.
+2. Masukkan UUID owner ke admin_users seperti langkah A-5.
+3. Push seluruh source v1.0.3.
+4. Redeploy Vercel.
 
-3) VERCEL
-- Add New Project > Import repository GitHub.
-- Framework akan terbaca Next.js.
-- Environment Variables:
-  NEXT_PUBLIC_SUPABASE_URL
-  NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
-- Deploy.
+C. MEMBER AREA
+- Login / daftar member: /member/login
+- Dashboard member: /member
+- Member tidak bisa mengakses /admin.
+- Member dapat memilih 10 preset tema pribadi.
 
-4) SETUP TOKO
-- buka https://domain-anda/owner/login
-- Login akun owner.
-- Pengaturan: ganti brand, hero, WA, Instagram, footer.
-- Produk ADC: edit tiap produk dan masukkan affiliate_url Anda.
-- Aktifkan produk yang ingin ditampilkan.
+D. THEME OWNER
+Admin > Pengaturan:
+- 10 preset tema.
+- Custom Primary Color.
+- Custom Secondary Color.
+- Custom Accent Color.
+- Tema global otomatis dipakai homepage dan detail produk.
 
-SELESAI.
-
-
-ADMIN / OWNER LOGIN
-- Tombol Admin tidak ditampilkan di storefront publik.
-- Login owner dipisahkan di /owner/login.
-- Akun owner wajib dibuat langsung di Supabase Authentication.
-- Pengunjung/customer tidak menggunakan halaman login owner.
+PENTING:
+Login OWNER sengaja tidak ditampilkan di homepage. Simpan URL /owner/login secara privat.
