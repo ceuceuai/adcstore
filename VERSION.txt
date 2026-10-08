@@ -1,3 +1,1 @@
-ADCStore v1.0.13
-Minimum From Version: v1.0.12
-Release: Performance & Smooth Navigation
+ADCStore v1.0.14

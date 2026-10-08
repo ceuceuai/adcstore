@@ -6,7 +6,7 @@ export type Product = {
   sale_mode: 'affiliate' | 'internal' | 'both'; featured: boolean; is_active: boolean; sort_order: number;
 };
 export type StoreSettings = {
-  id:number; brand_name:string; tagline:string; logo_url:string|null; whatsapp:string|null; instagram_url:string|null;
+  id:number; brand_name:string; tagline:string; logo_url:string|null; favicon_url?:string|null; whatsapp:string|null; instagram_url:string|null;
   primary_color:string; secondary_color:string; accent_color:string; theme_preset:string;
   hero_badge:string; hero_title:string; hero_subtitle:string;
   hero_primary_cta_text:string; hero_member_cta_text:string; hero_member_cta_enabled:boolean;
@@ -15,6 +15,8 @@ export type StoreSettings = {
   catalog_eyebrow:string; catalog_title:string; catalog_subtitle:string;
   floating_wa_enabled:boolean; floating_wa_number:string|null; floating_wa_message:string; floating_wa_position:'left'|'right'; floating_wa_style:'3d'|'round'|'custom'; floating_wa_icon_url:string|null; floating_wa_tooltip:string; floating_wa_show_on:'all'|'home'|'product';
   footer_text:string; home_products_per_page:number; pwa_name:string; pwa_short_name:string; pwa_icon_url:string|null;
+  member_login_label?:string; member_login_heading?:string; member_login_description?:string; member_signup_heading?:string; member_signup_description?:string;
+  owner_login_label?:string; owner_login_heading?:string; owner_login_description?:string; admin_console_label?:string;
 };
 export type Profile = { id:string; full_name:string|null; role:'member'|'owner'; theme_preset:string; custom_primary:string|null; custom_secondary:string|null; custom_accent:string|null };
 export type BankAccount = { id:string; bank:string; account_number:string; account_name:string; enabled:boolean };
