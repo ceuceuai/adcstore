@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { createClient } from '@/lib/supabase';
-import { LayoutDashboard, Package2, CreditCard, KeyRound, Settings, LogOut, ShoppingBag, ExternalLink } from 'lucide-react';
+import { LayoutDashboard, Package2, CreditCard, KeyRound, Settings, LogOut, ShoppingBag, ExternalLink, Images } from 'lucide-react';
 
 export default function AdminShell({children}:{children:React.ReactNode}){
  const router=useRouter(); const path=usePathname(); const [checking,setChecking]=useState(true);
@@ -13,6 +13,7 @@ export default function AdminShell({children}:{children:React.ReactNode}){
  const links=[
   {href:'/admin',label:'Dashboard',icon:LayoutDashboard},
   {href:'/admin/products',label:'Produk ADC',icon:Package2},
+  {href:'/admin/banners',label:'Slide Banner',icon:Images},
   {href:'/admin/orders',label:'Order / Checkout',icon:ShoppingBag},
   {href:'/admin/access',label:'Akses Produk',icon:KeyRound},
   {href:'/admin/payments',label:'Pembayaran',icon:CreditCard},
