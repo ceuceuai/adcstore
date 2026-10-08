@@ -10,6 +10,6 @@ export default async function manifest():Promise<MetadataRoute.Manifest>{
    if(s){name=s.pwa_name||s.brand_name||name;shortName=s.pwa_short_name||s.brand_name||shortName;icon=s.pwa_icon_url||s.logo_url||''}
   }
  }catch{}
- const icons=icon?[{src:icon,sizes:'any',purpose:'any maskable' as const}]:[{src:'/pwa-default.svg',sizes:'512x512',type:'image/svg+xml',purpose:'any maskable' as const}];
+ const icons=icon?[{src:icon,sizes:'any',purpose:'any' as const}]:[{src:'/pwa-default.svg',sizes:'512x512',type:'image/svg+xml',purpose:'any' as const}];
  return {name,short_name:shortName,description:'Digital Store & Affiliate Website for ADC Members',start_url:'/',display:'standalone',background_color:'#f5efff',theme_color:'#8b5cf6',icons};
 }
