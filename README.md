@@ -1,54 +1,29 @@
-# ADCStore v1.0.3
+# ADCStore v1.0.5
+
 **Digital Store & Affiliate Website for ADC Members**
 
-Bonus eksklusif berupa website toko digital siap pakai. Produk ADC dapat disiapkan di katalog dan pemilik toko cukup mengganti link affiliate milik sendiri.
+Versi 1.0.5 merombak Owner Dashboard menjadi UI 3D soft pastel dan menambah checkout internal lengkap.
 
-## Stack
-- Next.js 14
-- Supabase Auth + Database
-- GitHub
-- Vercel
+## Fitur utama
+- Homepage & member area 3D soft pastel
+- 10 preset tema + custom color
+- Produk: Affiliate Only / Internal Checkout / Both
+- Pembayaran internal: banyak Bank, banyak E-Wallet, QRIS statis dengan upload image
+- Order / Checkout owner: pending, paid, completed, cancelled
+- Akses Produk: HTML, button link, atau kombinasi
+- Member hanya melihat akses produk setelah order berstatus paid/completed dan email order sama dengan email akun
+- Owner login privat `/owner/login` dan akun owner berasal dari Supabase Authentication
 
-## Yang baru di v1.0.3
-- Redesign homepage dengan gaya 3D soft pastel.
-- Member Area baru dengan login/daftar terpisah dari Owner.
-- Owner login tetap privat di `/owner/login` dan tidak ditampilkan di navbar publik.
-- 10 preset tema warna + custom Primary / Secondary / Accent.
-- Theme setting global toko dari Admin.
-- Setiap member dapat memilih tema pribadi untuk member area.
-- Security admin ditingkatkan memakai tabel `admin_users` + RPC `is_admin()`; user member tidak bisa masuk dashboard admin.
-- Homepage, product detail, member area, dan form/login sudah responsive.
-
-## Fresh Install
+## Fresh install
 1. Buat project Supabase.
-2. Buka SQL Editor lalu jalankan seluruh isi `sql/INSTALL_ADCSTORE_v1.0.3.sql`.
-3. Buat akun owner di **Authentication > Users > Add user**.
-4. Salin UUID akun owner lalu jalankan satu query berikut di SQL Editor:
-   ```sql
-   insert into public.admin_users(user_id)
-   values ('PASTE-OWNER-USER-UUID')
-   on conflict do nothing;
-   ```
-5. Di Vercel isi Environment Variables:
-   ```env
-   NEXT_PUBLIC_SUPABASE_URL=https://xxxxx.supabase.co
-   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_xxxxx
-   ```
-   `NEXT_PUBLIC_SUPABASE_ANON_KEY` tetap didukung sebagai fallback untuk project Supabase lama.
-6. Deploy / Redeploy Vercel.
-7. Owner login melalui `/owner/login`.
+2. Jalankan **`sql/INSTALL_ADCSTORE_v1.0.5.sql`** sekali.
+3. Buat akun Authentication pertama untuk owner. Akun Auth pertama otomatis menjadi owner.
+4. Isi env Vercel dari `.env.example`.
+5. Deploy ke GitHub/Vercel.
+6. Login owner di `/owner/login`.
 
-## Upgrade dari v1.0.2
-Jalankan `sql/UPGRADE_v1.0.2_TO_v1.0.3.sql`, lalu masukkan UUID akun owner ke `admin_users` menggunakan query pada langkah Fresh Install nomor 4. Setelah itu push source v1.0.3 dan redeploy Vercel.
+## Upgrade v1.0.4 -> v1.0.5
+Jalankan **`sql/UPGRADE_v1.0.4_TO_v1.0.5.sql`** sekali, lalu deploy source v1.0.5.
 
-## URL penting
-- `/` — Homepage / storefront
-- `/member/login` — Login dan daftar member
-- `/member` — Dashboard member
-- `/owner/login` — Login privat owner
-- `/admin` — Dashboard owner
-- `/admin/products` — CRUD katalog ADC
-- `/admin/settings` — Branding + 10 preset tema + custom warna
-
-## Catatan
-Katalog contoh masih memakai Produk ADC 01–06 sebagai placeholder. Ganti nama, gambar, deskripsi, harga, kategori, CTA, dan link affiliate melalui dashboard owner.
+## Environment
+Gunakan `NEXT_PUBLIC_SUPABASE_URL` dan `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`. Source masih mendukung fallback `NEXT_PUBLIC_SUPABASE_ANON_KEY` untuk project lama.

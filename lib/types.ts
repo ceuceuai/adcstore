@@ -9,3 +9,9 @@ export type StoreSettings = {
   hero_title:string; hero_subtitle:string; footer_text:string;
 };
 export type Profile = { id:string; full_name:string|null; role:'member'|'owner'; theme_preset:string; custom_primary:string|null; custom_secondary:string|null; custom_accent:string|null };
+export type BankAccount = { id:string; bank:string; account_number:string; account_name:string; enabled:boolean };
+export type EWallet = { id:string; provider:string; number:string; account_name:string; enabled:boolean };
+export type PaymentSettings = { id:number; banks:BankAccount[]; ewallets:EWallet[]; qris_enabled:boolean; qris_label:string; qris_image_url:string|null; instructions:string };
+export type AccessButton = { id:string; label:string; url:string; style:'primary'|'secondary' };
+export type ProductAccess = { id:string; product_id:string; access_type:'html'|'buttons'|'both'; html_content:string|null; buttons:AccessButton[]; is_active:boolean; updated_at?:string; products?:Pick<Product,'name'|'slug'> };
+export type Order = { id:string; order_number:string; product_id:string; customer_name:string; customer_email:string; customer_whatsapp:string; amount:number; payment_method:string; status:'pending'|'paid'|'completed'|'cancelled'; payment_proof_url:string|null; notes:string|null; created_at:string; products?:Pick<Product,'name'|'slug'> };
