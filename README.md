@@ -1,6 +1,14 @@
-# ADCStore v1.0.15
+# ADCStore v1.0.16
 
 Digital Store & Affiliate Website for ADC Members.
+
+## Highlight v1.0.16 — Settings Save Fix & Transparent Branding
+- Fix tombol **Simpan Pengaturan** yang gagal karena permission `store_settings`.
+- Simpan settings sekarang memakai UPDATE row `id=1`, bukan UPSERT yang tidak diperlukan.
+- Tambahan SQL privilege eksplisit + RLS owner tetap aktif.
+- Success/error menggunakan modal popup di tengah.
+- Logo brand, logo login, sidebar owner, navbar, member area, serta preview PWA mempertahankan background transparan dari file asli.
+- Fitur CSV Catalog Distribution v1.0.15 tetap dipertahankan.
 
 ## Highlight v1.0.15 — CSV Catalog Distribution
 - Import produk massal dari CSV dengan Preview + Validasi sebelum masuk database.
@@ -15,13 +23,13 @@ Digital Store & Affiliate Website for ADC Members.
 
 ## Fresh Install
 1. Buat project Supabase.
-2. Jalankan `sql/INSTALL_ADCSTORE_v1.0.15.sql` sekali di SQL Editor.
+2. Jalankan `sql/INSTALL_ADCSTORE_v1.0.16.sql` sekali di SQL Editor.
 3. Buat user pertama di Supabase Authentication; user pertama otomatis menjadi owner.
 4. Isi ENV Vercel: `NEXT_PUBLIC_SUPABASE_URL` dan `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`.
 5. Push source ke GitHub lalu deploy ke Vercel.
 
-## Upgrade dari v1.0.14
-Tidak ada perubahan schema. File `sql/UPGRADE_v1.0.14_TO_v1.0.15.sql` hanya marker/check versi. Deploy source v1.0.15.
+## Upgrade dari v1.0.15
+Jalankan `sql/UPGRADE_v1.0.15_TO_v1.0.16.sql` sekali, lalu deploy source v1.0.16.
 
 ## CSV penting
 Kolom affiliate utama: `affiliate_salespage_url`, `affiliate_checkout_url`, `affiliate_cta_text`.

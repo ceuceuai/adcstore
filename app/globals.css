@@ -41,3 +41,8 @@
 @keyframes routeShimmer{to{background-position-x:-200%}}
 @keyframes routeFade{from{opacity:.35;transform:translateY(3px)}to{opacity:1;transform:none}}
 @media(max-width:800px){.routeSkeletonGrid{grid-template-columns:1fr}.routeSkeletonGrid>div{height:110px}}
+
+/* v1.0.16 — preserve uploaded transparent brand assets exactly as uploaded */
+.brandLogoTransparent{display:block!important;width:auto!important;height:auto!important;object-fit:contain!important;background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;padding:0!important}
+.saveResultModal{width:min(420px,92vw);padding:30px;border-radius:28px;background:rgba(255,255,255,.98);border:1px solid rgba(255,255,255,.98);box-shadow:0 32px 80px rgba(55,37,80,.28);text-align:center}
+.saveResultModal h3{font-size:24px;margin:12px 0 6px}.saveResultModal p{color:var(--muted);margin:0 0 20px;line-height:1.65}.saveResultIcon{width:64px;height:64px;border-radius:22px;margin:auto;display:grid;place-items:center;font-size:30px;font-weight:1000;color:#fff;box-shadow:0 14px 30px rgba(56,39,92,.18)}.saveResultIcon.success{background:linear-gradient(145deg,#31c98c,#169967)}.saveResultIcon.error{background:linear-gradient(145deg,#ff7587,#c94a5d)}
