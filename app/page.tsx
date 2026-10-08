@@ -1,0 +1,16 @@
+'use client';
+import Link from 'next/link';
+import { useEffect, useMemo, useState } from 'react';
+import StoreNav from '@/components/StoreNav';
+import { createClient } from '@/lib/supabase';
+import { Product, StoreSettings } from '@/lib/types';
+import { rupiah } from '@/lib/money';
+
+const fallback:StoreSettings={id:1,brand_name:'ADCStore',tagline:'Digital Store & Affiliate Website for ADC Members',logo_url:null,whatsapp:null,instagram_url:null,primary_color:'#6d5dfc',hero_title:'Produk Digital Siap Jual untuk Member ADC',hero_subtitle:'Temukan produk digital pilihan. Klik produk, pelajari manfaatnya, lalu beli melalui link resmi affiliate.',footer_text:'ADCStore — Digital Store & Affiliate Website for ADC Members'};
+export default function Home(){
+ const [settings,setSettings]=useState<StoreSettings>(fallback); const [products,setProducts]=useState<Product[]>([]); const [q,setQ]=useState(''); const [cat,setCat]=useState('Semua');
+ useEffect(()=>{const s=createClient(); Promise.all([s.from('store_settings').select('*').eq('id',1).maybeSingle(),s.from('products').select('*').eq('is_active',true).order('sort_order')]).then(([a,b])=>{if(a.data)setSettings(a.data as StoreSettings); if(b.data)setProducts(b.data as Product[])})},[]);
+ const cats=['Semua',...Array.from(new Set(products.map(x=>x.category).filter(Boolean) as string[]))];
+ const shown=useMemo(()=>products.filter(p=>(cat==='Semua'||p.category===cat)&&(`${p.name} ${p.short_description||''}`.toLowerCase().includes(q.toLowerCase()))),[products,q,cat]);
+ return <><StoreNav brand={settings.brand_name}/><header className="hero"><div className="container"><div className="heroBox glass"><span className="badge">BONUS EKSKLUSIF • ADCStore</span><h1>{settings.hero_title}</h1><p>{settings.hero_subtitle}</p><div className="actions"><a href="#produk" className="btn">Lihat Produk</a>{settings.whatsapp&&<a className="btn alt" target="_blank" href={`https://wa.me/${settings.whatsapp.replace(/\D/g,'')}`}>Hubungi WhatsApp</a>}</div></div></div></header><section className="section" id="produk"><div className="container"><div className="topline"><div><h2>Katalog Produk</h2><div className="muted">Produk ADC sudah tersedia. Pemilik toko tinggal mengatur link affiliate masing-masing.</div></div></div><div className="actions" style={{marginBottom:18}}><input className="input" value={q} onChange={e=>setQ(e.target.value)} placeholder="Cari produk..." style={{maxWidth:320}}/><select className="input" value={cat} onChange={e=>setCat(e.target.value)} style={{maxWidth:220}}>{cats.map(c=><option key={c}>{c}</option>)}</select></div><div className="grid">{shown.map(p=><article className="card glass" key={p.id}>{p.image_url?<img src={p.image_url} className="productImage" alt={p.name}/>:<div className="productImage"/>}<div className="cardBody"><div className="badge">{p.category||'Produk Digital'}</div><h3>{p.name}</h3><p className="muted">{p.short_description}</p><div className="price">{rupiah(p.price)}</div><Link className="btn" href={`/product/${p.slug}`}>Lihat Detail</Link></div></article>)}{shown.length===0&&<div className="notice">Belum ada produk yang cocok.</div>}</div></div></section><footer className="footer"><div className="container">{settings.footer_text}</div></footer></>
+}

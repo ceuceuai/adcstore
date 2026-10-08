@@ -1,0 +1,10 @@
+ADCStore v1.0.0
+Initial Release
+- Storefront
+- Affiliate product detail
+- Admin Auth
+- Product CRUD
+- Search/filter/pagination
+- Store settings
+- Owner password change
+- Single master SQL installer
