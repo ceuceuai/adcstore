@@ -1,13 +1,2 @@
-ADCStore v1.0.1
-Hotfix Supabase Publishable Key
-- Native support NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
-- Backward-compatible fallback to NEXT_PUBLIC_SUPABASE_ANON_KEY
-- Updated .env.example and install guide
-- Storefront
-- Affiliate product detail
-- Admin Auth
-- Product CRUD
-- Search/filter/pagination
-- Store settings
-- Owner password change
-- Single master SQL installer
+ADCStore v1.0.2
+Minimum From Version: v1.0.1

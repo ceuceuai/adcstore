@@ -1,9 +1,9 @@
-ADCStore v1.0.1 - PANDUAN CEPAT
+ADCStore v1.0.2 - PANDUAN CEPAT
 
 1) SUPABASE
 - Buat project baru.
 - SQL Editor > New Query.
-- Paste seluruh isi sql/INSTALL_ADCSTORE_v1.0.1.sql > Run.
+- Paste seluruh isi sql/INSTALL_ADCSTORE_v1.0.2.sql > Run.
 - Authentication > Users > Add User > buat akun owner.
 
 2) GITHUB
@@ -20,10 +20,17 @@ ADCStore v1.0.1 - PANDUAN CEPAT
 - Deploy.
 
 4) SETUP TOKO
-- buka https://domain-anda/admin/login
+- buka https://domain-anda/owner/login
 - Login akun owner.
 - Pengaturan: ganti brand, hero, WA, Instagram, footer.
 - Produk ADC: edit tiap produk dan masukkan affiliate_url Anda.
 - Aktifkan produk yang ingin ditampilkan.
 
 SELESAI.
+
+
+ADMIN / OWNER LOGIN
+- Tombol Admin tidak ditampilkan di storefront publik.
+- Login owner dipisahkan di /owner/login.
+- Akun owner wajib dibuat langsung di Supabase Authentication.
+- Pengunjung/customer tidak menggunakan halaman login owner.
