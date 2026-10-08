@@ -1,8 +1,8 @@
-# ADCStore v1.0.5
+# ADCStore v1.0.6
 
 **Digital Store & Affiliate Website for ADC Members**
 
-Versi 1.0.5 merombak Owner Dashboard menjadi UI 3D soft pastel dan menambah checkout internal lengkap.
+Versi 1.0.6 merombak Owner Dashboard menjadi UI 3D soft pastel dan menambah checkout internal lengkap.
 
 ## Fitur utama
 - Homepage & member area 3D soft pastel
@@ -16,14 +16,14 @@ Versi 1.0.5 merombak Owner Dashboard menjadi UI 3D soft pastel dan menambah chec
 
 ## Fresh install
 1. Buat project Supabase.
-2. Jalankan **`sql/INSTALL_ADCSTORE_v1.0.5.sql`** sekali.
+2. Jalankan **`sql/INSTALL_ADCSTORE_v1.0.6.sql`** sekali.
 3. Buat akun Authentication pertama untuk owner. Akun Auth pertama otomatis menjadi owner.
 4. Isi env Vercel dari `.env.example`.
 5. Deploy ke GitHub/Vercel.
 6. Login owner di `/owner/login`.
 
-## Upgrade v1.0.4 -> v1.0.5
-Jalankan **`sql/UPGRADE_v1.0.4_TO_v1.0.5.sql`** sekali, lalu deploy source v1.0.5.
+## Upgrade v1.0.4 -> v1.0.6
+Jalankan **`sql/UPGRADE_v1.0.4_TO_v1.0.6.sql`** sekali, lalu deploy source v1.0.6.
 
 ## Environment
 Gunakan `NEXT_PUBLIC_SUPABASE_URL` dan `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`. Source masih mendukung fallback `NEXT_PUBLIC_SUPABASE_ANON_KEY` untuk project lama.

@@ -1,4 +1,4 @@
--- ADCStore v1.0.4 -> v1.0.5
+-- ADCStore v1.0.4 -> v1.0.6
 -- Jalankan SEKALI untuk project yang sudah memakai v1.0.4.
 -- Tidak menghapus produk, settings, profiles, atau owner yang sudah ada.
 
