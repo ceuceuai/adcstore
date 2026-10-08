@@ -1,61 +1,32 @@
-# ADCStore v1.0.14
+# ADCStore v1.0.15
 
-## Performance & Smooth Navigation
-- Admin sidebar/header sekarang persistent lewat `app/admin/layout.tsx`; tidak remount pada setiap pindah menu.
-- Verifikasi owner tidak diulang untuk setiap perpindahan halaman admin.
-- Semua route admin diprefetch agar klik menu terasa lebih cepat.
-- Ada progress indicator dan loading skeleton saat konten route sedang dimuat.
-- Tidak ada perubahan schema database dari v1.0.12.
+Digital Store & Affiliate Website for ADC Members.
 
-# ADCStore v1.0.14
-
-ADCStore — Digital Store & Affiliate Website for ADC Members.
-
-## Highlight v1.0.14
-- Harga promo lengkap: Harga Normal/Coret + Harga Publish/Jual.
-- Badge diskon otomatis (HEMAT xx%) dan teks badge custom optional.
-- Homepage Slide Banner responsive: upload/URL desktop 1600×600 dan mobile 1080×1350.
-- Banner punya URL tujuan, CTA optional, urutan, aktif/nonaktif, autoplay, arrow, dots, dan swipe-friendly layout.
-- Admin Slide Banner dilengkapi search, filter status, pagination, dan page size 10/20/50.
-- Mobile Bottom Navbar untuk pengalaman seperti aplikasi.
-- PWA: service worker, manifest dinamis, install ke Home Screen, nama aplikasi dan icon bisa diatur dari dashboard.
-- Icon PWA bisa upload sendiri; rekomendasi 512×512 px.
-- Semua fitur sebelumnya tetap ada: multi-image, video VSL, internal/affiliate salespage & checkout, akses produk, pembayaran bank/e-wallet/QRIS, 10 tema + custom color, hero custom, Floating WhatsApp.
+## Highlight v1.0.15 — CSV Catalog Distribution
+- Import produk massal dari CSV dengan Preview + Validasi sebelum masuk database.
+- Export semua produk atau hanya hasil filter/search.
+- Download template `ADCStore-PRODUCT-IMPORT-TEMPLATE.csv` langsung dari dashboard.
+- Link affiliate bisa diedit massal di Excel / Google Sheets sebelum CSV diimport.
+- Duplicate slug: pilih **Update existing** atau **Skip existing**.
+- Preview import 10 baris per halaman dengan status New / Update / Skip / Error.
+- Multi-image CSV memakai pemisah `|`.
+- Optional product access ikut CSV melalui `access_type`, `access_html`, dan `access_buttons` (JSON array).
+- Seluruh fitur v1.0.14 tetap dipertahankan.
 
 ## Fresh Install
 1. Buat project Supabase.
-2. Jalankan `sql/INSTALL_ADCSTORE_v1.0.14.sql` sekali di SQL Editor.
-3. Buat akun pertama di Supabase Authentication. Akun pertama otomatis menjadi OWNER.
-4. Set environment variable Vercel:
-   - `NEXT_PUBLIC_SUPABASE_URL`
-   - `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
-5. Push source ke GitHub lalu deploy di Vercel.
-6. Login owner melalui `/owner/login`.
+2. Jalankan `sql/INSTALL_ADCSTORE_v1.0.15.sql` sekali di SQL Editor.
+3. Buat user pertama di Supabase Authentication; user pertama otomatis menjadi owner.
+4. Isi ENV Vercel: `NEXT_PUBLIC_SUPABASE_URL` dan `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`.
+5. Push source ke GitHub lalu deploy ke Vercel.
 
-## Upgrade dari v1.0.10
-1. Jalankan `sql/UPGRADE_v1.0.10_TO_v1.0.14.sql` sekali.
-2. Deploy seluruh source v1.0.14.
-3. Atur banner dari `Owner Console > Slide Banner`.
-4. Atur PWA dari `Pengaturan Toko > PWA / Install App`.
+## Upgrade dari v1.0.14
+Tidak ada perubahan schema. File `sql/UPGRADE_v1.0.14_TO_v1.0.15.sql` hanya marker/check versi. Deploy source v1.0.15.
 
-## Rekomendasi Banner
-- Desktop: **1600 × 600 px** (rasio 8:3).
-- Mobile: **1080 × 1350 px** (rasio 4:5).
-- Bila mobile banner kosong, sistem otomatis memakai banner desktop.
+## CSV penting
+Kolom affiliate utama: `affiliate_salespage_url`, `affiliate_checkout_url`, `affiliate_cta_text`.
+`gallery_images` dapat berisi beberapa URL yang dipisah `|`.
+`access_buttons` harus berupa JSON array valid bila dipakai.
 
 ## Catatan
-Bucket `store-assets` dipakai untuk QRIS, gambar produk, hero, floating WA, banner, dan icon PWA. Upload/delete hanya owner.
-
-
-## v1.0.14 Hotfix
-- Fix Next.js 14 manifest TypeScript error: icon `purpose` now uses the supported value `any` instead of invalid `any maskable`.
-- No database schema changes.
-
-
-## v1.0.14 — Dynamic Branding & Favicon
-- Nama brand dan logo dipakai dinamis pada login member, login owner, member area, navbar, dan owner console.
-- Teks login member/owner dapat diubah dari Settings.
-- Logo dapat upload atau URL.
-- Favicon dapat upload atau URL; jika kosong otomatis fallback ke logo brand.
-- Metadata browser title/description mengikuti brand/tagline dari database.
-- PWA manifest tetap mengikuti Settings dan tidak mengunci brand di source UI.
+Admin/owner tetap wajib dibuat melalui Supabase Authentication. Branding, favicon, logo, homepage copy, CTA, hero, dan elemen brand UI tetap dinamis dari Settings/DB.

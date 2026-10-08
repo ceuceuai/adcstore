@@ -1,25 +1,18 @@
-ADCStore v1.0.14 - PANDUAN RINGKAS
+ADCStore v1.0.15 - PANDUAN RINGKAS
 
 FRESH INSTALL
 1. Buat project Supabase.
-2. SQL Editor > jalankan sql/INSTALL_ADCSTORE_v1.0.14.sql seluruhnya satu kali.
-3. Authentication > Users > buat akun pertama. Akun pertama otomatis menjadi OWNER.
+2. SQL Editor > jalankan sql/INSTALL_ADCSTORE_v1.0.15.sql seluruhnya satu kali.
+3. Authentication > Users > buat akun pertama. Akun pertama otomatis OWNER.
 4. Vercel Environment Variables:
    NEXT_PUBLIC_SUPABASE_URL
    NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
 5. Push source ke GitHub dan deploy ke Vercel.
-6. Login owner: /owner/login
 
-UPGRADE DARI v1.0.10
-1. Jalankan sql/UPGRADE_v1.0.10_TO_v1.0.14.sql satu kali.
-2. Deploy semua file source v1.0.14.
-3. Tidak perlu fresh install ulang.
+UPGRADE v1.0.14 -> v1.0.15
+Tidak ada perubahan schema database. Deploy source v1.0.15. File SQL upgrade hanya marker/check.
 
-FITUR BARU v1.0.14
-- Harga normal/coret + harga publish/jual + badge diskon.
-- Slide Banner homepage responsive dan clickable.
-- Desktop banner rekomendasi 1600x600 px.
-- Mobile banner rekomendasi 1080x1350 px.
-- Mobile bottom navbar.
-- PWA install ke Home Screen.
-- Nama/icon PWA dapat diganti dari Pengaturan.
+CSV KATALOG
+Admin > Produk ADC > Import CSV.
+Download Template CSV, edit produk/link affiliate di Excel atau Google Sheets, lalu upload. Sistem menampilkan Preview + Validasi sebelum import.
+Duplicate slug dapat di-update atau dilewati.
