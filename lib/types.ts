@@ -1,6 +1,8 @@
 export type Product = {
   id: string; name: string; slug: string; short_description: string | null; description: string | null;
-  image_url: string | null; price: number; category: string | null; affiliate_url: string | null; cta_text: string;
+  image_url: string | null; price: number; category: string | null;
+  affiliate_salespage_url: string | null; internal_salespage_html: string | null; affiliate_url: string | null;
+  cta_text: string; internal_cta_text: string; affiliate_salespage_cta_text: string;
   sale_mode: 'affiliate' | 'internal' | 'both'; featured: boolean; is_active: boolean; sort_order: number;
 };
 export type StoreSettings = {
