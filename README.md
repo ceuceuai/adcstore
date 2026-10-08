@@ -1,8 +1,17 @@
-# ADCStore v1.0.12
+# ADCStore v1.0.13
+
+## Performance & Smooth Navigation
+- Admin sidebar/header sekarang persistent lewat `app/admin/layout.tsx`; tidak remount pada setiap pindah menu.
+- Verifikasi owner tidak diulang untuk setiap perpindahan halaman admin.
+- Semua route admin diprefetch agar klik menu terasa lebih cepat.
+- Ada progress indicator dan loading skeleton saat konten route sedang dimuat.
+- Tidak ada perubahan schema database dari v1.0.12.
+
+# ADCStore v1.0.13
 
 ADCStore — Digital Store & Affiliate Website for ADC Members.
 
-## Highlight v1.0.12
+## Highlight v1.0.13
 - Harga promo lengkap: Harga Normal/Coret + Harga Publish/Jual.
 - Badge diskon otomatis (HEMAT xx%) dan teks badge custom optional.
 - Homepage Slide Banner responsive: upload/URL desktop 1600×600 dan mobile 1080×1350.
@@ -15,7 +24,7 @@ ADCStore — Digital Store & Affiliate Website for ADC Members.
 
 ## Fresh Install
 1. Buat project Supabase.
-2. Jalankan `sql/INSTALL_ADCSTORE_v1.0.12.sql` sekali di SQL Editor.
+2. Jalankan `sql/INSTALL_ADCSTORE_v1.0.13.sql` sekali di SQL Editor.
 3. Buat akun pertama di Supabase Authentication. Akun pertama otomatis menjadi OWNER.
 4. Set environment variable Vercel:
    - `NEXT_PUBLIC_SUPABASE_URL`
@@ -24,8 +33,8 @@ ADCStore — Digital Store & Affiliate Website for ADC Members.
 6. Login owner melalui `/owner/login`.
 
 ## Upgrade dari v1.0.10
-1. Jalankan `sql/UPGRADE_v1.0.10_TO_v1.0.12.sql` sekali.
-2. Deploy seluruh source v1.0.12.
+1. Jalankan `sql/UPGRADE_v1.0.10_TO_v1.0.13.sql` sekali.
+2. Deploy seluruh source v1.0.13.
 3. Atur banner dari `Owner Console > Slide Banner`.
 4. Atur PWA dari `Pengaturan Toko > PWA / Install App`.
 
@@ -38,6 +47,6 @@ ADCStore — Digital Store & Affiliate Website for ADC Members.
 Bucket `store-assets` dipakai untuk QRIS, gambar produk, hero, floating WA, banner, dan icon PWA. Upload/delete hanya owner.
 
 
-## v1.0.12 Hotfix
+## v1.0.13 Hotfix
 - Fix Next.js 14 manifest TypeScript error: icon `purpose` now uses the supported value `any` instead of invalid `any maskable`.
 - No database schema changes.

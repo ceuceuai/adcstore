@@ -1,6 +1,5 @@
 'use client';
 import { FormEvent, useEffect, useState } from 'react';
-import AdminShell from '@/components/AdminShell';
 import { createClient } from '@/lib/supabase';
 import { StoreSettings } from '@/lib/types';
 import { THEME_PRESETS } from '@/lib/themes';
@@ -26,7 +25,7 @@ export default function Settings(){
    else setD(x=>({...x,pwa_icon_url:data.publicUrl}));
    setUploading('');setMsg('Upload berhasil. Klik Simpan Pengaturan agar perubahan tersimpan.');
  }
- return <AdminShell><div className="topline"><div><h1>Pengaturan Toko</h1><p className="muted">Branding, homepage, hero, WhatsApp melayang, dan tema warna global ADCStore.</p></div></div>
+ return <><div className="topline"><div><h1>Pengaturan Toko</h1><p className="muted">Branding, homepage, hero, WhatsApp melayang, dan tema warna global ADCStore.</p></div></div>
  <form className="form glass" onSubmit={save} style={{padding:24,borderRadius:26,maxWidth:980}}>
   <h2 style={{marginBottom:0}}>Branding</h2>
   {[["Nama Brand","brand_name"],["Tagline","tagline"],["Logo URL","logo_url"],["WhatsApp Utama","whatsapp"],["Instagram URL","instagram_url"],["Footer Text","footer_text"]].map(([label,key])=><div className="field" key={key}><label>{label}</label><input className="input" value={(d as any)[key]||''} onChange={e=>setD({...d,[key]:e.target.value})}/></div>)}
@@ -55,5 +54,5 @@ export default function Settings(){
   <div className="glass" style={{padding:20,borderRadius:22,background:`linear-gradient(135deg,${d.primary_color},${d.secondary_color},${d.accent_color})`,color:'#fff'}}><strong>Live Preview</strong><div style={{fontSize:28,fontWeight:1000,marginTop:8}}>{d.brand_name}</div><div>{d.hero_title}</div></div>
   <button className="btn">Simpan Pengaturan</button>
  </form>
- <div className="glass" style={{padding:22,borderRadius:24,maxWidth:980,marginTop:20}}><h2>Ganti Password Owner</h2><div className="actions"><input className="input" type="password" value={pwd} onChange={e=>setPwd(e.target.value)} placeholder="Password baru minimal 6 karakter"/><button className="btn" onClick={changePass}>Ganti Password</button></div></div>{msg&&<div className="notice" style={{maxWidth:980,marginTop:14}}>{msg}</div>}</AdminShell>
+ <div className="glass" style={{padding:22,borderRadius:24,maxWidth:980,marginTop:20}}><h2>Ganti Password Owner</h2><div className="actions"><input className="input" type="password" value={pwd} onChange={e=>setPwd(e.target.value)} placeholder="Password baru minimal 6 karakter"/><button className="btn" onClick={changePass}>Ganti Password</button></div></div>{msg&&<div className="notice" style={{maxWidth:980,marginTop:14}}>{msg}</div>}</>
 }

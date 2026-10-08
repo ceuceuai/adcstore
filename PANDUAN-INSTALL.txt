@@ -1,8 +1,8 @@
-ADCStore v1.0.12 - PANDUAN RINGKAS
+ADCStore v1.0.13 - PANDUAN RINGKAS
 
 FRESH INSTALL
 1. Buat project Supabase.
-2. SQL Editor > jalankan sql/INSTALL_ADCSTORE_v1.0.12.sql seluruhnya satu kali.
+2. SQL Editor > jalankan sql/INSTALL_ADCSTORE_v1.0.13.sql seluruhnya satu kali.
 3. Authentication > Users > buat akun pertama. Akun pertama otomatis menjadi OWNER.
 4. Vercel Environment Variables:
    NEXT_PUBLIC_SUPABASE_URL
@@ -11,11 +11,11 @@ FRESH INSTALL
 6. Login owner: /owner/login
 
 UPGRADE DARI v1.0.10
-1. Jalankan sql/UPGRADE_v1.0.10_TO_v1.0.12.sql satu kali.
-2. Deploy semua file source v1.0.12.
+1. Jalankan sql/UPGRADE_v1.0.10_TO_v1.0.13.sql satu kali.
+2. Deploy semua file source v1.0.13.
 3. Tidak perlu fresh install ulang.
 
-FITUR BARU v1.0.12
+FITUR BARU v1.0.13
 - Harga normal/coret + harga publish/jual + badge diskon.
 - Slide Banner homepage responsive dan clickable.
 - Desktop banner rekomendasi 1600x600 px.
