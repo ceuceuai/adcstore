@@ -1,4 +1,4 @@
--- ADCStore v1.0.6 -> v1.0.7
+-- ADCStore v1.0.6 -> v1.0.8
 -- Tambahan salespage + CTA internal/official. Aman dijalankan satu kali.
 
 alter table public.products add column if not exists affiliate_salespage_url text;

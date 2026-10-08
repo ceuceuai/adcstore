@@ -1,8 +1,8 @@
-ADCStore v1.0.7 - PANDUAN RINGKAS
+ADCStore v1.0.8 - PANDUAN RINGKAS
 
 FRESH INSTALL:
 1. Buat project Supabase.
-2. SQL Editor > jalankan sql/INSTALL_ADCSTORE_v1.0.7.sql seluruhnya.
+2. SQL Editor > jalankan sql/INSTALL_ADCSTORE_v1.0.8.sql seluruhnya.
 3. Authentication > Users > buat akun owner PERTAMA. Tidak perlu query UUID manual.
 4. Vercel Environment Variables:
    NEXT_PUBLIC_SUPABASE_URL=...
@@ -14,8 +14,8 @@ FRESH INSTALL:
 9. Akses Produk: isi HTML, tombol login/download, atau keduanya.
 
 UPGRADE DARI v1.0.4:
-1. Jalankan sql/UPGRADE_v1.0.4_TO_v1.0.7.sql sekali.
-2. Deploy semua file v1.0.7.
+1. Jalankan sql/UPGRADE_v1.0.4_TO_v1.0.8.sql sekali.
+2. Deploy semua file v1.0.8.
 3. Environment Variable tidak berubah.
 
 CATATAN AKSES MEMBER:
