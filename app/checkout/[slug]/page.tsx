@@ -7,7 +7,7 @@ import { PaymentSettings, Product, StoreSettings } from '@/lib/types';
 import { rupiah } from '@/lib/money';
 import ThemeProvider from '@/components/ThemeProvider';
 import { Building2, WalletCards, QrCode, CheckCircle2 } from 'lucide-react';
-const fallback:StoreSettings={id:1,brand_name:'ADCStore',tagline:'Digital Store & Affiliate Website for ADC Members',logo_url:null,whatsapp:null,instagram_url:null,primary_color:'#8b5cf6',secondary_color:'#c4b5fd',accent_color:'#f9a8d4',theme_preset:'lavender',hero_title:'Produk Digital Siap Jual untuk Member ADC',hero_subtitle:'',footer_text:'ADCStore'};
+const fallback:StoreSettings={id:1,brand_name:'ADCStore',tagline:'Digital Store & Affiliate Website for ADC Members',logo_url:null,whatsapp:null,instagram_url:null,primary_color:'#8b5cf6',secondary_color:'#c4b5fd',accent_color:'#f9a8d4',theme_preset:'lavender',hero_title:'Produk Digital Siap Jual untuk Member ADC',hero_subtitle:'',footer_text:'ADCStore',home_products_per_page:8};
 const payBase:PaymentSettings={id:1,banks:[],ewallets:[],qris_enabled:false,qris_label:'QRIS',qris_image_url:null,instructions:''};
 export default function Checkout(){
  const {slug}=useParams<{slug:string}>(); const [p,setP]=useState<Product|null>(null); const [s,setS]=useState(fallback); const [pay,setPay]=useState(payBase); const [method,setMethod]=useState(''); const [form,setForm]=useState({name:'',email:'',wa:''}); const [done,setDone]=useState(''); const [msg,setMsg]=useState('');

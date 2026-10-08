@@ -1,25 +1,22 @@
-ADCStore v1.0.8 - PANDUAN RINGKAS
+ADCStore v1.0.9 - PANDUAN RINGKAS
 
-FRESH INSTALL:
+FRESH INSTALL
 1. Buat project Supabase.
-2. SQL Editor > jalankan sql/INSTALL_ADCSTORE_v1.0.8.sql seluruhnya.
-3. Authentication > Users > buat akun owner PERTAMA. Tidak perlu query UUID manual.
+2. SQL Editor > jalankan sql/INSTALL_ADCSTORE_v1.0.9.sql seluruhnya satu kali.
+3. Authentication > Users > buat akun pertama. Akun pertama otomatis OWNER.
 4. Vercel Environment Variables:
-   NEXT_PUBLIC_SUPABASE_URL=...
-   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=...
-5. Deploy source ke GitHub lalu Vercel.
-6. Login owner: /owner/login
-7. Dashboard > Pembayaran: isi Bank/E-Wallet dan upload QRIS.
-8. Produk ADC: tentukan Affiliate / Internal / Both.
-9. Akses Produk: isi HTML, tombol login/download, atau keduanya.
+   NEXT_PUBLIC_SUPABASE_URL
+   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+5. Push source root-ready ke GitHub lalu deploy ke Vercel.
 
-UPGRADE DARI v1.0.4:
-1. Jalankan sql/UPGRADE_v1.0.4_TO_v1.0.8.sql sekali.
-2. Deploy semua file v1.0.8.
-3. Environment Variable tidak berubah.
+UPGRADE DARI v1.0.8
+1. Jalankan sql/UPGRADE_v1.0.8_TO_v1.0.9.sql satu kali.
+2. Deploy semua file source v1.0.9.
+3. Tidak perlu fresh install dan tidak perlu hapus data lama.
 
-CATATAN AKSES MEMBER:
-- Customer checkout internal memakai email.
-- Owner ubah status order menjadi Paid/Completed.
-- Member membuat/login akun dengan EMAIL YANG SAMA.
-- Menu Akses Produk akan otomatis menampilkan akses untuk produk yang sudah Paid/Completed.
+FITUR BARU v1.0.9
+- Multi image per produk: upload banyak file + URL image.
+- Cover image dapat dipilih dari gallery.
+- Video Sales Letter: YouTube / Vimeo / direct video URL.
+- Homepage pagination dan jumlah produk per halaman bisa diatur owner.
+- List Produk, Order, Akses Produk, dan Member Access punya Search + Filter relevan + Pagination + Page Size.

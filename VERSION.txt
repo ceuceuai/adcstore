@@ -1,1 +1,2 @@
-1.0.8
+ADCStore v1.0.9
+Minimum From Version: v1.0.8
