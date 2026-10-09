@@ -1,17 +1,17 @@
-ADCStore v1.0.29 - PANDUAN RINGKAS
+ADCStore v1.0.30 - PANDUAN RINGKAS
 
 FRESH INSTALL
 1. Buat project Supabase.
-2. SQL Editor > jalankan sql/INSTALL_ADCSTORE_v1.0.29.sql seluruhnya satu kali.
+2. SQL Editor > jalankan sql/INSTALL_ADCSTORE_v1.0.30.sql seluruhnya satu kali.
 3. Authentication > Users > buat akun pertama. Akun pertama otomatis OWNER.
 4. Vercel Environment Variables:
    NEXT_PUBLIC_SUPABASE_URL
    NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
 5. Push source ke GitHub dan deploy ke Vercel.
 
-UPGRADE v1.0.15 -> v1.0.29
-1. Jalankan sql/UPGRADE_v1.0.15_TO_v1.0.29.sql sekali di Supabase SQL Editor.
-2. Deploy source v1.0.29.
+UPGRADE v1.0.15 -> v1.0.30
+1. Jalankan sql/UPGRADE_v1.0.15_TO_v1.0.30.sql sekali di Supabase SQL Editor.
+2. Deploy source v1.0.30.
 Upgrade ini memperbaiki privilege/RLS penyimpanan Pengaturan; data lama tetap dipertahankan.
 
 CSV KATALOG
@@ -22,7 +22,7 @@ Duplicate slug dapat di-update atau dilewati.
 
 ## IMPORTANT - ONE SHOT UPGRADE FROM v1.0.17
 If your live ADCStore database is still v1.0.17, run ONLY:
-`sql/UPGRADE_v1.0.17_TO_v1.0.29_ONE_SHOT.sql`
+`sql/UPGRADE_v1.0.17_TO_v1.0.30_ONE_SHOT.sql`
 
 That single SQL includes:
 - category master
