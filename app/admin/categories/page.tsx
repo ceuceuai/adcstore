@@ -78,7 +78,7 @@ export default function CategoriesPage(){
    <div className="productAdminInfo"><div className="adminCardTop"><div><span className="badge small">Kategori</span><h3>{r.name}</h3><small>/{r.slug}</small></div><span className={`statusPill ${r.is_active?'paid':'cancelled'}`}>{r.is_active?'Aktif':'Nonaktif'}</span></div>
    <p className="muted">{r.description||'Tanpa deskripsi.'}</p>
    <div className="productAdminMeta"><span><b>{r.sort_order}</b><small>Urutan</small></span></div>
-   <div className="productAdminActions"><button className="btn alt" onClick={()=>openEdit(r)}><Pencil size={17}/> Edit</button><button className="btn alt dangerText" onClick={()=>askDelete([r.id])><Trash2 size={17}/> Hapus</button></div></div>
+   <div className="productAdminActions"><button className="btn alt" onClick={()=>openEdit(r)}><Pencil size={17}/> Edit</button><button className="btn alt dangerText" onClick={()=>askDelete([r.id])}><Trash2 size={17}/> Hapus</button></div></div>
   </article>)}{!view.length&&<div className="empty3d panel3d">Belum ada kategori.</div>}</div>
   <div className="pager3d"><span>{filtered.length} kategori • Halaman {safePage}/{pages}</span><div className="actions"><button className="btn alt" disabled={safePage<=1} onClick={()=>setPage(x=>Math.max(1,x-1))}>← Sebelumnya</button><button className="btn alt" disabled={safePage>=pages} onClick={()=>setPage(x=>Math.min(pages,x+1))}>Berikutnya →</button></div></div>
 
