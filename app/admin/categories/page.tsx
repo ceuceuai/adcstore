@@ -11,6 +11,7 @@ const slugify=(x:string)=>x.toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').repl
 
 export default function CategoriesPage(){
  const [rows,setRows]=useState<ProductCategory[]>([]),[q,setQ]=useState(''),[status,setStatus]=useState('all'),[page,setPage]=useState(1),[size,setSize]=useState(10);
+ const [dialog,setDialog]=useState<{open:boolean;title:string;message:string;danger:boolean;infoOnly:boolean;target:ProductCategory|null}>({open:false,title:'',message:'',danger:false,infoOnly:false,target:null}),[dialogBusy,setDialogBusy]=useState(false);
  const [show,setShow]=useState(false),[edit,setEdit]=useState<ProductCategory|null>(null),[draft,setDraft]=useState<Draft>(blank),[msg,setMsg]=useState('');
 
  async function load(){const {data}=await createClient().from('product_categories').select('*').order('sort_order').order('name');setRows((data||[]) as ProductCategory[])}
@@ -20,7 +21,15 @@ export default function CategoriesPage(){
  function openNew(){setEdit(null);setDraft(blank);setShow(true);setMsg('')}
  function openEdit(r:ProductCategory){setEdit(r);setDraft({name:r.name,slug:r.slug,description:r.description||'',image_url:r.image_url||'',is_active:r.is_active,sort_order:r.sort_order});setShow(true);setMsg('')}
  async function save(e:FormEvent){e.preventDefault();const s=createClient();const payload={...draft,slug:draft.slug||slugify(draft.name),sort_order:Number(draft.sort_order)};const res=edit?await s.from('product_categories').update(payload).eq('id',edit.id):await s.from('product_categories').insert(payload);if(res.error){setMsg(res.error.message);return}setShow(false);await load()}
- async function remove(r:ProductCategory){const s=createClient();const {count}=await s.from('products').select('*',{count:'exact',head:true}).eq('category',r.name);if((count||0)>0){alert(`Kategori "${r.name}" masih dipakai ${count} produk. Pindahkan produk ke kategori lain dulu.`);return}if(!confirm(`Hapus kategori "${r.name}"?`))return;await s.from('product_categories').delete().eq('id',r.id);await load()}
+ async function remove(r:ProductCategory){
+  const s=createClient();const {count}=await s.from('products').select('*',{count:'exact',head:true}).eq('category',r.name);
+  if((count||0)>0){setDialog({open:true,title:'Kategori Masih Digunakan',message:`Kategori "${r.name}" masih dipakai ${count} produk. Pindahkan produk ke kategori lain dulu.`,danger:false,infoOnly:true,target:null});return}
+  setDialog({open:true,title:'Hapus Kategori?',message:`Kategori "${r.name}" akan dihapus permanen.`,danger:true,infoOnly:false,target:r});
+ }
+ async function confirmCategoryDelete(){
+  if(!dialog.target)return setDialog(d=>({...d,open:false}));
+  setDialogBusy(true);await createClient().from('product_categories').delete().eq('id',dialog.target.id);setDialogBusy(false);setDialog(d=>({...d,open:false,target:null}));await load();
+ }
 
  return <div className="adminPage">
   <div className="adminPageHead"><div><span className="eyebrow">MASTER DATA</span><h1>Kategori Produk</h1><p className="muted">Kategori dinamis untuk merapikan katalog. Bisa bertambah kapan saja.</p></div><button className="btn" onClick={openNew}><Plus size={18}/> Tambah Kategori</button></div>

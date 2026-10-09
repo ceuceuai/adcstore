@@ -5,6 +5,7 @@ import { useEffect,useState } from 'react';
 import { Home, Grid2X2, UserRound, KeyRound, Store, MessageCircle } from 'lucide-react';
 import { createClient } from '@/lib/supabase';
 import { StoreSettings } from '@/lib/types';
+import { trackEvent } from '@/lib/analytics';
 
 function waTarget(s:Partial<StoreSettings>){
   if(s.floating_wa_target_type==='url') return (s.floating_wa_target_url||'').trim();
@@ -23,6 +24,6 @@ export default function MobileBottomNav(){
  ];
  return <nav className="mobileBottomNav" aria-label="Navigasi mobile">
    {items.map(({href,label,icon:Icon,active},i)=><Link key={`${href}-${i}`} href={href} className={active?'active':''}><Icon size={20}/><span>{label}</span></Link>)}
-   {waInNav?<a href={wa} target="_blank" rel="noreferrer" className="mobileWaNav"><MessageCircle size={20}/><span>WhatsApp</span></a>:<Link href="/"><Store size={20}/><span>Toko</span></Link>}
+   {waInNav?<a href={wa} target="_blank" rel="noreferrer" onClick={()=>trackEvent('whatsapp_click',{metadata:{location:'mobile_nav'}})} className="mobileWaNav"><MessageCircle size={20}/><span>WhatsApp</span></a>:<Link href="/"><Store size={20}/><span>Toko</span></Link>}
  </nav>
 }

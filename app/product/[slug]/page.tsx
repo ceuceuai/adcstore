@@ -7,6 +7,7 @@ import ThemeProvider from '@/components/ThemeProvider';
 import {createClient} from '@/lib/supabase';
 import {Product,StoreSettings} from '@/lib/types';
 import {rupiah} from '@/lib/money';
+import {trackEvent} from '@/lib/analytics';
 
 const fallback:StoreSettings={id:1,brand_name:'Digital Store',tagline:'Digital product store',logo_url:null,whatsapp:null,instagram_url:null,primary_color:'#8b5cf6',secondary_color:'#c4b5fd',accent_color:'#f9a8d4',theme_preset:'lavender',hero_badge:'BONUS EKSKLUSIF',hero_title:'Produk Digital Siap Jual untuk Member ADC',hero_subtitle:'',hero_primary_cta_text:'Lihat Produk',hero_member_cta_text:'Masuk Member',hero_member_cta_enabled:true,hero_trust_1:'Produk siap promosi',hero_trust_2:'Link affiliate sendiri',hero_trust_3:'Tema bisa diganti',hero_visual_mode:'default',hero_image_url:null,hero_image_position:'right',hero_image_fit:'contain',hero_image_alt:'Hero image',catalog_eyebrow:'KATALOG DIGITAL',catalog_title:'Produk pilihan untuk mulai jualan',catalog_subtitle:'Produk ADC sudah tersedia.',floating_wa_enabled:false,floating_wa_number:null,floating_wa_message:'Halo, saya butuh bantuan tentang produk ini.',floating_wa_position:'right',floating_wa_style:'3d',floating_wa_icon_url:null,floating_wa_tooltip:'Butuh bantuan? Chat WhatsApp',floating_wa_show_on:'all',footer_text:'Digital Store',home_products_per_page:8,pwa_name:'Digital Store',pwa_short_name:'Store',pwa_icon_url:null};
 
@@ -32,7 +33,7 @@ export default function ProductDetail(){
    const product=a.data as Product|null;
    if(product){
     product.gallery_images=product.gallery_images||[];
-    setP(product);setActiveImage(product.image_url||product.gallery_images[0]||'');
+    setP(product);setActiveImage(product.image_url||product.gallery_images[0]||'');trackEvent('product_view',{product_id:product.id});
     let rq=s.from('products').select('*').eq('is_active',true).neq('id',product.id);
     if(product.category)rq=rq.eq('category',product.category);
     let {data:rdata}=await rq.order('created_at',{ascending:false}).limit(4);
@@ -78,10 +79,10 @@ export default function ProductDetail(){
       </div>
       <p>{p.description||p.short_description}</p>
       <div className="detailCtaGrid">
-       {hasOfficialSalespage&&<a className="btn alt" href={p.affiliate_salespage_url!} target="_blank" rel="nofollow sponsored">{p.affiliate_salespage_cta_text||'Lihat Salespage Official'}</a>}
-       {hasInternalSalespage&&<a className="btn alt" href="#salespage-internal">Lihat Salespage Internal</a>}
-       {hasOfficialCheckout&&<a className="btn soft" href={p.affiliate_url!} target="_blank" rel="nofollow sponsored">{p.cta_text||'Checkout di Website Resmi'}</a>}
-       {hasInternalCheckout&&<Link className="btn" href={`/checkout/${p.slug}`}>{p.internal_cta_text||'Checkout di Website Ini'}</Link>}
+       {hasOfficialSalespage&&<a className="btn alt" href={p.affiliate_salespage_url!} target="_blank" rel="nofollow sponsored" onClick={()=>trackEvent('salespage_click',{product_id:p.id,metadata:{source:'official'}})}>{p.affiliate_salespage_cta_text||'Lihat Salespage Official'}</a>}
+       {hasInternalSalespage&&<a className="btn alt" href="#salespage-internal" onClick={()=>trackEvent('salespage_click',{product_id:p.id,metadata:{source:'internal'}})}>Lihat Salespage Internal</a>}
+       {hasOfficialCheckout&&<a className="btn soft" href={p.affiliate_url!} target="_blank" rel="nofollow sponsored" onClick={()=>trackEvent('checkout_click',{product_id:p.id,metadata:{source:'official'}})}>{p.cta_text||'Checkout di Website Resmi'}</a>}
+       {hasInternalCheckout&&<Link className="btn" href={`/checkout/${p.slug}`} onClick={()=>trackEvent('checkout_click',{product_id:p.id,metadata:{source:'internal'}})}>{p.internal_cta_text||'Checkout di Website Ini'}</Link>}
       </div>
       <div style={{marginTop:14}}><Link className="btn alt" href="/">← Kembali ke Produk</Link></div>
      </div>
@@ -89,7 +90,7 @@ export default function ProductDetail(){
 
     {p.video_url&&<div className="panel3d productSectionPanel"><span className="eyebrow">VIDEO SALES LETTER</span><div className="videoFrame">{embed?<iframe src={embed} title={`Video ${p.name}`} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen/>:<video controls src={p.video_url}/>}</div></div>}
 
-    {hasInternalSalespage&&<div id="salespage-internal" className="panel3d productSectionPanel"><span className="eyebrow">SALESPAGE INTERNAL</span><div className="htmlPreview" dangerouslySetInnerHTML={{__html:p.internal_salespage_html!}}/><div className="detailCtaGrid" style={{marginTop:24}}>{hasOfficialCheckout&&<a className="btn soft" href={p.affiliate_url!} target="_blank" rel="nofollow sponsored">{p.cta_text||'Checkout di Website Resmi'}</a>}{hasInternalCheckout&&<Link className="btn" href={`/checkout/${p.slug}`}>{p.internal_cta_text||'Checkout di Website Ini'}</Link>}</div></div>}
+    {hasInternalSalespage&&<div id="salespage-internal" className="panel3d productSectionPanel"><span className="eyebrow">SALESPAGE INTERNAL</span><div className="htmlPreview" dangerouslySetInnerHTML={{__html:p.internal_salespage_html!}}/><div className="detailCtaGrid" style={{marginTop:24}}>{hasOfficialCheckout&&<a className="btn soft" href={p.affiliate_url!} target="_blank" rel="nofollow sponsored" onClick={()=>trackEvent('checkout_click',{product_id:p.id,metadata:{source:'official'}})}>{p.cta_text||'Checkout di Website Resmi'}</a>}{hasInternalCheckout&&<Link className="btn" href={`/checkout/${p.slug}`} onClick={()=>trackEvent('checkout_click',{product_id:p.id,metadata:{source:'internal'}})}>{p.internal_cta_text||'Checkout di Website Ini'}</Link>}</div></div>}
 
     {related.length>0&&<section className="relatedSection"><div className="sectionHead"><div><span className="eyebrow">PRODUK TERKAIT</span><h2>Rekomendasi Produk Lainnya</h2><p className="muted">Produk dari kategori yang sama atau produk terbaru lainnya.</p></div></div><div className="grid relatedProductGrid">{related.map(r=><article className="card productCard relatedProductCard" key={r.id}><Link href={`/product/${r.slug}`} className="relatedImageLink">{r.image_url?<div className="productSquareFrame compact"><img src={r.image_url} className="productSquareImage" alt={r.name}/></div>:<div className="productSquareFrame compact placeholderArt"><span>{(settings.brand_name||'S').charAt(0)}</span></div>}</Link><div className="cardBody"><div className="badge small">{r.category||'Produk Digital'}</div><Link href={`/product/${r.slug}`} className="productTitleLink"><h3>{r.name}</h3></Link><div className="priceStack">{r.compare_at_price>r.price&&<span className="comparePrice">{rupiah(r.compare_at_price)}</span>}<div className="price">{rupiah(r.price)}</div></div><Link className="btn full" href={`/product/${r.slug}`}>Lihat Produk</Link></div></article>)}</div></section>}
    </div>

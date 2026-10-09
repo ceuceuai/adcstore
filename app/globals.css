@@ -171,3 +171,33 @@
   .floatingWa.mobile-nav_item{display:none!important}
   .mobileBottomNav .mobileWaNav{color:var(--primary)}
 }
+
+/* v1.0.28 Analytics */
+.miniBars{height:220px;display:flex;align-items:flex-end;gap:6px;overflow-x:auto;padding-top:12px}
+.miniBarWrap{min-width:20px;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:5px}
+.miniBar{width:14px;border-radius:8px 8px 3px 3px;background:linear-gradient(180deg,var(--accent),var(--primary));box-shadow:0 6px 14px color-mix(in srgb,var(--primary) 24%,transparent)}
+.miniBarWrap small{font-size:9px;color:var(--muted);transform:rotate(-45deg);transform-origin:center;white-space:nowrap;margin-bottom:8px}
+.analyticsTopList{display:grid;gap:9px;margin-top:12px}
+.analyticsTopRow{display:grid;grid-template-columns:42px 1fr;gap:4px 10px;padding:12px;border-radius:14px;background:rgba(255,255,255,.64);border:1px solid rgba(124,77,255,.10)}
+.analyticsTopRow small{grid-column:2;color:var(--muted)}
+.analyticsEventList{display:grid;gap:8px;margin-top:14px}
+.analyticsEventRow{display:grid;grid-template-columns:150px 1.2fr 1fr 180px;gap:10px;align-items:center;padding:12px 14px;border-radius:14px;background:rgba(255,255,255,.7);border:1px solid rgba(124,77,255,.08)}
+.analyticsEventRow small{color:var(--muted)}
+@media(max-width:800px){.analyticsEventRow{grid-template-columns:1fr}.analyticsEventRow small{grid-column:1}.miniBars{height:180px}}
+
+/* v1.0.29 — modern confirmation modal + bulk selection */
+.confirmModalBack{z-index:3000}
+.confirmModal3d{max-width:440px;text-align:center;padding:28px}
+.confirmIcon{width:58px;height:58px;border-radius:20px;margin:0 auto 14px;display:grid;place-items:center;font-weight:900;font-size:26px;background:linear-gradient(145deg,color-mix(in srgb,var(--primary) 15%,white),color-mix(in srgb,var(--accent) 20%,white));color:var(--primary);box-shadow:0 12px 28px color-mix(in srgb,var(--primary) 16%,transparent)}
+.confirmIcon.danger{background:linear-gradient(145deg,#fff1f2,#ffe4e6);color:#be123c}
+.confirmMessage{line-height:1.65;margin:8px auto 20px;max-width:360px}
+.confirmActions{justify-content:center}
+.dangerBtn{background:linear-gradient(145deg,#ef4444,#be123c)!important;color:#fff!important;border-color:transparent!important;box-shadow:0 10px 22px rgba(190,18,60,.22)!important}
+.bulkToolbar3d{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:12px 0 16px;padding:12px 14px;border-radius:18px;background:rgba(255,255,255,.66);border:1px solid rgba(124,77,255,.10);box-shadow:0 10px 24px rgba(70,50,120,.06)}
+.bulkCheck{display:flex;align-items:center;gap:8px;font-weight:700}
+.selectedCount{font-weight:800;color:var(--primary)}
+.productAdminCard{position:relative}
+.productSelectBox{position:absolute;top:14px;left:14px;z-index:4;width:28px;height:28px;border-radius:10px;display:grid;place-items:center;background:rgba(255,255,255,.92);box-shadow:0 8px 18px rgba(52,39,89,.12);cursor:pointer}
+.productSelectBox input{width:16px;height:16px;accent-color:var(--primary)}
+.selectedProductCard{outline:2px solid color-mix(in srgb,var(--primary) 50%,transparent);box-shadow:0 14px 34px color-mix(in srgb,var(--primary) 16%,transparent)}
+@media(max-width:700px){.bulkToolbar3d .btn{width:auto}.productSelectBox{top:10px;left:10px}}

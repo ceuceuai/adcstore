@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { HomeBanner } from '@/lib/types';
+import { trackEvent } from '@/lib/analytics';
 export default function HomeBannerSlider({items}:{items:HomeBanner[]}){
  const[index,setIndex]=useState(0);
  useEffect(()=>{if(items.length<2)return;const t=setInterval(()=>setIndex(i=>(i+1)%items.length),5000);return()=>clearInterval(t)},[items.length]);

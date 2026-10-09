@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import GlobalFloatingWhatsApp from '@/components/GlobalFloatingWhatsApp';
 import MobileBottomNav from '@/components/MobileBottomNav';
 import PwaRegister from '@/components/PwaRegister';
+import AnalyticsTracker from '@/components/AnalyticsTracker';
 
 async function getBranding(){
  const url=process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -17,4 +18,4 @@ export async function generateMetadata():Promise<Metadata>{
  const s=await getBranding(); const title=s?.brand_name||'Digital Store'; const description=s?.tagline||'Digital product store'; const icon=s?.favicon_url||s?.logo_url||undefined;
  return {title,description,icons:icon?{icon,shortcut:icon,apple:icon}:undefined};
 }
-export default function RootLayout({children}:{children:React.ReactNode}){return <html lang="id"><body>{children}<GlobalFloatingWhatsApp/><MobileBottomNav/><PwaRegister/></body></html>}
+export default function RootLayout({children}:{children:React.ReactNode}){return <html lang="id"><body>{children}<GlobalFloatingWhatsApp/><MobileBottomNav/><PwaRegister/><AnalyticsTracker/></body></html>}

@@ -16,7 +16,7 @@ export type StoreSettings = {
   floating_wa_enabled:boolean; floating_wa_number:string|null; floating_wa_target_type?:'number'|'url'; floating_wa_target_url?:string|null; floating_wa_mobile_mode?:'above_nav'|'nav_item'; floating_wa_message:string; floating_wa_position:'left'|'right'; floating_wa_style:'3d'|'round'|'custom'; floating_wa_icon_url:string|null; floating_wa_tooltip:string; floating_wa_show_on:'all'|'home'|'product';
   footer_text:string; home_products_per_page:number; pwa_name:string; pwa_short_name:string; pwa_icon_url:string|null;
   member_login_label?:string; member_login_heading?:string; member_login_description?:string; member_signup_heading?:string; member_signup_description?:string;
-  owner_login_label?:string; owner_login_heading?:string; owner_login_description?:string; admin_console_label?:string;
+  owner_login_label?:string; owner_login_heading?:string; owner_login_description?:string; admin_console_label?:string; meta_pixel_enabled?:boolean; meta_pixel_id?:string|null; tiktok_pixel_enabled?:boolean; tiktok_pixel_id?:string|null; ga4_enabled?:boolean; ga4_measurement_id?:string|null; gtm_enabled?:boolean; gtm_container_id?:string|null;
 };
 export type Profile = { id:string; full_name:string|null; role:'member'|'owner'; theme_preset:string; custom_primary:string|null; custom_secondary:string|null; custom_accent:string|null };
 export type BankAccount = { id:string; bank:string; account_number:string; account_name:string; enabled:boolean };
@@ -43,4 +43,18 @@ export type MediaAsset = {
   source:'upload'|'legacy'|string;
   created_at:string;
   uploaded_by?:string|null;
+};
+
+export type AnalyticsEvent = {
+  id:string;
+  event_type:'page_view'|'product_view'|'salespage_click'|'checkout_click'|'whatsapp_click'|'banner_click'|'purchase';
+  product_id:string|null;
+  page_path:string|null;
+  referrer:string|null;
+  utm_source:string|null;
+  utm_medium:string|null;
+  utm_campaign:string|null;
+  session_id:string|null;
+  metadata:Record<string,unknown>;
+  created_at:string;
 };
