@@ -249,3 +249,152 @@
 @media(max-width:420px){
  .specialProductGrid{grid-template-columns:1fr}
 }
+
+
+/* v1.0.37 — Professional Analytics Dashboard */
+.analyticsPage{padding:26px 26px 50px}
+.analyticsHero{
+  display:flex;justify-content:space-between;gap:24px;align-items:flex-start;
+  padding:4px 2px 22px;
+}
+.analyticsHero h1{font-size:clamp(32px,4vw,48px);line-height:1.02;margin:8px 0 10px;letter-spacing:-.04em}
+.analyticsHero p{max-width:680px;margin:0;color:var(--muted);font-size:15px;line-height:1.7}
+.analyticsEyebrow,.analyticsKicker{
+  display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:900;
+  letter-spacing:.12em;color:var(--primary);text-transform:uppercase;
+}
+.analyticsPeriod{
+  min-width:170px;height:48px;padding:0 14px;display:flex;align-items:center;gap:9px;
+  border:1px solid color-mix(in srgb,var(--primary) 11%,transparent);
+  border-radius:16px;background:rgba(255,255,255,.78);
+  box-shadow:0 10px 28px rgba(50,38,84,.06);
+}
+.analyticsPeriod select{border:0;background:transparent;outline:0;width:100%;font-weight:750;color:var(--text);font:inherit}
+.analyticsStatsGrid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:12px;margin-bottom:18px}
+.analyticsStatCard{
+  min-width:0;padding:16px;border-radius:20px;background:rgba(255,255,255,.82);
+  border:1px solid color-mix(in srgb,var(--primary) 9%,transparent);
+  box-shadow:0 12px 28px rgba(53,40,87,.055);display:flex;gap:12px;align-items:flex-start;
+}
+.analyticsStatIcon{
+  width:38px;height:38px;flex:0 0 38px;border-radius:13px;display:grid;place-items:center;
+  color:var(--primary);background:color-mix(in srgb,var(--primary) 10%,white);
+}
+.analyticsStatBody{min-width:0}
+.analyticsStatBody span{display:block;font-size:11px;font-weight:850;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.analyticsStatBody strong{display:block;font-size:27px;line-height:1.1;margin:4px 0;color:var(--text);letter-spacing:-.03em}
+.analyticsStatBody small{display:block;font-size:10px;line-height:1.35;color:var(--muted)}
+.analyticsMainGrid{display:grid;grid-template-columns:minmax(0,1fr) 310px;gap:18px}
+.analyticsSecondaryGrid{display:grid;grid-template-columns:1.2fr .8fr;gap:18px;margin-top:18px}
+.analyticsPanel{
+  background:rgba(255,255,255,.86);border:1px solid color-mix(in srgb,var(--primary) 9%,transparent);
+  border-radius:24px;box-shadow:0 16px 34px rgba(46,34,82,.06);padding:22px;
+}
+.analyticsPanelHead{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:18px}
+.analyticsPanelHead.compact{margin-bottom:12px}
+.analyticsPanelHead h2,.analyticsInsightPanel h2{font-size:20px;margin:5px 0 2px;letter-spacing:-.02em}
+.analyticsPanelHead p{margin:0;color:var(--muted);font-size:12px}
+.analyticsTrafficSummary{display:flex;gap:10px}
+.analyticsTrafficSummary>div{
+  min-width:105px;padding:10px 12px;border-radius:14px;background:color-mix(in srgb,var(--surface) 88%,white);
+  border:1px solid color-mix(in srgb,var(--primary) 8%,transparent)
+}
+.analyticsTrafficSummary small{display:block;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.analyticsTrafficSummary strong{display:block;font-size:18px;margin-top:3px}
+.analyticsChart{position:relative;height:280px;padding:8px 4px 0}
+.analyticsChartGrid{position:absolute;inset:8px 0 28px;display:grid;grid-template-rows:repeat(4,1fr);pointer-events:none}
+.analyticsChartGrid span{border-top:1px dashed color-mix(in srgb,var(--text) 8%,transparent)}
+.analyticsBars{position:relative;height:100%;display:flex;align-items:flex-end;gap:5px;overflow-x:auto;padding:0 2px 0}
+.analyticsBarItem{min-width:24px;height:100%;display:grid;grid-template-rows:18px 1fr 28px;align-items:end;text-align:center}
+.analyticsBarValue{font-size:9px;font-weight:850;color:var(--primary)}
+.analyticsBarTrack{height:100%;display:flex;align-items:flex-end;justify-content:center}
+.analyticsBarFill{
+  width:13px;min-height:2px;border-radius:8px 8px 3px 3px;
+  background:linear-gradient(180deg,var(--accent),var(--primary));
+  box-shadow:0 7px 16px color-mix(in srgb,var(--primary) 16%,transparent);
+}
+.analyticsBarItem small{font-size:8px;color:var(--muted);transform:rotate(-45deg);white-space:nowrap;align-self:center}
+.analyticsInsightPanel{padding:22px}
+.analyticsInsightList{display:grid;gap:10px;margin-top:16px}
+.analyticsInsightList>div{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 14px;
+  border-radius:15px;background:color-mix(in srgb,var(--surface) 92%,white);
+  border:1px solid color-mix(in srgb,var(--primary) 8%,transparent)
+}
+.analyticsInsightList span{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);font-weight:750}
+.analyticsInsightList strong{font-size:18px}
+.analyticsRankList,.analyticsSourceList{display:grid;gap:9px}
+.analyticsRankRow{
+  display:grid;grid-template-columns:38px 1fr 20px;gap:10px;align-items:center;padding:12px 13px;
+  border-radius:15px;background:color-mix(in srgb,var(--surface) 91%,white);
+}
+.analyticsRankNo{font-weight:900;color:var(--primary);font-size:12px}
+.analyticsRankRow div{min-width:0}
+.analyticsRankRow strong{display:block;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.analyticsRankRow small{display:block;margin-top:3px;font-size:10px;color:var(--muted)}
+.analyticsSourceRow{
+  display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 13px;border-radius:15px;
+  background:color-mix(in srgb,var(--surface) 91%,white)
+}
+.analyticsSourceRow div{min-width:0}
+.analyticsSourceRow span{display:block;font-size:12px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:280px}
+.analyticsSourceRow small{display:block;font-size:10px;color:var(--muted);margin-top:3px}
+.analyticsSourceRow strong{font-size:16px;color:var(--primary)}
+.analyticsEventPanel{margin-top:18px}
+.analyticsFilters{display:grid;grid-template-columns:minmax(240px,1fr) 190px 150px;gap:10px;margin-bottom:14px}
+.analyticsFilters select,.analyticsSearch{
+  height:44px;border:1px solid color-mix(in srgb,var(--primary) 10%,transparent);
+  border-radius:14px;background:rgba(255,255,255,.9)
+}
+.analyticsFilters select{padding:0 12px;color:var(--text);outline:0}
+.analyticsSearch{display:flex;align-items:center;gap:8px;padding:0 12px}
+.analyticsSearch svg{color:var(--muted)}
+.analyticsSearch input{width:100%;border:0;outline:0;background:transparent;color:var(--text)}
+.analyticsEventTable{overflow:hidden;border:1px solid color-mix(in srgb,var(--primary) 8%,transparent);border-radius:16px}
+.analyticsEventHead,.analyticsEventRowNew{
+  display:grid;grid-template-columns:180px 1.2fr 1fr 180px;gap:12px;align-items:center;padding:12px 14px
+}
+.analyticsEventHead{
+  background:color-mix(in srgb,var(--primary) 5%,white);font-size:10px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)
+}
+.analyticsEventRowNew{border-top:1px solid color-mix(in srgb,var(--text) 6%,transparent);font-size:12px}
+.analyticsEventRowNew>span:first-child{display:flex;align-items:center;gap:8px;font-weight:800}
+.analyticsEventRowNew small{color:var(--muted)}
+.analyticsEventDot{width:8px;height:8px;border-radius:50%;background:var(--primary);box-shadow:0 0 0 4px color-mix(in srgb,var(--primary) 9%,transparent)}
+.analyticsPager{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:14px;font-size:11px;color:var(--muted)}
+.analyticsPager div{display:flex;gap:8px}
+.analyticsPager button{
+  border:1px solid color-mix(in srgb,var(--primary) 10%,transparent);background:#fff;color:var(--text);
+  padding:9px 12px;border-radius:12px;font-weight:750;cursor:pointer
+}
+.analyticsPager button:disabled{opacity:.4;cursor:not-allowed}
+.analyticsEmpty{padding:20px;border-radius:14px;text-align:center;background:color-mix(in srgb,var(--surface) 92%,white);color:var(--muted);font-size:12px}
+
+@media(max-width:1250px){
+ .analyticsStatsGrid{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+@media(max-width:980px){
+ .analyticsPage{padding:20px 16px 40px}
+ .analyticsHero{flex-direction:column}
+ .analyticsPeriod{width:100%}
+ .analyticsMainGrid,.analyticsSecondaryGrid{grid-template-columns:1fr}
+ .analyticsStatsGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .analyticsFilters{grid-template-columns:1fr 1fr}
+ .analyticsFilters .analyticsSearch{grid-column:1/-1}
+ .analyticsEventHead{display:none}
+ .analyticsEventRowNew{grid-template-columns:1fr 1fr}
+ .analyticsEventRowNew small{grid-column:1/-1}
+}
+@media(max-width:560px){
+ .analyticsStatsGrid{grid-template-columns:1fr 1fr}
+ .analyticsStatCard{padding:13px;gap:9px}
+ .analyticsStatIcon{width:34px;height:34px;flex-basis:34px}
+ .analyticsStatBody strong{font-size:22px}
+ .analyticsTrafficSummary{width:100%;display:grid;grid-template-columns:1fr 1fr}
+ .analyticsPanelHead{flex-direction:column}
+ .analyticsChart{height:230px}
+ .analyticsFilters{grid-template-columns:1fr}
+ .analyticsFilters .analyticsSearch{grid-column:auto}
+ .analyticsEventRowNew{grid-template-columns:1fr}
+ .analyticsPager{flex-direction:column;align-items:flex-start}
+}
