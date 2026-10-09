@@ -1,15 +1,15 @@
 'use client';
 import Script from 'next/script';
 import { useEffect,useState } from 'react';
-import { usePathname,useSearchParams } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { createClient } from '@/lib/supabase';
 import { StoreSettings } from '@/lib/types';
 import { trackEvent } from '@/lib/analytics';
 
 export default function AnalyticsTracker(){
-  const path=usePathname(); const params=useSearchParams(); const [s,setS]=useState<Partial<StoreSettings>>({});
+  const path=usePathname(); const [s,setS]=useState<Partial<StoreSettings>>({});
   useEffect(()=>{createClient().from('store_settings').select('meta_pixel_enabled,meta_pixel_id,tiktok_pixel_enabled,tiktok_pixel_id,ga4_enabled,ga4_measurement_id,gtm_enabled,gtm_container_id').eq('id',1).maybeSingle().then(({data})=>{if(data)setS(data as Partial<StoreSettings>)})},[]);
-  useEffect(()=>{trackEvent('page_view',{page_path:path})},[path,params?.toString()]);
+  useEffect(()=>{trackEvent('page_view',{page_path:path})},[path]);
   return <>
     {s.ga4_enabled&&s.ga4_measurement_id&&<>
       <Script src={`https://www.googletagmanager.com/gtag/js?id=${s.ga4_measurement_id}`} strategy="afterInteractive"/>

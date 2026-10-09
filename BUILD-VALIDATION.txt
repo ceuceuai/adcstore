@@ -1,0 +1,13 @@
+ADCStore v1.0.31 HOTFIX
+
+Root cause fixed:
+- components/AnalyticsTracker.tsx was the ONLY source file using useSearchParams().
+- Because AnalyticsTracker is mounted globally in app/layout.tsx, Next.js attempted to prerender every route through that hook and failed every route with missing-suspense-with-csr-bailout.
+- v1.0.31 removes useSearchParams() entirely from AnalyticsTracker. UTM capture remains handled client-side by lib/analytics.ts via window.location.search.
+
+Static validations performed:
+- grep source: 0 occurrences of useSearchParams in app/components/lib.
+- grep source: trackEvent usages retain imports.
+- ZIP integrity test required before release.
+
+Note: local npm dependency installation was unavailable in the build container, so final Next/Vercel production build should be confirmed by deployment.
