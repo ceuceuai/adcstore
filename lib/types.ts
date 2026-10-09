@@ -3,7 +3,7 @@ export type Product = {
   image_url: string | null; gallery_images: string[]; video_url: string | null; price: number; compare_at_price: number; show_discount_badge: boolean; discount_badge_text: string | null; category: string | null;
   affiliate_salespage_url: string | null; internal_salespage_html: string | null; affiliate_url: string | null;
   cta_text: string; internal_cta_text: string; affiliate_salespage_cta_text: string;
-  sale_mode: 'affiliate' | 'internal' | 'both'; featured: boolean; is_active: boolean; sort_order: number;
+  sale_mode: 'affiliate' | 'internal' | 'both'; featured: boolean; is_active: boolean; sort_order: number; created_at?: string; updated_at?: string;
 };
 export type StoreSettings = {
   id:number; brand_name:string; tagline:string; logo_url:string|null; favicon_url?:string|null; whatsapp:string|null; instagram_url?:string|null;
@@ -29,3 +29,18 @@ export type Order = { id:string; order_number:string; product_id:string; custome
 export type HomeBanner = { id:string; title:string|null; desktop_image_url:string; mobile_image_url:string|null; target_url:string|null; cta_text:string|null; is_active:boolean; sort_order:number; created_at?:string; updated_at?:string };
 
 export type SocialLink = { id:string; platform:string; label:string; url:string; icon_url:string|null; is_active:boolean; sort_order:number; created_at?:string; updated_at?:string };
+
+export type ProductCategory = { id:string; name:string; slug:string; description:string|null; image_url:string|null; is_active:boolean; sort_order:number; created_at?:string; updated_at?:string };
+
+export type MediaAsset = {
+  id:string;
+  file_name:string;
+  storage_path:string|null;
+  public_url:string;
+  mime_type:string|null;
+  size_bytes:number|null;
+  sha256:string|null;
+  source:'upload'|'legacy'|string;
+  created_at:string;
+  uploaded_by?:string|null;
+};

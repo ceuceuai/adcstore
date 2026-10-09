@@ -54,3 +54,15 @@
 .socialAdminList{display:grid;gap:10px;margin-top:14px}.socialAdminRow{display:grid;grid-template-columns:140px 1fr 1.5fr auto;gap:10px;align-items:center;padding:12px;border:1px solid rgba(120,90,180,.13);border-radius:18px;background:rgba(255,255,255,.72)}
 .socialFooter{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:14px}.socialFooter a{display:inline-flex;align-items:center;gap:7px;padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.78);border:1px solid rgba(120,90,180,.14);font-size:13px;font-weight:800}.socialFooter img{width:18px;height:18px;object-fit:contain;background:transparent}
 @media(max-width:760px){.socialAdminRow{grid-template-columns:1fr}.pwaIconPreviewWrap{align-items:flex-start}}
+
+.mediaLibraryGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px}
+.mediaLibraryItem,.mediaLibraryCard{border:1px solid rgba(124,77,255,.12);background:rgba(255,255,255,.82);border-radius:20px;padding:10px;text-align:left;box-shadow:0 12px 28px rgba(62,38,110,.08);min-width:0}
+.mediaLibraryItem{cursor:pointer;transition:.18s ease}
+.mediaLibraryItem:hover,.mediaLibraryItem.selected{transform:translateY(-2px);border-color:var(--primary);box-shadow:0 16px 34px rgba(124,77,255,.16)}
+.mediaLibraryThumb{height:125px;border-radius:15px;background:rgba(124,77,255,.05);display:grid;place-items:center;overflow:hidden;position:relative}
+.mediaLibraryThumb img{width:100%;height:100%;object-fit:contain;background:transparent}
+.mediaLibraryItem strong,.mediaLibraryCard strong{display:block;margin-top:8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mediaLibraryItem small,.mediaLibraryCard small{display:block;color:var(--muted);font-size:11px}
+.mediaCheck{position:absolute;right:8px;top:8px;width:28px;height:28px;border-radius:999px;background:var(--primary);color:#fff;display:grid;place-items:center;box-shadow:0 6px 16px rgba(124,77,255,.28)}
+.mediaLibraryMeta{padding:4px 2px 2px}.mediaLibraryMeta .btn{margin-top:9px;width:100%}
+@media(max-width:620px){.mediaLibraryGrid{grid-template-columns:repeat(2,minmax(0,1fr))}.mediaLibraryThumb{height:110px}}
