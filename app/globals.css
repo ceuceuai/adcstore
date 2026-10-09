@@ -201,3 +201,9 @@
 .productSelectBox input{width:16px;height:16px;accent-color:var(--primary)}
 .selectedProductCard{outline:2px solid color-mix(in srgb,var(--primary) 50%,transparent);box-shadow:0 14px 34px color-mix(in srgb,var(--primary) 16%,transparent)}
 @media(max-width:700px){.bulkToolbar3d .btn{width:auto}.productSelectBox{top:10px;left:10px}}
+
+/* v1.0.34 — dynamic login visual, no hardcoded login illustration */
+.authVisualImage{width:min(100%,360px);max-height:430px;object-fit:contain;border-radius:28px;filter:drop-shadow(0 24px 34px color-mix(in srgb,var(--primary) 16%,transparent))}
+.authBrandFallback{width:180px;height:180px;border-radius:44px;display:grid;place-items:center;font-size:92px;font-weight:1000;color:#fff;background:linear-gradient(145deg,var(--primary),var(--secondary));box-shadow:0 26px 48px color-mix(in srgb,var(--primary) 24%,transparent),inset 0 4px 4px rgba(255,255,255,.5)}
+.authCard.noAuthArt{grid-template-columns:1fr;width:min(620px,95vw)}
+.loginVisualSettingsPreview{display:block;width:100%;max-width:260px;height:160px;object-fit:contain;margin-top:12px;border-radius:18px;background:color-mix(in srgb,var(--surface) 90%,transparent);border:1px solid var(--line)}
