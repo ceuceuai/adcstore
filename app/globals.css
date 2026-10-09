@@ -449,3 +449,7 @@
  .paymentBottomAction{flex-direction:column;align-items:stretch}
  .paymentBottomAction .btn{width:100%}
 }
+
+/* v1.0.41 — Product Image URL reliability */
+.urlImagePreview{margin-top:10px;width:120px;aspect-ratio:1;border-radius:16px;overflow:hidden;background:rgba(255,255,255,.78);border:1px solid var(--line);display:grid;place-items:center}
+.urlImagePreview img{width:100%;height:100%;object-fit:contain;display:block}
