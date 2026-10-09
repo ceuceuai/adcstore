@@ -3,7 +3,7 @@ export type Product = {
   image_url: string | null; gallery_images: string[]; video_url: string | null; price: number; compare_at_price: number; show_discount_badge: boolean; discount_badge_text: string | null; category: string | null;
   affiliate_salespage_url: string | null; internal_salespage_html: string | null; affiliate_url: string | null;
   cta_text: string; internal_cta_text: string; affiliate_salespage_cta_text: string;
-  sale_mode: 'affiliate' | 'internal' | 'both'; homepage_salespage_source:'auto'|'affiliate'|'internal'|'hidden'; homepage_checkout_source:'auto'|'affiliate'|'internal'|'hidden'; featured: boolean; highlight_type:'none'|'promo'|'exclusive'|'custom'; highlight_label:string|null; highlight_sort_order:number; is_active: boolean; sort_order: number; created_at?: string; updated_at?: string;
+  sale_mode: 'affiliate' | 'internal' | 'both'; homepage_salespage_source:'auto'|'affiliate'|'internal'|'hidden'; homepage_checkout_source:'auto'|'affiliate'|'internal'|'hidden'; highlight_type:'none'|'promo'|'exclusive'|'custom'; highlight_label:string|null; highlight_sort_order:number; is_active: boolean; sort_order: number; created_at?: string; updated_at?: string;
 };
 export type StoreSettings = {
   id:number; brand_name:string; tagline:string; logo_url:string|null; favicon_url?:string|null; whatsapp:string|null; instagram_url?:string|null;

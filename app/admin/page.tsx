@@ -4,8 +4,8 @@ import Link from 'next/link';
 import { createClient } from '@/lib/supabase';
 import { Package2, Sparkles, Link2Off, ShoppingBag, CreditCard, KeyRound, ArrowUpRight } from 'lucide-react';
 export default function Admin(){
- const [stats,setStats]=useState({all:0,active:0,featured:0,missing:0,orders:0,paid:0});
- useEffect(()=>{const s=createClient();Promise.all([s.from('products').select('is_active,featured,affiliate_url'),s.from('orders').select('status')]).then(([p,o])=>{const d=p.data||[],orders=o.data||[];setStats({all:d.length,active:d.filter(x=>x.is_active).length,featured:d.filter(x=>x.featured).length,missing:d.filter(x=>!x.affiliate_url).length,orders:orders.length,paid:orders.filter(x=>x.status==='paid'||x.status==='completed').length})})},[]);
+ const [stats,setStats]=useState({all:0,active:0,missing:0,orders:0,paid:0});
+ useEffect(()=>{const s=createClient();Promise.all([s.from('products').select('is_active,affiliate_url'),s.from('orders').select('status')]).then(([p,o])=>{const d=p.data||[],orders=o.data||[];setStats({all:d.length,active:d.filter(x=>x.is_active).length,missing:d.filter(x=>!x.affiliate_url).length,orders:orders.length,paid:orders.filter(x=>x.status==='paid'||x.status==='completed').length})})},[]);
  const cards=[
   {label:'Total Produk',value:stats.all,icon:Package2,sub:'Semua katalog'},
   {label:'Produk Aktif',value:stats.active,icon:Sparkles,sub:'Tampil di storefront'},
