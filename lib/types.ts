@@ -6,7 +6,7 @@ export type Product = {
   sale_mode: 'affiliate' | 'internal' | 'both'; featured: boolean; is_active: boolean; sort_order: number;
 };
 export type StoreSettings = {
-  id:number; brand_name:string; tagline:string; logo_url:string|null; favicon_url?:string|null; whatsapp:string|null; instagram_url:string|null;
+  id:number; brand_name:string; tagline:string; logo_url:string|null; favicon_url?:string|null; whatsapp:string|null; instagram_url?:string|null;
   primary_color:string; secondary_color:string; accent_color:string; theme_preset:string;
   hero_badge:string; hero_title:string; hero_subtitle:string;
   hero_primary_cta_text:string; hero_member_cta_text:string; hero_member_cta_enabled:boolean;
@@ -27,3 +27,5 @@ export type ProductAccess = { id:string; product_id:string; access_type:'html'|'
 export type Order = { id:string; order_number:string; product_id:string; customer_name:string; customer_email:string; customer_whatsapp:string; amount:number; payment_method:string; status:'pending'|'paid'|'completed'|'cancelled'; payment_proof_url:string|null; notes:string|null; created_at:string; products?:Pick<Product,'name'|'slug'> };
 
 export type HomeBanner = { id:string; title:string|null; desktop_image_url:string; mobile_image_url:string|null; target_url:string|null; cta_text:string|null; is_active:boolean; sort_order:number; created_at?:string; updated_at?:string };
+
+export type SocialLink = { id:string; platform:string; label:string; url:string; icon_url:string|null; is_active:boolean; sort_order:number; created_at?:string; updated_at?:string };

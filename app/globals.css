@@ -46,3 +46,11 @@
 .brandLogoTransparent{display:block!important;width:auto!important;height:auto!important;object-fit:contain!important;background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;padding:0!important}
 .saveResultModal{width:min(420px,92vw);padding:30px;border-radius:28px;background:rgba(255,255,255,.98);border:1px solid rgba(255,255,255,.98);box-shadow:0 32px 80px rgba(55,37,80,.28);text-align:center}
 .saveResultModal h3{font-size:24px;margin:12px 0 6px}.saveResultModal p{color:var(--muted);margin:0 0 20px;line-height:1.65}.saveResultIcon{width:64px;height:64px;border-radius:22px;margin:auto;display:grid;place-items:center;font-size:30px;font-weight:1000;color:#fff;box-shadow:0 14px 30px rgba(56,39,92,.18)}.saveResultIcon.success{background:linear-gradient(145deg,#31c98c,#169967)}.saveResultIcon.error{background:linear-gradient(145deg,#ff7587,#c94a5d)}
+
+
+/* v1.0.17: preview icon PWA tidak boleh membesar mengikuti resolusi asli file. */
+.pwaIconPreviewWrap{display:flex;align-items:center;gap:16px;margin-top:14px;padding:14px;border:1px solid rgba(120,90,180,.14);border-radius:18px;background:rgba(255,255,255,.68)}
+.pwaIconPreview{display:block!important;width:96px!important;height:96px!important;max-width:96px!important;max-height:96px!important;object-fit:contain!important;background:transparent!important;border:0!important;border-radius:22px!important;box-shadow:0 10px 28px rgba(89,61,150,.14)!important;padding:0!important;flex:0 0 96px}
+.socialAdminList{display:grid;gap:10px;margin-top:14px}.socialAdminRow{display:grid;grid-template-columns:140px 1fr 1.5fr auto;gap:10px;align-items:center;padding:12px;border:1px solid rgba(120,90,180,.13);border-radius:18px;background:rgba(255,255,255,.72)}
+.socialFooter{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:14px}.socialFooter a{display:inline-flex;align-items:center;gap:7px;padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.78);border:1px solid rgba(120,90,180,.14);font-size:13px;font-weight:800}.socialFooter img{width:18px;height:18px;object-fit:contain;background:transparent}
+@media(max-width:760px){.socialAdminRow{grid-template-columns:1fr}.pwaIconPreviewWrap{align-items:flex-start}}
