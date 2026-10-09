@@ -1,8 +1,8 @@
-# ADCStore v1.0.22
+# ADCStore v1.0.24
 
 Digital Store & Affiliate Website for ADC Members.
 
-## Highlight v1.0.22 — Dynamic Social Media & PWA Icon Preview Fix
+## Highlight v1.0.24 — Dynamic Social Media & PWA Icon Preview Fix
 - Field Instagram fixed diganti sistem **Sosial Media dinamis**: Instagram, Facebook, TikTok, YouTube, Telegram, LinkedIn, X/Twitter, Website, Marketplace, atau Custom.
 - Sosial media sepenuhnya optional; jika kosong tidak ditampilkan di storefront.
 - CRUD sosial media + icon custom + status + urutan.
@@ -32,13 +32,13 @@ Digital Store & Affiliate Website for ADC Members.
 
 ## Fresh Install
 1. Buat project Supabase.
-2. Jalankan `sql/INSTALL_ADCSTORE_v1.0.22.sql` sekali di SQL Editor.
+2. Jalankan `sql/INSTALL_ADCSTORE_v1.0.24.sql` sekali di SQL Editor.
 3. Buat user pertama di Supabase Authentication; user pertama otomatis menjadi owner.
 4. Isi ENV Vercel: `NEXT_PUBLIC_SUPABASE_URL` dan `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`.
 5. Push source ke GitHub lalu deploy ke Vercel.
 
 ## Upgrade dari v1.0.16
-Jalankan `sql/UPGRADE_v1.0.16_TO_v1.0.22.sql` sekali, lalu deploy source v1.0.22.
+Jalankan `sql/UPGRADE_v1.0.16_TO_v1.0.24.sql` sekali, lalu deploy source v1.0.24.
 
 ## CSV penting
 Kolom affiliate utama: `affiliate_salespage_url`, `affiliate_checkout_url`, `affiliate_cta_text`.
@@ -49,14 +49,14 @@ Kolom affiliate utama: `affiliate_salespage_url`, `affiliate_checkout_url`, `aff
 Admin/owner tetap wajib dibuat melalui Supabase Authentication. Branding, favicon, logo, homepage copy, CTA, hero, dan elemen brand UI tetap dinamis dari Settings/DB.
 
 
-## v1.0.22
+## v1.0.24
 - Master Kategori Produk dinamis dengan CRUD, search, status filter, dan pagination (default 10).
 - Form produk memakai dropdown kategori master.
 - Import CSV otomatis membuat kategori yang belum ada.
 - Homepage: filter kategori dinamis + sorting pengunjung (Terbaru, Terlama, Termurah, Termahal).
 - Default homepage: produk terbaru lebih dulu.
 
-## v1.0.22 — Media Library
+## v1.0.24 — Media Library
 - Media Library terpusat untuk image reusable.
 - Sebelum upload baru, user bisa memilih image yang sudah pernah diupload.
 - Upload baru memakai SHA-256 dedupe: file identik tidak diupload ulang.
@@ -64,27 +64,27 @@ Admin/owner tetap wajib dibuat melalui Supabase Authentication. Branding, favico
 - Semua modul utama image memakai picker yang sama: produk, kategori, banner, QRIS, logo, favicon, hero, floating WhatsApp, PWA icon, dan social icon.
 - Aset lama didaftarkan otomatis ke Media Library lewat SQL upgrade.
 - Delete media diblok jika image masih dipakai modul lain.
-- Upgrade langsung dari v1.0.17 ke v1.0.22 tersedia karena v1.0.18 belum perlu dideploy.
+- Upgrade langsung dari v1.0.17 ke v1.0.24 tersedia karena v1.0.18 belum perlu dideploy.
 
-## v1.0.22 — Permission Audit / Banner Hotfix
+## v1.0.24 — Permission Audit / Banner Hotfix
 - Fix `permission denied for table homepage_banners`.
 - Audit explicit PostgREST GRANT untuk seluruh tabel utama; RLS tetap menjadi lapisan otorisasi.
 - Public storefront mendapat read grant yang diperlukan.
 - Public checkout mendapat insert grant order.
 - Admin/authenticated mendapat table privileges yang diperlukan, lalu dibatasi kembali oleh RLS.
-- Tersedia upgrade langsung v1.0.17 -> v1.0.22 agar v1.0.18/v1.0.19 bisa dilewati.
-- Tersedia `HOTFIX_BANNER_PERMISSION_v1.0.22.sql` bila hanya ingin memperbaiki database yang sedang live dulu.
+- Tersedia upgrade langsung v1.0.17 -> v1.0.24 agar v1.0.18/v1.0.19 bisa dilewati.
+- Tersedia `HOTFIX_BANNER_PERMISSION_v1.0.24.sql` bila hanya ingin memperbaiki database yang sedang live dulu.
 
 
-## v1.0.22 — Safe Live Hotfix
+## v1.0.24 — Safe Live Hotfix
 - Memperbaiki paket hotfix untuk user yang database-nya masih v1.0.17.
-- `HOTFIX_CURRENT_v1.0.17_BANNER_PERMISSION_v1.0.22.sql` hanya menyentuh `homepage_banners` sehingga tidak gagal karena tabel fitur v1.0.18/v1.0.19 belum dibuat.
-- Untuk upgrade penuh dari v1.0.17 langsung ke versi terbaru gunakan `UPGRADE_v1.0.17_TO_v1.0.22.sql`.
+- `HOTFIX_CURRENT_v1.0.17_BANNER_PERMISSION_v1.0.24.sql` hanya menyentuh `homepage_banners` sehingga tidak gagal karena tabel fitur v1.0.18/v1.0.19 belum dibuat.
+- Untuk upgrade penuh dari v1.0.17 langsung ke versi terbaru gunakan `UPGRADE_v1.0.17_TO_v1.0.24.sql`.
 
 
 ## IMPORTANT - ONE SHOT UPGRADE FROM v1.0.17
 If your live ADCStore database is still v1.0.17, run ONLY:
-`sql/UPGRADE_v1.0.17_TO_v1.0.22_ONE_SHOT.sql`
+`sql/UPGRADE_v1.0.17_TO_v1.0.24_ONE_SHOT.sql`
 
 That single SQL includes:
 - category master
@@ -95,3 +95,22 @@ That single SQL includes:
 - final verification
 
 Do not run separate hotfix SQL first.
+
+## v1.0.24 — Hybrid Product Storefront
+- Product image standard: square 1:1, recommended 1080×1080 px.
+- Product/gallery images use `object-fit: contain` so artwork is not cropped.
+- Homepage product cards show at most 2 CTA: Salespage + Checkout.
+- Homepage Salespage priority: Affiliate/Official Salespage -> Internal Salespage.
+- Homepage Checkout priority: Official/Affiliate Checkout -> Internal ADCStore Checkout.
+- Product detail shows every available hybrid route independently: Official Salespage, Internal Salespage, Official Checkout, Internal Checkout.
+- Missing routes are simply hidden; no dead-button warning.
+- Product detail adds related/recommended products, prioritizing the same category.
+- Related products use square image cards, 4 desktop / 2 mobile.
+
+## v1.0.24 — Dynamic Homepage CTA Source
+- Setiap produk bisa memilih sumber tombol Salespage di homepage: Auto, Affiliate/Official, Internal, atau Hidden.
+- Setiap produk bisa memilih sumber tombol Checkout di homepage: Auto, Affiliate/Official, Internal, atau Hidden.
+- Homepage tetap maksimal 2 tombol: Salespage + Checkout.
+- Jika sumber yang dipilih belum tersedia, tombol disembunyikan otomatis.
+- Detail produk tetap menampilkan semua jalur hybrid yang memang terisi.
+- Export/Import CSV membawa dua field baru agar master katalog bisa didistribusikan konsisten.
