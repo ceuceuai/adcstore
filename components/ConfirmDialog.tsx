@@ -23,8 +23,8 @@ export default function ConfirmDialog({
       <h2>{title}</h2>
       <p className="muted confirmMessage">{message}</p>
       <div className="actions confirmActions">
-        {!infoOnly&&<button className="btn alt" disabled={busy} onClick={onCancel}>{cancelText}</button>}
-        <button className={danger?'btn dangerBtn':'btn'} disabled={busy} onClick={()=>onConfirm()}>
+        {!infoOnly&&<button type="button" className="btn alt" disabled={busy} onClick={onCancel}>{cancelText}</button>}
+        <button type="button" className={danger?'btn dangerBtn':'btn'} disabled={busy} onClick={()=>onConfirm()}>
           {busy?'Memproses...':(infoOnly?'OK':confirmText)}
         </button>
       </div>

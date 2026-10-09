@@ -1,0 +1,34 @@
+ADCStore v1.0.40 - FULL UI ACTION QA REPORT
+
+Scope checked statically:
+- Owner Dashboard
+- Produk ADC
+- Kategori Produk
+- Media Library
+- Analytics
+- Slide Banner
+- Order / Checkout
+- Akses Produk
+- Pembayaran
+- Pengaturan
+- Owner Login
+- Member Login / Member Area / Member Access
+- Storefront Homepage
+- Product Detail
+- Internal Checkout
+- Global Admin Sidebar / Logout / Store Shortcut
+- Floating WhatsApp / Mobile Bottom Nav / Banner Slider / Confirm Dialog
+
+Hardening applied:
+- Every <button> now has explicit type=button or type=submit.
+- Form submit buttons explicitly marked submit.
+- Browser native alert()/confirm() not used.
+- Social-media deletion now requires centered custom confirmation.
+- Order status changes now require centered custom confirmation.
+- Banner deletion now surfaces database errors.
+- Store Settings save now re-reads the saved row from Supabase before showing success.
+- Payment save already re-reads database row before success.
+
+Important limitation:
+- This is a source/static QA pass, not a live browser end-to-end test against your deployed Supabase/Vercel project.
+- Full runtime certainty still requires deployment and clicking each flow against the live database/auth/storage environment.

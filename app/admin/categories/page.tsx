@@ -62,7 +62,7 @@ export default function CategoriesPage(){
  }
 
  return <div className="adminPage">
-  <div className="adminPageHead"><div><span className="eyebrow">MASTER DATA</span><h1>Kategori Produk</h1><p className="muted">Kategori dinamis untuk merapikan katalog. Bisa bertambah kapan saja.</p></div><button className="btn" onClick={openNew}><Plus size={18}/> Tambah Kategori</button></div>
+  <div className="adminPageHead"><div><span className="eyebrow">MASTER DATA</span><h1>Kategori Produk</h1><p className="muted">Kategori dinamis untuk merapikan katalog. Bisa bertambah kapan saja.</p></div><button type="button" className="btn" onClick={openNew}><Plus size={18}/> Tambah Kategori</button></div>
   <div className="filterPanel3d">
    <div style={{position:'relative',flex:1}}><Search size={17} style={{position:'absolute',left:14,top:15,opacity:.55}}/><input className="input" style={{paddingLeft:40}} placeholder="Cari kategori..." value={q} onChange={e=>{setQ(e.target.value);setPage(1)}}/></div>
    <select className="input" value={status} onChange={e=>{setStatus(e.target.value);setPage(1)}}><option value="all">Semua Status</option><option value="active">Aktif</option><option value="inactive">Nonaktif</option></select>
@@ -78,9 +78,9 @@ export default function CategoriesPage(){
    <div className="productAdminInfo"><div className="adminCardTop"><div><span className="badge small">Kategori</span><h3>{r.name}</h3><small>/{r.slug}</small></div><span className={`statusPill ${r.is_active?'paid':'cancelled'}`}>{r.is_active?'Aktif':'Nonaktif'}</span></div>
    <p className="muted">{r.description||'Tanpa deskripsi.'}</p>
    <div className="productAdminMeta"><span><b>{r.sort_order}</b><small>Urutan</small></span></div>
-   <div className="productAdminActions"><button className="btn alt" onClick={()=>openEdit(r)}><Pencil size={17}/> Edit</button><button className="btn alt dangerText" onClick={()=>askDelete([r.id])}><Trash2 size={17}/> Hapus</button></div></div>
+   <div className="productAdminActions"><button type="button" className="btn alt" onClick={()=>openEdit(r)}><Pencil size={17}/> Edit</button><button type="button" className="btn alt dangerText" onClick={()=>askDelete([r.id])}><Trash2 size={17}/> Hapus</button></div></div>
   </article>)}{!view.length&&<div className="empty3d panel3d">Belum ada kategori.</div>}</div>
-  <div className="pager3d"><span>{filtered.length} kategori • Halaman {safePage}/{pages}</span><div className="actions"><button className="btn alt" disabled={safePage<=1} onClick={()=>setPage(x=>Math.max(1,x-1))}>← Sebelumnya</button><button className="btn alt" disabled={safePage>=pages} onClick={()=>setPage(x=>Math.min(pages,x+1))}>Berikutnya →</button></div></div>
+  <div className="pager3d"><span>{filtered.length} kategori • Halaman {safePage}/{pages}</span><div className="actions"><button type="button" className="btn alt" disabled={safePage<=1} onClick={()=>setPage(x=>Math.max(1,x-1))}>← Sebelumnya</button><button type="button" className="btn alt" disabled={safePage>=pages} onClick={()=>setPage(x=>Math.min(pages,x+1))}>Berikutnya →</button></div></div>
 
   <ConfirmDialog open={dialog.open} title={dialog.title} message={dialog.message} danger={dialog.danger} infoOnly={dialog.infoOnly} busy={dialogBusy} onCancel={()=>{if(!dialogBusy){setDeleteIds([]);setDialog(d=>({...d,open:false}))}}} onConfirm={confirmCategoryDelete}/>
   {show&&<div className="modalBack" onMouseDown={()=>setShow(false)}><div className="modal3d" style={{maxWidth:720}} onMouseDown={e=>e.stopPropagation()}><div className="topline"><div><span className="eyebrow">MASTER DATA</span><h2>{edit?'Edit Kategori':'Tambah Kategori'}</h2></div><button type="button" className="iconBtn3d" onClick={()=>setShow(false)}><X/></button></div><form onSubmit={save}>

@@ -1,6 +1,7 @@
 'use client';
 import { FormEvent, useEffect, useState } from 'react';
 import MediaPicker from '@/components/MediaPicker';
+import ConfirmDialog from '@/components/ConfirmDialog';
 import { createClient } from '@/lib/supabase';
 import { SocialLink, StoreSettings } from '@/lib/types';
 import { THEME_PRESETS } from '@/lib/themes';
@@ -9,16 +10,18 @@ const base:StoreSettings={id:1,brand_name:'Digital Store',tagline:'Digital produ
 
 export default function Settings(){
  const [d,setD]=useState(base),[msg,setMsg]=useState(''),[pwd,setPwd]=useState(''),[saving,setSaving]=useState(false),[modal,setModal]=useState<{type:'success'|'error';text:string}|null>(null);
+ const [socialDelete,setSocialDelete]=useState<SocialLink|null>(null),[socialDeleteBusy,setSocialDeleteBusy]=useState(false);
  const [socials,setSocials]=useState<SocialLink[]>([]),[socialSearch,setSocialSearch]=useState(''),[socialPlatform,setSocialPlatform]=useState('Semua'),[socialPage,setSocialPage]=useState(1),[socialPageSize,setSocialPageSize]=useState(10);
  const emptySocial={id:'',platform:'Instagram',label:'Instagram',url:'',icon_url:null as string|null,is_active:true,sort_order:0}; const [socialForm,setSocialForm]=useState({...emptySocial});
  useEffect(()=>{const s=createClient();Promise.all([s.from('store_settings').select('*').eq('id',1).maybeSingle(),s.from('social_links').select('*').order('sort_order').order('created_at')]).then(([a,b])=>{if(a.data)setD({...base,...a.data} as StoreSettings);if(b.data)setSocials((b.data||[]) as SocialLink[])})},[]);
  function pickTheme(id:string){const t=THEME_PRESETS.find(x=>x.id===id)!;setD({...d,theme_preset:id,primary_color:t.primary,secondary_color:t.secondary,accent_color:t.accent})}
- async function save(e:FormEvent){e.preventDefault();setSaving(true);setMsg('');const payload={...d,id:1};const {error}=await createClient().from('store_settings').update(payload).eq('id',1);setSaving(false);if(error){setModal({type:'error',text:`Gagal menyimpan pengaturan: ${error.message}`});return}setModal({type:'success',text:'Pengaturan toko berhasil disimpan.'});}
+ async function save(e:FormEvent){e.preventDefault();if(saving)return;setSaving(true);setMsg('');const payload={...d,id:1};const s=createClient();const {data,error}=await s.from('store_settings').update(payload).eq('id',1).select('*').single();setSaving(false);if(error){setModal({type:'error',text:`Gagal menyimpan pengaturan: ${error.message}`});return}if(data)setD({...base,...data} as StoreSettings);setModal({type:'success',text:'Pengaturan toko berhasil disimpan dan diverifikasi dari database.'});}
  async function changePass(){if(pwd.length<6){setModal({type:'error',text:'Password minimal 6 karakter.'});return}const {error}=await createClient().auth.updateUser({password:pwd});if(error){setModal({type:'error',text:error.message});return}setPwd('');setModal({type:'success',text:'Password owner berhasil diganti.'})}
 
  async function reloadSocials(){const {data}=await createClient().from('social_links').select('*').order('sort_order').order('created_at');setSocials((data||[]) as SocialLink[])}
  async function saveSocial(){if(!socialForm.platform.trim()||!socialForm.url.trim()){setModal({type:'error',text:'Platform dan URL sosial media wajib diisi.'});return}const payload={platform:socialForm.platform.trim(),label:(socialForm.label||socialForm.platform).trim(),url:socialForm.url.trim(),icon_url:socialForm.icon_url||null,is_active:socialForm.is_active,sort_order:Number(socialForm.sort_order||0)};const s=createClient();const res=socialForm.id?await s.from('social_links').update(payload).eq('id',socialForm.id):await s.from('social_links').insert(payload);if(res.error){setModal({type:'error',text:res.error.message});return}setSocialForm({...emptySocial});await reloadSocials();setModal({type:'success',text:'Sosial media berhasil disimpan.'})}
- async function deleteSocial(id:string){const {error}=await createClient().from('social_links').delete().eq('id',id);if(error){setModal({type:'error',text:error.message});return}await reloadSocials();setSocialForm({...emptySocial});setModal({type:'success',text:'Sosial media berhasil dihapus.'})}
+ function deleteSocial(id:string){const row=socials.find(x=>x.id===id);if(row)setSocialDelete(row)}
+ async function confirmDeleteSocial(){if(!socialDelete)return;setSocialDeleteBusy(true);const {error}=await createClient().from('social_links').delete().eq('id',socialDelete.id);setSocialDeleteBusy(false);if(error){setModal({type:'error',text:error.message});return}setSocialDelete(null);await reloadSocials();setSocialForm({...emptySocial});setModal({type:'success',text:'Sosial media berhasil dihapus.'})}
  return <><div className="topline"><div><h1>Pengaturan Toko</h1><p className="muted">Branding, homepage, login, favicon, WhatsApp melayang, PWA, dan tema warna toko.</p></div></div>
  <form className="form glass" onSubmit={save} style={{padding:24,borderRadius:26,maxWidth:980}}>
   <h2 style={{marginBottom:0}}>Branding</h2>
@@ -108,6 +111,7 @@ export default function Settings(){
   <div className="glass" style={{padding:20,borderRadius:22,background:`linear-gradient(135deg,${d.primary_color},${d.secondary_color},${d.accent_color})`,color:'#fff'}}><strong>Live Preview</strong><div style={{fontSize:28,fontWeight:1000,marginTop:8}}>{d.brand_name}</div><div>{d.hero_title}</div></div>
   <button className="btn" type="submit" disabled={saving}>{saving?'Menyimpan...':'Simpan Pengaturan'}</button>
  </form>
- <div className="glass" style={{padding:22,borderRadius:24,maxWidth:980,marginTop:20}}><h2>Ganti Password Owner</h2><div className="actions"><input className="input" type="password" value={pwd} onChange={e=>setPwd(e.target.value)} placeholder="Password baru minimal 6 karakter"/><button className="btn" onClick={changePass}>Ganti Password</button></div></div>{msg&&<div className="notice" style={{maxWidth:980,marginTop:14}}>{msg}</div>} {modal&&<div className="modalBack" onClick={()=>setModal(null)}><div className="saveResultModal" onClick={e=>e.stopPropagation()}><div className={`saveResultIcon ${modal.type}`}>{modal.type==='success'?'✓':'!'}</div><h3>{modal.type==='success'?'Berhasil Disimpan':'Tidak Bisa Disimpan'}</h3><p>{modal.text}</p><button className="btn" type="button" onClick={()=>setModal(null)}>Tutup</button></div></div>}
+ <div className="glass" style={{padding:22,borderRadius:24,maxWidth:980,marginTop:20}}><h2>Ganti Password Owner</h2><div className="actions"><input className="input" type="password" value={pwd} onChange={e=>setPwd(e.target.value)} placeholder="Password baru minimal 6 karakter"/><button type="button" className="btn" onClick={changePass}>Ganti Password</button></div></div>{msg&&<div className="notice" style={{maxWidth:980,marginTop:14}}>{msg}</div>} <ConfirmDialog open={!!socialDelete} title="Hapus Sosial Media?" message={socialDelete?`${socialDelete.label||socialDelete.platform} akan dihapus permanen.`:''} confirmText="Ya, Hapus" danger busy={socialDeleteBusy} onCancel={()=>!socialDeleteBusy&&setSocialDelete(null)} onConfirm={confirmDeleteSocial}/>
+ {modal&&<div className="modalBack" onClick={()=>setModal(null)}><div className="saveResultModal" onClick={e=>e.stopPropagation()}><div className={`saveResultIcon ${modal.type}`}>{modal.type==='success'?'✓':'!'}</div><h3>{modal.type==='success'?'Berhasil Disimpan':'Tidak Bisa Disimpan'}</h3><p>{modal.text}</p><button className="btn" type="button" onClick={()=>setModal(null)}>Tutup</button></div></div>}
 </>
 }

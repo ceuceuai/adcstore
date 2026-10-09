@@ -240,8 +240,8 @@ export default function AnalyticsPage(){
    <div className="analyticsPager">
     <span>{filtered.length} event • Halaman {safe}/{pages}</span>
     <div>
-     <button disabled={safe<=1} onClick={()=>setPage(x=>Math.max(1,x-1))}>← Sebelumnya</button>
-     <button disabled={safe>=pages} onClick={()=>setPage(x=>Math.min(pages,x+1))}>Berikutnya →</button>
+     <button type="button" disabled={safe<=1} onClick={()=>setPage(x=>Math.max(1,x-1))}>← Sebelumnya</button>
+     <button type="button" disabled={safe>=pages} onClick={()=>setPage(x=>Math.min(pages,x+1))}>Berikutnya →</button>
     </div>
    </div>
   </section>

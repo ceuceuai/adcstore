@@ -67,7 +67,7 @@ export default function ProductDetail(){
     <div className="productDetail3d">
      <div>
       {activeImage?<div className="productSquareFrame"><img src={activeImage} className="productSquareImage" alt={p.name}/></div>:<div className="productSquareFrame placeholderArt"><span>{(settings.brand_name||'Store').trim().charAt(0).toUpperCase()}</span></div>}
-      {gallery.length>1&&<div className="productThumbGrid">{gallery.map(url=><button key={url} onClick={()=>setActiveImage(url)} className={`productThumb ${activeImage===url?'active':''}`}><img src={url} alt="Thumbnail"/></button>)}</div>}
+      {gallery.length>1&&<div className="productThumbGrid">{gallery.map(url=><button type="button" key={url} onClick={()=>setActiveImage(url)} className={`productThumb ${activeImage===url?'active':''}`}><img src={url} alt="Thumbnail"/></button>)}</div>}
      </div>
      <div className="productDetailCopy">
       <div className="badge">{p.category||'Produk Digital'}</div>

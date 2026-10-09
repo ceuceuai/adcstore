@@ -189,8 +189,8 @@ export default function Home(){
     {filtered.length>0&&<div className="pager3d" style={{marginTop:24}}>
      <span>{filtered.length} produk • Halaman {safePage}/{pages} • {size} produk/halaman</span>
      <div className="actions">
-      <button className="btn alt" disabled={safePage<=1} onClick={()=>setPage(x=>Math.max(1,x-1))}>← Sebelumnya</button>
-      <button className="btn alt" disabled={safePage>=pages} onClick={()=>setPage(x=>Math.min(pages,x+1))}>Berikutnya →</button>
+      <button type="button" className="btn alt" disabled={safePage<=1} onClick={()=>setPage(x=>Math.max(1,x-1))}>← Sebelumnya</button>
+      <button type="button" className="btn alt" disabled={safePage>=pages} onClick={()=>setPage(x=>Math.min(pages,x+1))}>Berikutnya →</button>
      </div>
     </div>}
    </div>
