@@ -1,0 +1,11 @@
+ADCStore v1.0.63 Static QA
+==========================
+PASS: targeted social-footer checks passed.
+
+
+- social data query: PASS
+- active filter: PASS
+- footer renders socials: PASS
+- fallback Instagram icon: PASS
+- custom icon override: PASS
+- no upgrade SQL: PASS

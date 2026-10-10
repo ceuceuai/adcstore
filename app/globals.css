@@ -857,3 +857,20 @@
 .memberCredentialBox small{color:var(--muted);font-size:11px}
 .memberCredentialActions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
 @media(max-width:760px){.memberPasswordAdminRow{grid-template-columns:1fr 48px}.memberPasswordAdminRow .btn:last-child{grid-column:1/-1}.memberCredentialBox{align-items:flex-start;flex-direction:column}.memberCredentialActions{width:100%}}
+
+
+/* v1.0.63 — Storefront Social Footer */
+.footerInner{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.footerText{font-weight:750;color:var(--muted)}
+.socialFooter{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;align-items:center;margin-top:16px}
+.socialFooter a{
+ display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:40px;
+ padding:9px 13px;border-radius:999px;text-decoration:none;color:var(--text);
+ background:color-mix(in srgb,var(--surface) 88%,white);
+ border:1px solid color-mix(in srgb,var(--primary) 14%,transparent);
+ box-shadow:0 8px 20px rgba(74,52,105,.07);font-size:13px;font-weight:850;
+ transition:transform .18s ease,border-color .18s ease;
+}
+.socialFooter a:hover{transform:translateY(-2px);border-color:color-mix(in srgb,var(--primary) 34%,transparent)}
+.socialFooter a svg{width:18px;height:18px;color:var(--primary);flex:0 0 18px}
+.socialFooterCustomIcon{width:18px!important;height:18px!important;object-fit:contain;background:transparent!important}

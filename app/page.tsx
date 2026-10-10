@@ -9,6 +9,7 @@ import { HomeBanner, Product, StoreSettings, SocialLink, ProductCategory } from 
 import HomeBannerSlider from '@/components/HomeBannerSlider';
 import { rupiah } from '@/lib/money';
 import { trackEvent } from '@/lib/analytics';
+import { Instagram, Facebook, Youtube, MessageCircle, Send, Music2, Globe2, Linkedin, Twitter } from 'lucide-react';
 
 const fallback:StoreSettings={
  id:1,brand_name:'Digital Store',tagline:'Digital product store',logo_url:null,whatsapp:null,instagram_url:null,
@@ -48,6 +49,7 @@ export default function Home(){
    s.from('product_categories').select('*').eq('is_active',true).order('sort_order').order('name')
   ]).then(([a,b,c,d,e])=>{
    if(a.data)setSettings({...fallback,...a.data} as StoreSettings);
+   if(d.error)console.error('[ADCStore Social] gagal membaca social_links:',d.error.message);
    if(b.data)setProducts(((b.data||[]) as Product[]).map(x=>({
     ...x,
     gallery_images:x.gallery_images||[],
@@ -98,6 +100,20 @@ export default function Home(){
   if(p.highlight_type==='exclusive')return 'EXCLUSIVE';
   if(p.highlight_type==='promo')return 'PROMO';
   return '';
+ }
+
+ function socialIcon(x:SocialLink){
+  const key=(x.platform||x.label||'').toLowerCase();
+  if(x.icon_url)return <img src={x.icon_url} alt="" className="socialFooterCustomIcon"/>;
+  if(key.includes('instagram'))return <Instagram size={18}/>;
+  if(key.includes('facebook'))return <Facebook size={18}/>;
+  if(key.includes('youtube'))return <Youtube size={18}/>;
+  if(key.includes('whatsapp'))return <MessageCircle size={18}/>;
+  if(key.includes('telegram'))return <Send size={18}/>;
+  if(key.includes('tiktok'))return <Music2 size={18}/>;
+  if(key.includes('linkedin'))return <Linkedin size={18}/>;
+  if(key.includes('twitter')||key==='x')return <Twitter size={18}/>;
+  return <Globe2 size={18}/>;
  }
 
  function productCard(p:Product,special=false){
@@ -198,6 +214,16 @@ export default function Home(){
    </div>
   </section>
 
-  <footer className="footer"><div className="container"><div>{settings.footer_text}</div>{socials.length>0&&<div className="socialFooter">{socials.map(x=><a key={x.id} href={x.url} target="_blank" rel="noreferrer">{x.icon_url&&<img src={x.icon_url} alt=""/>}<span>{x.label||x.platform}</span></a>)}</div>}</div></footer>
+  <footer className="footer">
+   <div className="container footerInner">
+    <div className="footerText">{settings.footer_text}</div>
+    {socials.length>0&&<div className="socialFooter" aria-label="Social Media">
+     {socials.map(x=><a key={x.id} href={x.url} target="_blank" rel="noopener noreferrer" title={x.label||x.platform}>
+      {socialIcon(x)}
+      <span>{x.label||x.platform}</span>
+     </a>)}
+    </div>}
+   </div>
+  </footer>
  </ThemeProvider>;
 }
