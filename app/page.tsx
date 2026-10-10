@@ -104,7 +104,7 @@ export default function Home(){
   const salesSource=p.homepage_salespage_source||'auto';
   const checkoutSource=p.homepage_checkout_source||'auto';
   const affiliateSales=p.affiliate_salespage_url?.trim()||'';
-  const internalSales=p.internal_salespage_html?.trim()?`/product/${p.slug}#salespage-internal`:'';
+  const internalSales=p.internal_salespage_html?.trim()?`/salespage/${p.slug}`:'';
   const affiliateCheckout=p.affiliate_url?.trim()||'';
   const internalCheckout=(p.sale_mode==='internal'||p.sale_mode==='both')?`/checkout/${p.slug}`:'';
   const salesUrl=salesSource==='hidden'?'':salesSource==='affiliate'?affiliateSales:salesSource==='internal'?internalSales:(affiliateSales||internalSales);
@@ -128,9 +128,11 @@ export default function Home(){
      {p.show_discount_badge&&p.compare_at_price>p.price&&<span className="discountBadge">{p.discount_badge_text||`HEMAT ${Math.round((1-p.price/p.compare_at_price)*100)}%`}</span>}
     </div>
     <div className="homeProductCtas">
-     {salesUrl&&(salesUrl.startsWith('/')
-      ?<Link className="btn alt" href={salesUrl} onClick={()=>trackEvent('salespage_click',{product_id:p.id,metadata:{location:special?'highlight':'homepage',source:'internal'}})}>Salespage</Link>
-      :<a className="btn alt" href={salesUrl} target="_blank" rel="nofollow sponsored" onClick={()=>trackEvent('salespage_click',{product_id:p.id,metadata:{location:special?'highlight':'homepage',source:'official'}})}>Salespage</a>)}
+     {salesUrl&&(salesUrl.startsWith('/salespage/')
+      ?<a className="btn alt" href={salesUrl} target="_blank" rel="noopener" onClick={()=>trackEvent('salespage_click',{product_id:p.id,metadata:{location:special?'highlight':'homepage',source:'internal'}})}>Salespage</a>
+      :salesUrl.startsWith('/')
+       ?<Link className="btn alt" href={salesUrl} onClick={()=>trackEvent('salespage_click',{product_id:p.id,metadata:{location:special?'highlight':'homepage',source:'internal'}})}>Salespage</Link>
+       :<a className="btn alt" href={salesUrl} target="_blank" rel="nofollow sponsored" onClick={()=>trackEvent('salespage_click',{product_id:p.id,metadata:{location:special?'highlight':'homepage',source:'official'}})}>Salespage</a>)}
      {checkoutUrl&&(checkoutUrl.startsWith('/')
       ?<Link className="btn" href={checkoutUrl} onClick={()=>trackEvent('checkout_click',{product_id:p.id,metadata:{location:special?'highlight':'homepage',source:'internal'}})}>Checkout</Link>
       :<a className="btn" href={checkoutUrl} target="_blank" rel="nofollow sponsored" onClick={()=>trackEvent('checkout_click',{product_id:p.id,metadata:{location:special?'highlight':'homepage',source:'official'}})}>Checkout</a>)}
