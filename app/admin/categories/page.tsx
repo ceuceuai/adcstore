@@ -1,4 +1,4 @@
-\'use client\';
+'use client';
 import { FormEvent, useEffect, useMemo, useState } from 'react';
 import { createClient } from '@/lib/supabase';
 import { ProductCategory } from '@/lib/types';
