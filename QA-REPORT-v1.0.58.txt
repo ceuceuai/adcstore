@@ -1,0 +1,10 @@
+ADCStore v1.0.58 Static QA
+==========================
+PASS: targeted owner-detection checks passed.
+
+Verified:
+- Owner accepted via admin_users OR profiles.role='owner'
+- Owner excluded from Member list via both sources
+- Owner cannot be edited/deleted from Member menu
+- Service role key remains server-only
+- No DB upgrade SQL included

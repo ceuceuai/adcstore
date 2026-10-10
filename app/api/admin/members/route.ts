@@ -24,8 +24,15 @@ async function requireOwner(req:NextRequest){
  if(userError||!userData.user)throw new Error('Sesi owner tidak valid.');
 
  const admin=createSupabaseClient(url,service,{auth:{persistSession:false,autoRefreshToken:false}});
- const {data:isAdmin,error:adminError}=await admin.from('admin_users').select('user_id').eq('user_id',userData.user.id).maybeSingle();
- if(adminError||!isAdmin)throw new Error('Akses hanya untuk owner.');
+ const [{data:isAdmin,error:adminError},{data:ownerProfile,error:profileError}]=await Promise.all([
+  admin.from('admin_users').select('user_id').eq('user_id',userData.user.id).maybeSingle(),
+  admin.from('profiles').select('id,role').eq('id',userData.user.id).maybeSingle()
+ ]);
+ if(adminError)throw adminError;
+ if(profileError)throw profileError;
+
+ const isOwner=!!isAdmin||ownerProfile?.role==='owner';
+ if(!isOwner)throw new Error('Akses hanya untuk owner.');
  return {admin,ownerId:userData.user.id};
 }
 
@@ -76,9 +83,15 @@ export async function GET(req:NextRequest){
    });
 
   // Remove owner(s) using admin_users table, not metadata.
-  const {data:admins}=await admin.from('admin_users').select('user_id');
-  const adminIds=new Set((admins||[]).map(x=>x.user_id));
-  return NextResponse.json({members:members.filter(m=>!adminIds.has(m.id))});
+  const [{data:admins},{data:ownerProfiles}]=await Promise.all([
+   admin.from('admin_users').select('user_id'),
+   admin.from('profiles').select('id').eq('role','owner')
+  ]);
+  const ownerIds=new Set<string>([
+   ...(admins||[]).map(x=>x.user_id),
+   ...(ownerProfiles||[]).map(x=>x.id)
+  ]);
+  return NextResponse.json({members:members.filter(m=>!ownerIds.has(m.id))});
  }catch(error:any){
   return NextResponse.json({error:error?.message||'Gagal membaca member.'},{status:400});
  }
@@ -122,8 +135,11 @@ export async function POST(req:NextRequest){
    const whatsapp=cleanText(body.whatsapp);
    if(!id||!full_name)throw new Error('ID member dan nama wajib diisi.');
 
-   const {data:admins}=await admin.from('admin_users').select('user_id').eq('user_id',id).maybeSingle();
-   if(admins)throw new Error('Akun owner tidak boleh diedit dari menu Member.');
+   const [{data:admins},{data:ownerProfile}]=await Promise.all([
+    admin.from('admin_users').select('user_id').eq('user_id',id).maybeSingle(),
+    admin.from('profiles').select('id,role').eq('id',id).maybeSingle()
+   ]);
+   if(admins||ownerProfile?.role==='owner')throw new Error('Akun owner tidak boleh diedit dari menu Member.');
 
    const {error}=await admin.auth.admin.updateUserById(id,{user_metadata:{full_name,whatsapp}});
    if(error)throw error;
@@ -135,8 +151,11 @@ export async function POST(req:NextRequest){
    const id=cleanText(body.id);
    if(!id)throw new Error('ID member tidak valid.');
 
-   const {data:admins}=await admin.from('admin_users').select('user_id').eq('user_id',id).maybeSingle();
-   if(admins)throw new Error('Akun owner tidak boleh dihapus.');
+   const [{data:admins},{data:ownerProfile}]=await Promise.all([
+    admin.from('admin_users').select('user_id').eq('user_id',id).maybeSingle(),
+    admin.from('profiles').select('id,role').eq('id',id).maybeSingle()
+   ]);
+   if(admins||ownerProfile?.role==='owner')throw new Error('Akun owner tidak boleh dihapus.');
 
    const {error}=await admin.auth.admin.deleteUser(id);
    if(error)throw error;
