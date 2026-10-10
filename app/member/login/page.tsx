@@ -9,6 +9,7 @@ export default function MemberLogin(){
  const [email,setEmail]=useState('');
  const [password,setPassword]=useState('');
  const [name,setName]=useState('');
+ const [whatsapp,setWhatsapp]=useState('');
  const [mode,setMode]=useState<'login'|'signup'>('login');
  const [msg,setMsg]=useState('');
  const [busy,setBusy]=useState(false);
@@ -20,9 +21,11 @@ export default function MemberLogin(){
   const requestedMode=params.get('mode');
   const prefillEmail=params.get('email');
   const prefillName=params.get('name');
+  const prefillWa=params.get('wa');
   if(requestedMode==='signup')setMode('signup');
   if(prefillEmail)setEmail(prefillEmail);
   if(prefillName)setName(prefillName);
+  if(prefillWa)setWhatsapp(prefillWa);
 
   createClient()
    .from('store_settings')
@@ -60,7 +63,7 @@ export default function MemberLogin(){
   const {data,error}=await s.auth.signUp({
    email:email.trim().toLowerCase(),
    password,
-   options:{data:{full_name:name.trim()},emailRedirectTo:redirectTo}
+   options:{data:{full_name:name.trim(),whatsapp:whatsapp.trim()},emailRedirectTo:redirectTo}
   });
 
   setBusy(false);
@@ -102,7 +105,7 @@ export default function MemberLogin(){
     <p className="muted">{mode==='login'?(settings.member_login_description||'Masuk untuk membuka member area.'):(settings.member_signup_description||'Gunakan email yang sama dengan email checkout agar akses produk dapat terhubung otomatis.')}</p>
 
     <form className="form" onSubmit={submit}>
-     {mode==='signup'&&<div className="field"><label>Nama</label><input className="input" value={name} onChange={e=>setName(e.target.value)} autoComplete="name" required/></div>}
+     {mode==='signup'&&<><div className="field"><label>Nama</label><input className="input" value={name} onChange={e=>setName(e.target.value)} autoComplete="name" required/></div><div className="field"><label>WhatsApp</label><input className="input" value={whatsapp} onChange={e=>setWhatsapp(e.target.value)} placeholder="62812xxxx" autoComplete="tel"/></div></>}
      <div className="field"><label>Email</label><input className="input" type="email" value={email} onChange={e=>setEmail(e.target.value)} autoComplete="email" required/></div>
      <div className="field">
       <div className="memberPasswordLabel"><label>Password</label>{mode==='login'&&<Link href="/member/forgot-password">Lupa Password?</Link>}</div>

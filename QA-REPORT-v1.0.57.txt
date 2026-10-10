@@ -1,0 +1,16 @@
+ADCStore v1.0.57 Static QA
+==========================
+PASS: targeted static checks passed.
+
+Verified:
+- v1.0.56 Omzet/Paid Analytics preserved
+- Owner Member menu + API route present
+- Add/Edit/Delete member flows wired
+- Password reset/resend uses Supabase recovery email
+- Excel export present
+- Search/filter/pagination present
+- Checkout signup prefill includes WhatsApp
+- Service role referenced only by server API
+- No malformed use-client directive
+- No useSearchParams introduced
+- No DB upgrade SQL because schema is unchanged

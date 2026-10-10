@@ -204,7 +204,7 @@ export default function Checkout(){
         <h3>Buat akun member dengan email checkout</h3>
         <p>Gunakan <b>{form.email}</b>. Setelah pembayaran berstatus Paid/Completed, produk otomatis muncul di Member Area.</p>
         <div className="checkoutMemberActions">
-         <Link href={`/member/login?mode=signup&email=${encodeURIComponent(form.email)}&name=${encodeURIComponent(form.name)}`} className="btn">Buat Akun & Password</Link>
+         <Link href={`/member/login?mode=signup&email=${encodeURIComponent(form.email)}&name=${encodeURIComponent(form.name)}&wa=${encodeURIComponent(form.wa)}`} className="btn">Buat Akun & Password</Link>
          <Link href={`/member/login?email=${encodeURIComponent(form.email)}`} className="btn soft">Sudah Punya Akun? Login</Link>
         </div>
        </div>

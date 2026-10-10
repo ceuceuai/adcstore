@@ -4,7 +4,7 @@ import {createClient} from '@/lib/supabase';
 import {AnalyticsEvent} from '@/lib/types';
 import {
   Eye, Users, PackageSearch, MousePointerClick, ShoppingCart, MessageCircle, Images,
-  TrendingUp, Activity, ArrowUpRight, BarChart3, Search, CalendarDays
+  TrendingUp, Activity, ArrowUpRight, BarChart3, Search, CalendarDays, Wallet, ReceiptText
 } from 'lucide-react';
 
 const periods=[7,30,90];
@@ -19,6 +19,15 @@ const eventLabels:Record<string,string>={
   purchase:'Purchase'
 };
 
+type PaidOrder={
+ id:string;
+ amount:number;
+ status:'paid'|'completed';
+ created_at:string;
+ updated_at:string;
+ order_items?:Array<{product_id:string;product_name:string;subtotal:number}>;
+};
+
 export default function AnalyticsPage(){
  const [days,setDays]=useState(30);
  const [events,setEvents]=useState<AnalyticsEvent[]>([]);
@@ -29,6 +38,7 @@ export default function AnalyticsPage(){
  const [size,setSize]=useState(10);
  const [lastUpdated,setLastUpdated]=useState<Date|null>(null);
  const [loadError,setLoadError]=useState('');
+ const [paidOrders,setPaidOrders]=useState<PaidOrder[]>([]);
 
  useEffect(()=>{
   let active=true;
@@ -37,18 +47,27 @@ export default function AnalyticsPage(){
   async function loadAnalytics(){
    const client=createClient();
    const from=new Date(Date.now()-days*86400000).toISOString();
-   const [a,b]=await Promise.all([
+   const [a,b,c]=await Promise.all([
     client.from('analytics_events').select('*').gte('created_at',from).order('created_at',{ascending:false}).limit(5000),
-    client.from('products').select('id,name')
+    client.from('products').select('id,name'),
+    client.from('orders')
+     .select('id,amount,status,created_at,updated_at,order_items(product_id,product_name,subtotal)')
+     .in('status',['paid','completed'])
+     .gte('updated_at',from)
+     .order('updated_at',{ascending:false})
    ]);
    if(!active)return;
-   if(a.error){
-    setLoadError(a.error.message);
+
+   const errors=[a.error?.message,c.error?.message].filter(Boolean);
+   if(errors.length){
+    setLoadError(errors.join(' | '));
    }else{
     setLoadError('');
     setEvents((a.data||[]) as AnalyticsEvent[]);
+    setPaidOrders((c.data||[]) as PaidOrder[]);
     setLastUpdated(new Date());
    }
+
    const m:Record<string,string>={};
    (b.data||[]).forEach((x:any)=>m[x.id]=x.name);
    setProducts(m);
@@ -73,6 +92,26 @@ export default function AnalyticsPage(){
   };
  },[events]);
 
+ const salesStats=useMemo(()=>{
+  const omzet=paidOrders.reduce((sum,o)=>sum+Number(o.amount||0),0);
+  const transactions=paidOrders.length;
+  const avgOrder=transactions?omzet/transactions:0;
+  return {omzet,transactions,avgOrder};
+ },[paidOrders]);
+
+ const dailyRevenue=useMemo(()=>{
+  const map=new Map<string,number>();
+  for(let i=days-1;i>=0;i--){
+   const d=new Date(Date.now()-i*86400000).toISOString().slice(0,10);
+   map.set(d,0);
+  }
+  paidOrders.forEach(o=>{
+   const d=(o.updated_at||o.created_at).slice(0,10);
+   if(map.has(d))map.set(d,(map.get(d)||0)+Number(o.amount||0));
+  });
+  return Array.from(map.entries());
+ },[paidOrders,days]);
+
  const daily=useMemo(()=>{
   const map=new Map<string,number>();
   for(let i=days-1;i>=0;i--){
@@ -91,22 +130,34 @@ export default function AnalyticsPage(){
  const avgViews=days?stats.views/days:0;
  const checkoutCtr=stats.product?stats.checkout/stats.product*100:0;
  const salesCtr=stats.product?stats.sales/stats.product*100:0;
+ const paidConversion=stats.checkout?salesStats.transactions/stats.checkout*100:0;
 
  const topProducts=useMemo(()=>{
-  const m=new Map<string,{views:number;checkout:number;sales:number}>();
+  const m=new Map<string,{views:number;checkout:number;sales:number;paid:number;revenue:number}>();
+
   events.forEach(e=>{
    if(!e.product_id)return;
-   const v=m.get(e.product_id)||{views:0,checkout:0,sales:0};
+   const v=m.get(e.product_id)||{views:0,checkout:0,sales:0,paid:0,revenue:0};
    if(e.event_type==='product_view')v.views++;
    if(e.event_type==='checkout_click')v.checkout++;
    if(e.event_type==='salespage_click')v.sales++;
    m.set(e.product_id,v);
   });
+
+  paidOrders.forEach(o=>{
+   (o.order_items||[]).forEach(item=>{
+    const v=m.get(item.product_id)||{views:0,checkout:0,sales:0,paid:0,revenue:0};
+    v.paid++;
+    v.revenue+=Number(item.subtotal||0);
+    m.set(item.product_id,v);
+   });
+  });
+
   return Array.from(m.entries())
-   .map(([id,v])=>({id,name:products[id]||'Produk',...v,score:v.views+v.checkout*3+v.sales*2}))
+   .map(([id,v])=>({id,name:products[id]||'Produk',...v,score:v.revenue+v.paid*1000000+v.checkout*1000+v.views}))
    .sort((a,b)=>b.score-a.score)
    .slice(0,5);
- },[events,products]);
+ },[events,products,paidOrders]);
 
  const topSources=useMemo(()=>{
   const m=new Map<string,number>();
@@ -127,6 +178,8 @@ export default function AnalyticsPage(){
  const rows=filtered.slice((safe-1)*size,safe*size);
 
  const statCards=[
+  {label:'Omzet',value:`Rp ${salesStats.omzet.toLocaleString('id-ID')}`,sub:'Paid + Completed',icon:Wallet,raw:true},
+  {label:'Transaksi Paid',value:salesStats.transactions,sub:`Konversi ${paidConversion.toFixed(1)}%`,icon:ReceiptText},
   {label:'Page Views',value:stats.views,sub:'Total halaman dilihat',icon:Eye},
   {label:'Unique Visitor',value:stats.unique,sub:'Sesi unik anonim',icon:Users},
   {label:'Product Views',value:stats.product,sub:'Produk dibuka',icon:PackageSearch},
@@ -162,7 +215,7 @@ export default function AnalyticsPage(){
      <div className="analyticsStatIcon"><Icon size={20}/></div>
      <div className="analyticsStatBody">
       <span>{label}</span>
-      <strong>{Number(value).toLocaleString('id-ID')}</strong>
+      <strong>{typeof value==='number'?value.toLocaleString('id-ID'):value}</strong>
       <small>{sub}</small>
      </div>
     </div>
@@ -191,6 +244,11 @@ export default function AnalyticsPage(){
       )}
      </div>
     </div>
+    <div className="analyticsSalesStrip">
+     <div><small>Omzet Periode</small><strong>Rp {salesStats.omzet.toLocaleString('id-ID')}</strong></div>
+     <div><small>Transaksi Paid</small><strong>{salesStats.transactions}</strong></div>
+     <div><small>Rata-rata Order</small><strong>Rp {Math.round(salesStats.avgOrder).toLocaleString('id-ID')}</strong></div>
+    </div>
    </section>
 
    <aside className="analyticsPanel analyticsInsightPanel">
@@ -199,6 +257,9 @@ export default function AnalyticsPage(){
     <div className="analyticsInsightList">
      <div><span><TrendingUp size={17}/> CTR Checkout</span><strong>{checkoutCtr.toFixed(1)}%</strong></div>
      <div><span><MousePointerClick size={17}/> CTR Salespage</span><strong>{salesCtr.toFixed(1)}%</strong></div>
+     <div><span><Wallet size={17}/> Omzet</span><strong>Rp {salesStats.omzet.toLocaleString('id-ID')}</strong></div>
+     <div><span><ReceiptText size={17}/> Transaksi Paid</span><strong>{salesStats.transactions}</strong></div>
+     <div><span><TrendingUp size={17}/> Konversi Paid</span><strong>{paidConversion.toFixed(1)}%</strong></div>
      <div><span><Activity size={17}/> WhatsApp Click</span><strong>{stats.wa}</strong></div>
      <div><span><Eye size={17}/> Avg. Views / Hari</span><strong>{avgViews.toFixed(1)}</strong></div>
     </div>
@@ -212,7 +273,7 @@ export default function AnalyticsPage(){
      {topProducts.map((p,i)=>
       <div className="analyticsRankRow" key={p.id}>
        <span className="analyticsRankNo">{String(i+1).padStart(2,'0')}</span>
-       <div><strong>{p.name}</strong><small>{p.views} view • {p.sales} salespage • {p.checkout} checkout</small></div>
+       <div><strong>{p.name}</strong><small>{p.views} view • {p.checkout} checkout • {p.paid} paid • Rp {p.revenue.toLocaleString('id-ID')}</small></div>
        <ArrowUpRight size={18}/>
       </div>
      )}

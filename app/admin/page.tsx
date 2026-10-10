@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase';
 import { StoreSettings } from '@/lib/types';
-import { Package2, Sparkles, Link2Off, ShoppingBag, CreditCard, KeyRound, ArrowUpRight } from 'lucide-react';
+import { Package2, Sparkles, Link2Off, ShoppingBag, CreditCard, KeyRound, ArrowUpRight, Users } from 'lucide-react';
 
 const fallback:Partial<StoreSettings>={
  brand_name:'ADCStore',
@@ -78,6 +78,7 @@ export default function Admin(){
      <Link href="/admin/payments" className="quick3d"><CreditCard/><span><b>Atur Pembayaran</b><small>Bank, e-wallet, QRIS</small></span><ArrowUpRight/></Link>
      <Link href="/admin/access" className="quick3d"><KeyRound/><span><b>Akses Produk</b><small>HTML & tombol akses</small></span><ArrowUpRight/></Link>
      <Link href="/admin/orders" className="quick3d"><ShoppingBag/><span><b>Kelola Order</b><small>Approve pembayaran customer</small></span><ArrowUpRight/></Link>
+     <Link href="/admin/members" className="quick3d"><Users/><span><b>Database Member</b><small>Akun, password & export Excel</small></span><ArrowUpRight/></Link>
     </div>
    </section>
    <section className="panel3d tips3d">

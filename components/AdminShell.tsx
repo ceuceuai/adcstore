@@ -3,14 +3,14 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { createClient } from '@/lib/supabase';
-import { LayoutDashboard, Package2, CreditCard, KeyRound, Settings, LogOut, ShoppingBag, ExternalLink, Images, Tags, LibraryBig, BarChart3 } from 'lucide-react';
+import { LayoutDashboard, Package2, CreditCard, KeyRound, Settings, LogOut, ShoppingBag, ExternalLink, Images, Tags, LibraryBig, BarChart3, Users } from 'lucide-react';
 
 export default function AdminShell({children}:{children:React.ReactNode}){
  const router=useRouter(); const path=usePathname(); const [checking,setChecking]=useState(true); const [navPending,setNavPending]=useState(false); const [brand,setBrand]=useState('Digital Store'); const [logo,setLogo]=useState<string|null>(null); const [consoleLabel,setConsoleLabel]=useState('Owner Console');
  useEffect(()=>{const s=createClient();s.auth.getSession().then(async({data})=>{if(!data.session)return router.replace('/owner/login');const {data:isAdmin}=await s.rpc('is_admin');if(!isAdmin){await s.auth.signOut();return router.replace('/owner/login')}setChecking(false)})},[router]);
  useEffect(()=>{setNavPending(false)},[path]);
  useEffect(()=>{createClient().from('store_settings').select('brand_name,logo_url,admin_console_label').eq('id',1).maybeSingle().then(({data})=>{if(data){setBrand(data.brand_name||'Digital Store');setLogo(data.logo_url||null);setConsoleLabel(data.admin_console_label||'Owner Console')}})},[]);
- useEffect(()=>{['/admin','/admin/products','/admin/categories','/admin/media','/admin/analytics','/admin/banners','/admin/orders','/admin/access','/admin/payments','/admin/settings'].forEach(href=>router.prefetch(href))},[router]);
+ useEffect(()=>{['/admin','/admin/products','/admin/categories','/admin/media','/admin/analytics','/admin/banners','/admin/orders','/admin/members','/admin/access','/admin/payments','/admin/settings'].forEach(href=>router.prefetch(href))},[router]);
  async function logout(){await createClient().auth.signOut();router.replace('/owner/login')}
  if(checking)return <div className="adminLoading">Memeriksa akses owner...</div>;
  const links=[
@@ -21,6 +21,7 @@ export default function AdminShell({children}:{children:React.ReactNode}){
   {href:'/admin/analytics',label:'Analytics',icon:BarChart3},
   {href:'/admin/banners',label:'Slide Banner',icon:Images},
   {href:'/admin/orders',label:'Order / Checkout',icon:ShoppingBag},
+  {href:'/admin/members',label:'Member',icon:Users},
   {href:'/admin/access',label:'Akses Produk',icon:KeyRound},
   {href:'/admin/payments',label:'Pembayaran',icon:CreditCard},
   {href:'/admin/settings',label:'Pengaturan',icon:Settings},
