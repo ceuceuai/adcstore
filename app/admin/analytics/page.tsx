@@ -27,19 +27,40 @@ export default function AnalyticsPage(){
  const [q,setQ]=useState('');
  const [page,setPage]=useState(1);
  const [size,setSize]=useState(10);
+ const [lastUpdated,setLastUpdated]=useState<Date|null>(null);
+ const [loadError,setLoadError]=useState('');
 
  useEffect(()=>{
-  const s=createClient();
-  const from=new Date(Date.now()-days*86400000).toISOString();
-  Promise.all([
-   s.from('analytics_events').select('*').gte('created_at',from).order('created_at',{ascending:false}).limit(5000),
-   s.from('products').select('id,name')
-  ]).then(([a,b])=>{
-   setEvents((a.data||[]) as AnalyticsEvent[]);
+  let active=true;
+  let timer:ReturnType<typeof setInterval>|null=null;
+
+  async function loadAnalytics(){
+   const client=createClient();
+   const from=new Date(Date.now()-days*86400000).toISOString();
+   const [a,b]=await Promise.all([
+    client.from('analytics_events').select('*').gte('created_at',from).order('created_at',{ascending:false}).limit(5000),
+    client.from('products').select('id,name')
+   ]);
+   if(!active)return;
+   if(a.error){
+    setLoadError(a.error.message);
+   }else{
+    setLoadError('');
+    setEvents((a.data||[]) as AnalyticsEvent[]);
+    setLastUpdated(new Date());
+   }
    const m:Record<string,string>={};
    (b.data||[]).forEach((x:any)=>m[x.id]=x.name);
    setProducts(m);
-  });
+  }
+
+  void loadAnalytics();
+  timer=setInterval(()=>void loadAnalytics(),5000);
+
+  return()=>{
+   active=false;
+   if(timer)clearInterval(timer);
+  };
  },[days]);
 
  const stats=useMemo(()=>{
@@ -122,13 +143,18 @@ export default function AnalyticsPage(){
     <h1>Analytics Website</h1>
     <p>Pantau traffic, minat produk, dan klik penting langsung dari ADCStore — tanpa wajib pasang iklan.</p>
    </div>
-   <div className="analyticsPeriod">
-    <CalendarDays size={18}/>
-    <select value={days} onChange={e=>setDays(Number(e.target.value))}>
-     {periods.map(x=><option value={x} key={x}>{x} Hari</option>)}
-    </select>
+   <div className="analyticsLiveTools">
+    <div className="analyticsLiveBadge"><span></span> LIVE • refresh 5 detik</div>
+    <div className="analyticsPeriod">
+     <CalendarDays size={18}/>
+     <select value={days} onChange={e=>setDays(Number(e.target.value))}>
+      {periods.map(x=><option value={x} key={x}>{x} Hari</option>)}
+     </select>
+    </div>
    </div>
   </div>
+  {loadError&&<div className="analyticsLoadError"><strong>Analytics belum bisa membaca database.</strong><span>{loadError}</span></div>}
+  {!loadError&&lastUpdated&&<div className="analyticsLastUpdated">Terakhir diperbarui: {lastUpdated.toLocaleTimeString('id-ID')}</div>}
 
   <div className="analyticsStatsGrid">
    {statCards.map(({label,value,sub,icon:Icon})=>

@@ -20,9 +20,9 @@ export async function trackEvent(event_type:AnalyticsEventType,opts?:{
   metadata?:Record<string,unknown>;
   page_path?:string|null;
 }){
-  if(typeof window==='undefined') return;
+  if(typeof window==='undefined') return false;
   try{
-    await createClient().from('analytics_events').insert({
+    const {error}=await createClient().from('analytics_events').insert({
       event_type,
       product_id:opts?.product_id||null,
       page_path:opts?.page_path||window.location.pathname,
@@ -33,5 +33,13 @@ export async function trackEvent(event_type:AnalyticsEventType,opts?:{
       session_id:getSessionId(),
       metadata:opts?.metadata||{}
     });
-  }catch{}
+    if(error){
+      console.error('[ADCStore Analytics] gagal menyimpan event',event_type,error.message);
+      return false;
+    }
+    return true;
+  }catch(error){
+    console.error('[ADCStore Analytics] exception',event_type,error);
+    return false;
+  }
 }
