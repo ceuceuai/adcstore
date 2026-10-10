@@ -1,0 +1,14 @@
+ADCStore v1.0.61 Static QA
+==========================
+PASS: targeted permission checks passed.
+
+
+- secret key not used for public tables: PASS
+- orders use owner session: PASS
+- auth admin list users: PASS
+- auth admin create user: PASS
+- auth admin update user: PASS
+- auth admin delete user: PASS
+- no direct profiles write in member API: PASS
+- owner rpc still used: PASS
+- No DB upgrade SQL included.

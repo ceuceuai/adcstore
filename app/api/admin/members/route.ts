@@ -33,8 +33,8 @@ async function requireOwner(req:NextRequest){
  if(!isAdmin)throw new Error('Akun ini bukan owner toko.');
 
  // Secret key hanya dipakai SETELAH user lolos validasi owner.
- const admin=createSupabaseClient(url,service,{auth:{persistSession:false,autoRefreshToken:false}});
- return {admin,ownerId:userData.user.id};
+ const adminAuth=createSupabaseClient(url,service,{auth:{persistSession:false,autoRefreshToken:false}});
+ return {adminAuth,ownerDb:authClient,ownerId:userData.user.id};
 }
 
 function cleanEmail(v:unknown){return String(v||'').trim().toLowerCase()}
@@ -42,11 +42,11 @@ function cleanText(v:unknown){return String(v||'').trim()}
 
 export async function GET(req:NextRequest){
  try{
-  const {admin,ownerId}=await requireOwner(req);
-  const {data:listed,error:listError}=await admin.auth.admin.listUsers({page:1,perPage:1000});
+  const {adminAuth,ownerDb,ownerId}=await requireOwner(req);
+  const {data:listed,error:listError}=await adminAuth.auth.admin.listUsers({page:1,perPage:1000});
   if(listError)throw listError;
 
-  const {data:orders,error:orderError}=await admin
+  const {data:orders,error:orderError}=await ownerDb
    .from('orders')
    .select('customer_name,customer_email,customer_whatsapp,status,created_at')
    .order('created_at',{ascending:false})
@@ -94,7 +94,7 @@ export async function GET(req:NextRequest){
 
 export async function POST(req:NextRequest){
  try{
-  const {admin,ownerId}=await requireOwner(req);
+  const {adminAuth,ownerId}=await requireOwner(req);
   const body=await req.json();
   const action=cleanText(body.action);
 
@@ -106,7 +106,7 @@ export async function POST(req:NextRequest){
 
    // Password acak tidak pernah ditampilkan; buyer set password via reset link.
    const randomPassword=`Adc!${crypto.randomUUID()}#9z`;
-   const {data,error}=await admin.auth.admin.createUser({
+   const {data,error}=await adminAuth.auth.admin.createUser({
     email,
     password:randomPassword,
     email_confirm:true,
@@ -114,13 +114,7 @@ export async function POST(req:NextRequest){
    });
    if(error)throw error;
 
-   if(data.user){
-    await admin.from('profiles').upsert({
-     id:data.user.id,
-     full_name,
-     role:'member'
-    },{onConflict:'id'});
-   }
+   // public.profiles is created automatically by the existing auth trigger.
    return NextResponse.json({ok:true,id:data.user?.id,email});
   }
 
@@ -132,9 +126,8 @@ export async function POST(req:NextRequest){
 
    if(id===ownerId)throw new Error('Akun owner tidak boleh diedit dari menu Member.');
 
-   const {error}=await admin.auth.admin.updateUserById(id,{user_metadata:{full_name,whatsapp}});
+   const {error}=await adminAuth.auth.admin.updateUserById(id,{user_metadata:{full_name,whatsapp}});
    if(error)throw error;
-   await admin.from('profiles').update({full_name}).eq('id',id);
    return NextResponse.json({ok:true});
   }
 
@@ -144,7 +137,7 @@ export async function POST(req:NextRequest){
 
    if(id===ownerId)throw new Error('Akun owner tidak boleh dihapus.');
 
-   const {error}=await admin.auth.admin.deleteUser(id);
+   const {error}=await adminAuth.auth.admin.deleteUser(id);
    if(error)throw error;
    return NextResponse.json({ok:true});
   }
