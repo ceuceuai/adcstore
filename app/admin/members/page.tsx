@@ -2,7 +2,7 @@
 import {FormEvent,useEffect,useMemo,useState} from 'react';
 import {createClient} from '@/lib/supabase';
 import ConfirmDialog from '@/components/ConfirmDialog';
-import {Download,KeyRound,Pencil,Plus,Search,Trash2,Users,X} from 'lucide-react';
+import {Copy,Download,Eye,EyeOff,KeyRound,MessageCircle,Pencil,Plus,RefreshCw,Search,Trash2,Users,X} from 'lucide-react';
 import * as XLSX from 'xlsx';
 
 type MemberRow={
@@ -17,9 +17,23 @@ type MemberRow={
  paid_count:number;
 };
 
-type MemberForm={id?:string;full_name:string;email:string;whatsapp:string};
+type MemberForm={id?:string;full_name:string;email:string;whatsapp:string;password:string};
+type Credential={name:string;email:string;whatsapp:string;password:string};
 
-const emptyForm:MemberForm={full_name:'',email:'',whatsapp:''};
+const emptyForm:MemberForm={full_name:'',email:'',whatsapp:'',password:''};
+
+function generatePassword(){
+ const alphabet='ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$%';
+ const bytes=new Uint32Array(12);
+ crypto.getRandomValues(bytes);
+ return Array.from(bytes,x=>alphabet[x%alphabet.length]).join('');
+}
+
+function waNumber(raw:string){
+ let n=String(raw||'').replace(/\D/g,'');
+ if(n.startsWith('0'))n=`62${n.slice(1)}`;
+ return n;
+}
 
 export default function MembersPage(){
  const [rows,setRows]=useState<MemberRow[]>([]);
@@ -31,8 +45,12 @@ export default function MembersPage(){
  const [msg,setMsg]=useState('');
  const [form,setForm]=useState<MemberForm>(emptyForm);
  const [modal,setModal]=useState(false);
+ const [passwordModal,setPasswordModal]=useState<MemberRow|null>(null);
+ const [newPassword,setNewPassword]=useState('');
+ const [showPassword,setShowPassword]=useState(false);
  const [busy,setBusy]=useState(false);
  const [deleteTarget,setDeleteTarget]=useState<MemberRow|null>(null);
+ const [credential,setCredential]=useState<Credential|null>(null);
 
  async function token(){
   const {data}=await createClient().auth.getSession();
@@ -77,8 +95,23 @@ export default function MembersPage(){
  const safePage=Math.min(page,pages);
  const shown=filtered.slice((safePage-1)*size,safePage*size);
 
- function openCreate(){setForm(emptyForm);setModal(true);setMsg('')}
- function openEdit(x:MemberRow){setForm({id:x.id,full_name:x.full_name,email:x.email,whatsapp:x.whatsapp});setModal(true);setMsg('')}
+ function openCreate(){
+  setForm({...emptyForm,password:generatePassword()});
+  setShowPassword(true);
+  setModal(true);
+  setMsg('');
+ }
+ function openEdit(x:MemberRow){
+  setForm({id:x.id,full_name:x.full_name,email:x.email,whatsapp:x.whatsapp,password:''});
+  setModal(true);
+  setMsg('');
+ }
+ function openPassword(x:MemberRow){
+  setPasswordModal(x);
+  setNewPassword(generatePassword());
+  setShowPassword(true);
+  setMsg('');
+ }
 
  async function save(e:FormEvent){
   e.preventDefault();
@@ -91,17 +124,18 @@ export default function MembersPage(){
     id:form.id,
     full_name:form.full_name,
     email:form.email,
-    whatsapp:form.whatsapp
+    whatsapp:form.whatsapp,
+    password:form.password
    });
 
    if(!isEdit){
-    const redirectTo=`${window.location.origin}/member/reset-password`;
-    const {error}=await createClient().auth.resetPasswordForEmail(form.email.trim().toLowerCase(),{redirectTo});
-    if(error){
-     setMsg(`Member berhasil dibuat, tetapi email set password gagal dikirim: ${error.message}`);
-    }else{
-     setMsg('Member berhasil dibuat dan link buat password sudah dikirim ke email.');
-    }
+    setCredential({
+     name:form.full_name,
+     email:form.email.trim().toLowerCase(),
+     whatsapp:form.whatsapp,
+     password:form.password
+    });
+    setMsg('Member berhasil dibuat. Kirim data login ke member melalui WhatsApp.');
    }else{
     setMsg('Data member berhasil diperbarui.');
    }
@@ -115,11 +149,25 @@ export default function MembersPage(){
   }
  }
 
- async function resend(x:MemberRow){
-  setMsg('');
-  const redirectTo=`${window.location.origin}/member/reset-password`;
-  const {error}=await createClient().auth.resetPasswordForEmail(x.email,{redirectTo});
-  setMsg(error?`Gagal mengirim link password: ${error.message}`:`Link buat/reset password dikirim ke ${x.email}.`);
+ async function savePassword(e:FormEvent){
+  e.preventDefault();
+  if(!passwordModal||busy)return;
+  setBusy(true);setMsg('');
+  try{
+   await api({action:'set_password',id:passwordModal.id,password:newPassword});
+   setCredential({
+    name:passwordModal.full_name,
+    email:passwordModal.email,
+    whatsapp:passwordModal.whatsapp,
+    password:newPassword
+   });
+   setPasswordModal(null);
+   setMsg('Password member berhasil diubah. Kirim data login baru melalui WhatsApp.');
+  }catch(e:any){
+   setMsg(e.message);
+  }finally{
+   setBusy(false);
+  }
  }
 
  async function remove(){
@@ -135,6 +183,23 @@ export default function MembersPage(){
   }finally{
    setBusy(false);
   }
+ }
+
+ function credentialText(c:Credential){
+  return `Halo ${c.name||'Member'}, akun member Anda sudah aktif.\n\nLogin: ${window.location.origin}/member/login\nEmail: ${c.email}\nPassword: ${c.password}\n\nSilakan login dan Anda bisa mengganti password dari Dashboard Member > Keamanan.`;
+ }
+
+ async function copyCredential(){
+  if(!credential)return;
+  await navigator.clipboard.writeText(credentialText(credential));
+  setMsg('Data login berhasil dicopy.');
+ }
+
+ function whatsappCredential(){
+  if(!credential)return '#';
+  const n=waNumber(credential.whatsapp);
+  const text=encodeURIComponent(credentialText(credential));
+  return n?`https://wa.me/${n}?text=${text}`:`https://wa.me/?text=${text}`;
  }
 
  function exportExcel(){
@@ -168,7 +233,7 @@ export default function MembersPage(){
   />
 
   <div className="pageHead3d">
-   <div><span className="eyebrow">MEMBER DATABASE</span><h1>Member</h1><p>Kelola akun member, kirim ulang link password, dan export database member.</p></div>
+   <div><span className="eyebrow">MEMBER DATABASE</span><h1>Member</h1><p>Kelola akun, buat password langsung, kirim data login via WhatsApp, dan export database member.</p></div>
    <div className="actions">
     <button type="button" className="btn alt" onClick={exportExcel}><Download size={17}/> Export Excel</button>
     <button type="button" className="btn" onClick={openCreate}><Plus size={17}/> Tambah Member</button>
@@ -194,6 +259,16 @@ export default function MembersPage(){
   </div>
 
   {msg&&<div className="notice" style={{marginBottom:14}}>{msg}</div>}
+
+  {credential&&<div className="memberCredentialBox">
+   <div><span className="eyebrow">DATA LOGIN SIAP DIKIRIM</span><h3>{credential.name||credential.email}</h3><p>Email: <b>{credential.email}</b><br/>Password sementara: <b>{credential.password}</b></p><small>Password ini tidak disimpan di dashboard. Kirim sekarang lalu tutup panel.</small></div>
+   <div className="memberCredentialActions">
+    <button type="button" className="btn alt" onClick={()=>void copyCredential()}><Copy size={16}/> Copy</button>
+    <a className="btn" href={whatsappCredential()} target="_blank" rel="noopener noreferrer"><MessageCircle size={16}/> Kirim WhatsApp</a>
+    <button type="button" className="btn alt" onClick={()=>setCredential(null)}><X size={16}/> Tutup</button>
+   </div>
+  </div>}
+
   {loading?<div className="panel3d">Memuat database member...</div>:
    <div className="memberAdminList">
     {shown.map(x=><article className="memberAdminCard" key={x.id}>
@@ -206,7 +281,7 @@ export default function MembersPage(){
       </div>
      </div>
      <div className="memberAdminActions">
-      <button type="button" className="btn alt" onClick={()=>void resend(x)}><KeyRound size={16}/> Kirim Link Password</button>
+      <button type="button" className="btn alt" onClick={()=>openPassword(x)}><KeyRound size={16}/> Set Password</button>
       <button type="button" className="btn alt" onClick={()=>openEdit(x)}><Pencil size={16}/> Edit</button>
       <button type="button" className="btn alt dangerBtn" onClick={()=>setDeleteTarget(x)}><Trash2 size={16}/> Hapus</button>
      </div>
@@ -228,12 +303,26 @@ export default function MembersPage(){
     <button type="button" className="modalClose" onClick={()=>!busy&&setModal(false)}><X size={18}/></button>
     <span className="eyebrow">{form.id?'EDIT MEMBER':'MEMBER BARU'}</span>
     <h2>{form.id?'Edit Data Member':'Tambah Member'}</h2>
-    <p className="muted">{form.id?'Email tidak diubah agar akses order tetap terhubung.':'Member baru akan menerima link untuk membuat password sendiri.'}</p>
+    <p className="muted">{form.id?'Email tidak diubah agar akses order tetap terhubung.':'Buat akun member dan password langsung. Setelah tersimpan, kirim data login via WhatsApp.'}</p>
     <form className="form" onSubmit={save}>
      <div className="field"><label>Nama</label><input className="input" value={form.full_name} onChange={e=>setForm({...form,full_name:e.target.value})} required/></div>
      <div className="field"><label>Email</label><input className="input" type="email" value={form.email} onChange={e=>setForm({...form,email:e.target.value})} required disabled={!!form.id}/></div>
      <div className="field"><label>WhatsApp</label><input className="input" value={form.whatsapp} onChange={e=>setForm({...form,whatsapp:e.target.value})} placeholder="62812xxxx"/></div>
-     <button type="submit" className="btn" disabled={busy}>{busy?'Menyimpan...':form.id?'Simpan Perubahan':'Tambah & Kirim Link Password'}</button>
+     {!form.id&&<div className="field"><label>Password Member</label><div className="memberPasswordAdminRow"><input className="input" type={showPassword?'text':'password'} minLength={6} value={form.password} onChange={e=>setForm({...form,password:e.target.value})} required/><button type="button" className="btn alt" onClick={()=>setShowPassword(v=>!v)}>{showPassword?<EyeOff size={16}/>:<Eye size={16}/>}</button><button type="button" className="btn alt" onClick={()=>setForm({...form,password:generatePassword()})}><RefreshCw size={16}/> Generate</button></div><small className="muted">Minimal 6 karakter. Bisa dibuat manual atau klik Generate.</small></div>}
+     <button type="submit" className="btn" disabled={busy}>{busy?'Menyimpan...':form.id?'Simpan Perubahan':'Tambah Member'}</button>
+    </form>
+   </div>
+  </div>}
+
+  {passwordModal&&<div className="modalOverlay" onMouseDown={e=>{if(e.currentTarget===e.target&&!busy)setPasswordModal(null)}}>
+   <div className="modalCard memberModalCard">
+    <button type="button" className="modalClose" onClick={()=>!busy&&setPasswordModal(null)}><X size={18}/></button>
+    <span className="eyebrow">SET PASSWORD MEMBER</span>
+    <h2>{passwordModal.full_name||passwordModal.email}</h2>
+    <p className="muted">Owner bisa membuat password baru tanpa menunggu email reset. Setelah disimpan, kirim data login melalui WhatsApp.</p>
+    <form className="form" onSubmit={savePassword}>
+     <div className="field"><label>Password Baru</label><div className="memberPasswordAdminRow"><input className="input" type={showPassword?'text':'password'} minLength={6} value={newPassword} onChange={e=>setNewPassword(e.target.value)} required/><button type="button" className="btn alt" onClick={()=>setShowPassword(v=>!v)}>{showPassword?<EyeOff size={16}/>:<Eye size={16}/>}</button><button type="button" className="btn alt" onClick={()=>setNewPassword(generatePassword())}><RefreshCw size={16}/> Generate</button></div></div>
+     <button type="submit" className="btn" disabled={busy}>{busy?'Menyimpan...':'Simpan Password Baru'}</button>
     </form>
    </div>
   </div>}

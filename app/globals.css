@@ -846,3 +846,14 @@
  .memberAdminCard{align-items:flex-start;flex-direction:column}
  .memberAdminActions{width:100%;justify-content:flex-start}
 }
+
+
+/* v1.0.62 — Owner Set Password + WhatsApp Credentials */
+.memberPasswordAdminRow{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:8px;align-items:center}
+.memberPasswordAdminRow .btn{min-height:44px;padding:0 12px}
+.memberCredentialBox{margin:0 0 14px;padding:18px;border-radius:20px;background:linear-gradient(145deg,color-mix(in srgb,var(--primary) 8%,white),white);border:1px solid color-mix(in srgb,var(--primary) 14%,transparent);display:flex;align-items:center;justify-content:space-between;gap:18px;box-shadow:0 12px 30px rgba(53,40,87,.06)}
+.memberCredentialBox h3{margin:4px 0}
+.memberCredentialBox p{margin:5px 0;font-size:13px}
+.memberCredentialBox small{color:var(--muted);font-size:11px}
+.memberCredentialActions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+@media(max-width:760px){.memberPasswordAdminRow{grid-template-columns:1fr 48px}.memberPasswordAdminRow .btn:last-child{grid-column:1/-1}.memberCredentialBox{align-items:flex-start;flex-direction:column}.memberCredentialActions{width:100%}}

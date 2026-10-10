@@ -102,13 +102,13 @@ export async function POST(req:NextRequest){
    const email=cleanEmail(body.email);
    const full_name=cleanText(body.full_name);
    const whatsapp=cleanText(body.whatsapp);
+   const password=String(body.password||'');
    if(!email||!full_name)throw new Error('Nama dan email wajib diisi.');
+   if(password.length<6)throw new Error('Password minimal 6 karakter.');
 
-   // Password acak tidak pernah ditampilkan; buyer set password via reset link.
-   const randomPassword=`Adc!${crypto.randomUUID()}#9z`;
    const {data,error}=await adminAuth.auth.admin.createUser({
     email,
-    password:randomPassword,
+    password,
     email_confirm:true,
     user_metadata:{full_name,whatsapp}
    });
@@ -127,6 +127,18 @@ export async function POST(req:NextRequest){
    if(id===ownerId)throw new Error('Akun owner tidak boleh diedit dari menu Member.');
 
    const {error}=await adminAuth.auth.admin.updateUserById(id,{user_metadata:{full_name,whatsapp}});
+   if(error)throw error;
+   return NextResponse.json({ok:true});
+  }
+
+  if(action==='set_password'){
+   const id=cleanText(body.id);
+   const password=String(body.password||'');
+   if(!id)throw new Error('ID member tidak valid.');
+   if(id===ownerId)throw new Error('Password owner tidak boleh diubah dari menu Member.');
+   if(password.length<6)throw new Error('Password minimal 6 karakter.');
+
+   const {error}=await adminAuth.auth.admin.updateUserById(id,{password});
    if(error)throw error;
    return NextResponse.json({ok:true});
   }

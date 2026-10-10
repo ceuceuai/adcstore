@@ -1,0 +1,12 @@
+ADCStore v1.0.62 Static QA
+==========================
+PASS: targeted checks passed.
+
+
+- create uses owner-provided password: PASS
+- set_password api exists: PASS
+- existing member Set Password button: PASS
+- WhatsApp credentials action: PASS
+- no reset email required in create flow: PASS
+- password not exported to xlsx: PASS
+- no DB upgrade SQL: PASS
