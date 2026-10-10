@@ -1,0 +1,12 @@
+ADCStore v1.0.59 Static QA
+==========================
+PASS: targeted checks passed.
+
+
+Checks:
+- owner validated via authenticated RPC: PASS
+- bearer forwarded to RPC client: PASS
+- secret client created after owner check: PASS
+- secret role not public env: PASS
+- old service-table role guess removed: PASS
+- No DB upgrade SQL included.

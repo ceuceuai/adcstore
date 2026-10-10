@@ -1,8 +1,8 @@
-# ADCStore v1.0.58
+# ADCStore v1.0.60
 
 Digital Store & Affiliate Website for ADC Members.
 
-## Highlight v1.0.58 — Dynamic Social Media & PWA Icon Preview Fix
+## Highlight v1.0.60 — Dynamic Social Media & PWA Icon Preview Fix
 - Field Instagram fixed diganti sistem **Sosial Media dinamis**: Instagram, Facebook, TikTok, YouTube, Telegram, LinkedIn, X/Twitter, Website, Marketplace, atau Custom.
 - Sosial media sepenuhnya optional; jika kosong tidak ditampilkan di storefront.
 - CRUD sosial media + icon custom + status + urutan.
@@ -32,13 +32,13 @@ Digital Store & Affiliate Website for ADC Members.
 
 ## Fresh Install
 1. Buat project Supabase.
-2. Jalankan `sql/INSTALL_ADCSTORE_v1.0.58.sql` sekali di SQL Editor.
+2. Jalankan `sql/INSTALL_ADCSTORE_v1.0.60.sql` sekali di SQL Editor.
 3. Buat user pertama di Supabase Authentication; user pertama otomatis menjadi owner.
 4. Isi ENV Vercel: `NEXT_PUBLIC_SUPABASE_URL` dan `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`.
 5. Push source ke GitHub lalu deploy ke Vercel.
 
 ## Upgrade dari v1.0.16
-Jalankan `sql/UPGRADE_v1.0.16_TO_v1.0.58.sql` sekali, lalu deploy source v1.0.58.
+Jalankan `sql/UPGRADE_v1.0.16_TO_v1.0.60.sql` sekali, lalu deploy source v1.0.60.
 
 ## CSV penting
 Kolom affiliate utama: `affiliate_salespage_url`, `affiliate_checkout_url`, `affiliate_cta_text`.
@@ -49,14 +49,14 @@ Kolom affiliate utama: `affiliate_salespage_url`, `affiliate_checkout_url`, `aff
 Admin/owner tetap wajib dibuat melalui Supabase Authentication. Branding, favicon, logo, homepage copy, CTA, hero, dan elemen brand UI tetap dinamis dari Settings/DB.
 
 
-## v1.0.58
+## v1.0.60
 - Master Kategori Produk dinamis dengan CRUD, search, status filter, dan pagination (default 10).
 - Form produk memakai dropdown kategori master.
 - Import CSV otomatis membuat kategori yang belum ada.
 - Homepage: filter kategori dinamis + sorting pengunjung (Terbaru, Terlama, Termurah, Termahal).
 - Default homepage: produk terbaru lebih dulu.
 
-## v1.0.58 — Media Library
+## v1.0.60 — Media Library
 - Media Library terpusat untuk image reusable.
 - Sebelum upload baru, user bisa memilih image yang sudah pernah diupload.
 - Upload baru memakai SHA-256 dedupe: file identik tidak diupload ulang.
@@ -64,27 +64,27 @@ Admin/owner tetap wajib dibuat melalui Supabase Authentication. Branding, favico
 - Semua modul utama image memakai picker yang sama: produk, kategori, banner, QRIS, logo, favicon, hero, floating WhatsApp, PWA icon, dan social icon.
 - Aset lama didaftarkan otomatis ke Media Library lewat SQL upgrade.
 - Delete media diblok jika image masih dipakai modul lain.
-- Upgrade langsung dari v1.0.17 ke v1.0.58 tersedia karena v1.0.18 belum perlu dideploy.
+- Upgrade langsung dari v1.0.17 ke v1.0.60 tersedia karena v1.0.18 belum perlu dideploy.
 
-## v1.0.58 — Permission Audit / Banner Hotfix
+## v1.0.60 — Permission Audit / Banner Hotfix
 - Fix `permission denied for table homepage_banners`.
 - Audit explicit PostgREST GRANT untuk seluruh tabel utama; RLS tetap menjadi lapisan otorisasi.
 - Public storefront mendapat read grant yang diperlukan.
 - Public checkout mendapat insert grant order.
 - Admin/authenticated mendapat table privileges yang diperlukan, lalu dibatasi kembali oleh RLS.
-- Tersedia upgrade langsung v1.0.17 -> v1.0.58 agar v1.0.18/v1.0.19 bisa dilewati.
-- Tersedia `HOTFIX_BANNER_PERMISSION_v1.0.58.sql` bila hanya ingin memperbaiki database yang sedang live dulu.
+- Tersedia upgrade langsung v1.0.17 -> v1.0.60 agar v1.0.18/v1.0.19 bisa dilewati.
+- Tersedia `HOTFIX_BANNER_PERMISSION_v1.0.60.sql` bila hanya ingin memperbaiki database yang sedang live dulu.
 
 
-## v1.0.58 — Safe Live Hotfix
+## v1.0.60 — Safe Live Hotfix
 - Memperbaiki paket hotfix untuk user yang database-nya masih v1.0.17.
-- `HOTFIX_CURRENT_v1.0.17_BANNER_PERMISSION_v1.0.58.sql` hanya menyentuh `homepage_banners` sehingga tidak gagal karena tabel fitur v1.0.18/v1.0.19 belum dibuat.
-- Untuk upgrade penuh dari v1.0.17 langsung ke versi terbaru gunakan `UPGRADE_v1.0.17_TO_v1.0.58.sql`.
+- `HOTFIX_CURRENT_v1.0.17_BANNER_PERMISSION_v1.0.60.sql` hanya menyentuh `homepage_banners` sehingga tidak gagal karena tabel fitur v1.0.18/v1.0.19 belum dibuat.
+- Untuk upgrade penuh dari v1.0.17 langsung ke versi terbaru gunakan `UPGRADE_v1.0.17_TO_v1.0.60.sql`.
 
 
 ## IMPORTANT - ONE SHOT UPGRADE FROM v1.0.17
 If your live ADCStore database is still v1.0.17, run ONLY:
-`sql/UPGRADE_v1.0.17_TO_v1.0.58_ONE_SHOT.sql`
+`sql/UPGRADE_v1.0.17_TO_v1.0.60_ONE_SHOT.sql`
 
 That single SQL includes:
 - category master
@@ -96,7 +96,7 @@ That single SQL includes:
 
 Do not run separate hotfix SQL first.
 
-## v1.0.58 — Hybrid Product Storefront
+## v1.0.60 — Hybrid Product Storefront
 - Product image standard: square 1:1, recommended 1080×1080 px.
 - Product/gallery images use `object-fit: contain` so artwork is not cropped.
 - Homepage product cards show at most 2 CTA: Salespage + Checkout.
@@ -107,7 +107,7 @@ Do not run separate hotfix SQL first.
 - Product detail adds related/recommended products, prioritizing the same category.
 - Related products use square image cards, 4 desktop / 2 mobile.
 
-## v1.0.58 — Dynamic Homepage CTA Source
+## v1.0.60 — Dynamic Homepage CTA Source
 - Setiap produk bisa memilih sumber tombol Salespage di homepage: Auto, Affiliate/Official, Internal, atau Hidden.
 - Setiap produk bisa memilih sumber tombol Checkout di homepage: Auto, Affiliate/Official, Internal, atau Hidden.
 - Homepage tetap maksimal 2 tombol: Salespage + Checkout.
@@ -115,7 +115,7 @@ Do not run separate hotfix SQL first.
 - Detail produk tetap menampilkan semua jalur hybrid yang memang terisi.
 - Export/Import CSV membawa dua field baru agar master katalog bisa didistribusikan konsisten.
 
-## v1.0.58 FINAL — Product Card Cleanup & Demo Hybrid Examples
+## v1.0.60 FINAL — Product Card Cleanup & Demo Hybrid Examples
 - Hardcoded decorative icons `✦`, `♥`, `↗` removed from homepage product cards.
 - Dynamic category label now appears as the badge at the top-right of each product image.
 - Duplicate category badge below the image removed.
@@ -126,20 +126,20 @@ Do not run separate hotfix SQL first.
 - Upgrade SQL only modifies exact untouched demo slugs; real edited products are not overwritten.
 - Image product standard remains square 1:1, recommended 1080×1080 px.
 
-## v1.0.58 — Theme-Synced Homepage CTA
+## v1.0.60 — Theme-Synced Homepage CTA
 - Homepage Salespage and Checkout buttons now derive colors from the selected theme variables.
 - Checkout uses the active Primary/Secondary theme palette.
 - Salespage uses the active Secondary/Accent palette.
 - No fixed purple CTA colors are used on homepage product cards.
 - Custom Primary / Secondary / Accent colors also update these CTA buttons automatically.
 
-## v1.0.58
+## v1.0.60
 - Floating WhatsApp target can be phone number or direct WhatsApp URL.
 - URL can point to WhatsApp Group, Channel, Community, or another WhatsApp destination.
 - Mobile mode can be floating above the bottom navbar or appear as the fifth navbar item.
 - Default mobile floating mode sits above the navbar so the icon never overlaps the menu.
 
-## v1.0.58 FINAL — Analytics & Tracking
+## v1.0.60 FINAL — Analytics & Tracking
 - Internal analytics works even when no ads/pixels are configured.
 - Dashboard analytics: page views, unique anonymous sessions, product views, salespage clicks, checkout clicks, WhatsApp clicks, banner clicks, CTR, top products, and event log.
 - Time range: 7 / 30 / 90 days.
@@ -149,7 +149,7 @@ Do not run separate hotfix SQL first.
 - Optional providers: Meta Pixel, TikTok Pixel, GA4, Google Tag Manager.
 - All external tracking providers are OFF by default and configured from Settings/DB (no hardcode).
 
-## v1.0.58 — Modern Confirmation + Bulk Product Actions
+## v1.0.60 — Modern Confirmation + Bulk Product Actions
 - Browser-native confirm/alert dialogs removed from admin delete flows.
 - All delete confirmations now use centered 3D modal dialogs consistent with Settings save feedback.
 - Products support per-item checkbox selection.
@@ -158,17 +158,17 @@ Do not run separate hotfix SQL first.
 - Category delete dependency notice uses custom modal instead of browser alert.
 - Media, Product Access, Banner, Category, and Product delete flows use custom modal confirmation.
 
-## v1.0.58 HOTFIX
+## v1.0.60 HOTFIX
 - Fixed Vercel TypeScript build error on `app/page.tsx`: missing `trackEvent` import.
 - Homepage Salespage/Checkout analytics event tracking remains active.
 - No database migration is required.
 
-## v1.0.58 HOTFIX
+## v1.0.60 HOTFIX
 - Fixed global Next.js prerender failure caused by useSearchParams() in AnalyticsTracker.
 - Internal analytics still captures UTM parameters inside the browser event helper, without useSearchParams().
 - No database schema change.
 
-## v1.0.58 — Category Management Final Fix
+## v1.0.60 — Category Management Final Fix
 - Category Edit modal now uses the same centered 3D modal system as the rest of admin.
 - Fixed category Edit action that previously used obsolete/unavailable modal CSS classes.
 - Checkbox per category.
@@ -177,18 +177,18 @@ Do not run separate hotfix SQL first.
 - Deletion is blocked when a category is still used by products, with a centered information modal.
 - Single and bulk delete use the same custom confirmation modal; no browser-native confirm.
 
-## v1.0.58 — Category JSX Syntax Fix
+## v1.0.60 — Category JSX Syntax Fix
 - Fixed missing closing brace in category delete button onClick handler.
 - No database schema change.
 
-## v1.0.58 — Dynamic Member & Owner Login Visual
+## v1.0.60 — Dynamic Member & Owner Login Visual
 - Removed the fixed ThreeDArt illustration from Member and Owner login pages.
 - Member login visual and Owner login visual can be configured separately.
 - Per login page: use Brand Logo, Custom Image from Media Library/URL, or No Visual.
 - Fresh default uses the dynamic Brand Logo, not a hardcoded illustration.
 - Custom transparent PNG/WebP is supported.
 
-## v1.0.58 — Dynamic Promo / Exclusive Homepage Section
+## v1.0.60 — Dynamic Promo / Exclusive Homepage Section
 - New homepage special-products section below Slide Banner and above full product catalog.
 - Product can be marked: None, Promo, Exclusive, or Custom Label.
 - Custom label supports labels such as Best Seller, Hot, Limited, etc.
@@ -199,14 +199,14 @@ Do not run separate hotfix SQL first.
 - If no product is marked, the section automatically disappears.
 - CSV import/export supports highlight_type, highlight_label, and highlight_sort_order.
 
-## v1.0.58 — Featured Cleanup
+## v1.0.60 — Featured Cleanup
 - Legacy `Featured` checkbox removed from Product form.
 - Legacy `featured` column removed from fresh database schema and upgrade.
 - Featured removed from CSV import/export/template.
 - Admin dashboard no longer queries the legacy featured field.
 - Homepage highlighting now has one clear system only: Promo / Exclusive / Custom Label with Highlight Sort Order.
 
-## v1.0.58 — Professional Analytics UI
+## v1.0.60 — Professional Analytics UI
 - Analytics redesigned from scratch into a compact professional dashboard.
 - 7 KPI cards with icons and clear hierarchy.
 - Traffic chart uses compact bar visualization with daily totals.
@@ -217,14 +217,14 @@ Do not run separate hotfix SQL first.
 - Mobile/tablet responsive layouts.
 - No database schema changes.
 
-## v1.0.58 — Dynamic Owner Dashboard Hero
+## v1.0.60 — Dynamic Owner Dashboard Hero
 - Owner dashboard badge, title, and description are editable from Settings.
 - Dashboard hero visual can use Brand Logo, Custom Image, or be hidden.
 - Custom dashboard image can be selected from Media Library or entered by URL.
 - Brand logo keeps transparent background; no forced background is added.
 - If Brand Logo is empty, dashboard uses a dynamic brand-initial fallback instead of a hardcoded ADC graphic.
 
-## v1.0.58 — Payment Save Hardening
+## v1.0.60 — Payment Save Hardening
 - Payment save flow rewritten to use explicit UPDATE by id=1, then re-read the saved row from Supabase.
 - Save button has explicit `type=button`, loading state, error handling, and verified success modal.
 - Added second sticky Save Payment action at bottom for long pages.
@@ -233,15 +233,15 @@ Do not run separate hotfix SQL first.
 - Bank/e-wallet removal now uses centered custom confirmation instead of immediate destructive action.
 - No browser-native confirm/alert calls remain in admin source.
 
-## v1.0.58 — Full UI Action QA Hardening
+## v1.0.60 — Full UI Action QA Hardening
 - Explicit button type on every button to prevent accidental form submission/non-response ambiguity.
 - Social media delete confirmation added.
 - Order status confirmation added.
 - Banner delete error handling improved.
 - Settings save now verifies persisted database data before success.
-- Full static route/button/action audit documented in QA-REPORT-v1.0.58.txt.
+- Full static route/button/action audit documented in QA-REPORT-v1.0.60.txt.
 
-## v1.0.58 — Product Image URL Fix
+## v1.0.60 — Product Image URL Fix
 - URL pasted into `Tambah URL Image Address` is automatically processed when `Simpan Produk` is clicked, even if `Tambah Image URL` was not pressed.
 - Direct image URL is validated before being accepted.
 - Invalid/private/page URLs show a clear message instead of silently leaving the product without an image.
@@ -250,7 +250,7 @@ Do not run separate hotfix SQL first.
 - Added live URL preview and validation status.
 - No database schema changes.
 
-## v1.0.58 — Multi-Product Checkout + WhatsApp Confirmation
+## v1.0.60 — Multi-Product Checkout + WhatsApp Confirmation
 - Internal checkout no longer uses hardcoded ADC artwork; it displays each product's real image.
 - If a product image is empty, checkout uses a dynamic initial fallback.
 - Customer can add multiple internal-checkout products into one order.
@@ -262,7 +262,7 @@ Do not run separate hotfix SQL first.
 - WhatsApp message is prefilled with order number, buyer name, item list, total, payment method, and request to send payment proof.
 - Uses Store Settings `whatsapp`, with `floating_wa_number` as fallback.
 
-## v1.0.58 — Flexible Post-Checkout Redirect
+## v1.0.60 — Flexible Post-Checkout Redirect
 - Owner can choose what happens after a successful internal checkout:
   - Redirect to Store WhatsApp with prefilled order confirmation.
   - Redirect to a custom URL / Thank You Page.
@@ -270,26 +270,26 @@ Do not run separate hotfix SQL first.
 - Custom URL is configured in Settings and can point to a thank-you page, membership page, form, channel, or other destination.
 - For custom URL redirects, `order` and `total` are appended as query parameters.
 - This package includes the v1.0.42 multi-product checkout features.
-- Because the current deployment is still v1.0.41, use the included one-shot `UPGRADE_v1.0.41_TO_v1.0.58.sql`. Do not install v1.0.42 first.
+- Because the current deployment is still v1.0.41, use the included one-shot `UPGRADE_v1.0.41_TO_v1.0.60.sql`. Do not install v1.0.42 first.
 
-## v1.0.58 — Mobile Homepage Compact Grid + Full Banner
+## v1.0.60 — Mobile Homepage Compact Grid + Full Banner
 - Homepage product catalog uses a 2-column grid on mobile instead of one large card per row.
 - Promo / Exclusive section also stays 2 columns on mobile, including phones <= 420px.
 - Mobile product cards are compacted: smaller typography, padding, badges, prices, and CTA buttons.
 - Slide Banner no longer forces `object-fit: cover` or a fixed mobile aspect ratio.
 - Desktop and mobile banner images are displayed at their real aspect ratio with `object-fit: contain`, so the artwork is not cropped.
 - This package still includes the v1.0.42/v1.0.43 database features.
-- Since the current live deployment is still v1.0.41, use only `UPGRADE_v1.0.41_TO_v1.0.58.sql`.
+- Since the current live deployment is still v1.0.41, use only `UPGRADE_v1.0.41_TO_v1.0.60.sql`.
 
-## v1.0.58 — Store Settings Schema Repair
+## v1.0.60 — Store Settings Schema Repair
 - Fixes `Could not find the 'ga4_enabled' column of 'store_settings' in the schema cache`.
 - One-shot upgrade now repairs every `store_settings` column expected by the current frontend using `ADD COLUMN IF NOT EXISTS`.
 - Also fixes a fresh-installer mismatch where `floating_wa_target_type`, `floating_wa_target_url`, and `floating_wa_mobile_mode` were used by the frontend but missing from the SQL schema.
 - PostgREST schema cache is explicitly reloaded with `NOTIFY pgrst, 'reload schema'`.
 - Settings page now shows a clear database-sync message if schema drift is detected.
-- Since the live database is still based on the older upgrade path, use only `UPGRADE_v1.0.41_TO_v1.0.58.sql`.
+- Since the live database is still based on the older upgrade path, use only `UPGRADE_v1.0.41_TO_v1.0.60.sql`.
 
-## v1.0.58 — Standalone Internal Salespage
+## v1.0.60 — Standalone Internal Salespage
 - Internal Salespage HTML no longer renders inside Product Detail.
 - New standalone public route: `/salespage/[slug]`.
 - The stored HTML is served as a full HTML document, preserving its own layout/CSS instead of being squeezed inside the ADCStore product-detail container.
@@ -299,7 +299,7 @@ Do not run separate hotfix SQL first.
 - Internal Salespage buttons from Product Detail also open the standalone page in a new tab.
 - No database schema changes.
 
-## v1.0.58 — Homepage Navigation Refinement
+## v1.0.60 — Homepage Navigation Refinement
 - Homepage product image always opens Product Detail.
 - Homepage product name always opens Product Detail.
 - Only the Internal Salespage button opens `/salespage/[slug]` in a new tab.
@@ -307,7 +307,7 @@ Do not run separate hotfix SQL first.
 - Standalone Internal Salespage remains available and still opens in a new tab from the dedicated Salespage button.
 - No database schema changes.
 
-## v1.0.58 — Analytics Repair + Near-Realtime Refresh
+## v1.0.60 — Analytics Repair + Near-Realtime Refresh
 - Analytics dashboard refreshes automatically every 5 seconds.
 - Added LIVE indicator and last-updated time.
 - Database read errors are now visible in the Analytics page instead of silently showing all zeros.
@@ -316,7 +316,7 @@ Do not run separate hotfix SQL first.
 - Added one required database repair file: `sql/REPAIR_ANALYTICS_REQUIRED.sql`.
 - The repair creates/repairs `analytics_events`, indexes, grants, RLS insert/read policies, and reloads PostgREST schema cache.
 
-## v1.0.58 — Homepage Product Card Alignment
+## v1.0.60 — Homepage Product Card Alignment
 - Product short descriptions are clamped to exactly 2 visible lines.
 - Longer descriptions end visually with CSS ellipsis behavior.
 - Product cards use equal-height flex layout.
@@ -325,7 +325,7 @@ Do not run separate hotfix SQL first.
 - Applies to both the normal catalog grid and Promo / Exclusive section.
 - No database schema changes. No upgrade SQL required.
 
-## v1.0.58 — Balanced Promo / Exclusive Grid
+## v1.0.60 — Balanced Promo / Exclusive Grid
 - Promo / Exclusive homepage section now uses count-aware desktop columns.
 - 1 product: centered.
 - 2 products: centered pair.
@@ -336,7 +336,7 @@ Do not run separate hotfix SQL first.
 - Mobile remains two columns.
 - No database schema changes. No upgrade SQL required.
 
-## v1.0.58 — Excel Product Import / Export
+## v1.0.60 — Excel Product Import / Export
 - Product bulk workflow now defaults to Microsoft Excel `.xlsx`, not CSV.
 - Export All and Export Filtered generate `.xlsx`.
 - Import Template is `.xlsx`.
@@ -344,7 +344,7 @@ Do not run separate hotfix SQL first.
 - Existing CSV files are still accepted for backwards compatibility.
 - No database schema changes. No upgrade SQL required.
 
-## v1.0.58 — Compact Category + Subcategory
+## v1.0.60 — Compact Category + Subcategory
 - Category admin redesigned as a compact row list; no image card and no description field in the UI.
 - Existing image/description database columns are kept for backward compatibility but are no longer required or shown in Category admin.
 - Added optional one-level Parent Category / Subcategory hierarchy.
@@ -352,9 +352,9 @@ Do not run separate hotfix SQL first.
 - Product category dropdown shows `Parent › Subcategory` labels while keeping existing product category values compatible.
 - Homepage category filter also displays hierarchical labels.
 - Parent categories cannot be deleted while they still have subcategories; categories cannot be deleted while used by products.
-- Real DB change: run `UPGRADE_DB_v1.0.45_TO_v1.0.58.sql` once on an existing database.
+- Real DB change: run `UPGRADE_DB_v1.0.45_TO_v1.0.60.sql` once on an existing database.
 
-## v1.0.58 — Checkout / Order / Product Access Flow Repair
+## v1.0.60 — Checkout / Order / Product Access Flow Repair
 - Internal checkout no longer inserts `orders` and then asks PostgREST to return the inserted row.
 - Checkout now calls atomic RPC `create_checkout_order`, so order + order_items are created in one DB transaction.
 - Product prices/totals are recalculated from the database, not trusted from the browser.
@@ -363,16 +363,16 @@ Do not run separate hotfix SQL first.
 - Member Access shows explicit errors if own orders/items/access cannot be read.
 - Paid/Completed orders unlock Product Access for every item in multi-product orders.
 - Includes the v1.0.52 category/subcategory database change.
-- Current live DB path: run only `UPGRADE_DB_v1.0.45_TO_v1.0.58.sql`.
+- Current live DB path: run only `UPGRADE_DB_v1.0.45_TO_v1.0.60.sql`.
 
-## v1.0.58 — Build Syntax Hotfix
+## v1.0.60 — Build Syntax Hotfix
 - Fixed malformed escaped `'use client';` directive in `app/admin/categories/page.tsx`.
 - Scanned all TypeScript/TSX source files for the same malformed escaped directive pattern.
 - No database schema changes.
 - No upgrade SQL required.
 - Database remains on the v1.0.53 schema if its required database upgrade was already applied.
 
-## v1.0.58 — Complete Member Account & Password Flow
+## v1.0.60 — Complete Member Account & Password Flow
 - Checkout success now clearly offers `Buat Akun & Password` and `Sudah Punya Akun? Login`.
 - Signup is prefilled with checkout name/email via query parameters.
 - Member signup requires the same email used at checkout so paid/completed product access can match automatically.
@@ -384,7 +384,7 @@ Do not run separate hotfix SQL first.
 - Existing Product Access logic remains tied to Paid/Completed orders and matching member email.
 - No database schema changes. No upgrade SQL required.
 
-## v1.0.58 — Omzet & Paid Transaction Analytics
+## v1.0.60 — Omzet & Paid Transaction Analytics
 - Analytics now reads `orders` directly for real sales metrics.
 - `Omzet` sums only orders with status Paid or Completed in the selected period.
 - Added `Transaksi Paid`, paid conversion, average order value, and revenue in Quick Insight.
@@ -393,7 +393,7 @@ Do not run separate hotfix SQL first.
 - Traffic/click analytics remains sourced from `analytics_events`.
 - No database schema change. No upgrade SQL required.
 
-## v1.0.58 — Member Database & Password Management
+## v1.0.60 — Member Database & Password Management
 - Cumulative release: includes all v1.0.56 Omzet/Paid Analytics updates. You may skip deploying v1.0.56.
 - New Owner menu: `Member`.
 - Owner can add member accounts without knowing/storing their password.
@@ -408,10 +408,25 @@ Do not run separate hotfix SQL first.
 - Requires `SUPABASE_SERVICE_ROLE_KEY` in Vercel Environment Variables for Owner > Member only. This key is server-only and is never sent to the browser.
 - No database schema change. No SQL upgrade required.
 
-## v1.0.58 — Owner Detection Hotfix for Member Database
+## v1.0.60 — Owner Detection Hotfix for Member Database
 - Fixed Owner > Member API rejecting valid owner accounts with `Akses hanya untuk owner.`.
 - Owner is now accepted when either `admin_users` contains the user OR `profiles.role = 'owner'`.
 - Owner accounts are excluded from the Member database using both mechanisms.
 - Edit/Delete member protection also blocks owner accounts recognized by either mechanism.
 - Cumulative release: includes all v1.0.56 Omzet Analytics and v1.0.57 Member Database features.
+- No database schema change. No SQL upgrade required.
+
+## v1.0.60 — Owner Member API Authorization Fix
+- Fixed Owner > Member falsely showing `Akses hanya untuk owner` even while logged into Owner Console.
+- Server Member API now validates owner using the exact same authenticated RPC (`public.is_admin()`) used by Owner Console.
+- The Supabase Secret Key is used only after the signed-in user has passed the owner check.
+- Existing owner/member data is unchanged.
+- Includes all v1.0.56 revenue analytics, v1.0.57 Member Database, and v1.0.58 safeguards.
+- No database schema change. No SQL upgrade required.
+
+## v1.0.60 — Member API admin_users Permission Hotfix
+- Fixed `permission denied for table admin_users` in Owner > Member.
+- Member API no longer directly queries `admin_users` with the server Secret Key.
+- Owner authorization still uses the signed-in owner's authenticated `public.is_admin()` RPC.
+- The currently authenticated owner ID is used to exclude/protect the owner account from Member edit/delete.
 - No database schema change. No SQL upgrade required.

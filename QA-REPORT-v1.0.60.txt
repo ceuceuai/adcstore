@@ -1,0 +1,11 @@
+ADCStore v1.0.60 Static QA
+==========================
+PASS: targeted checks passed.
+
+- no direct admin_users query in API: PASS
+- owner still validated by rpc: PASS
+- GET receives ownerId: PASS
+- owner excluded from list: PASS
+- owner protected edit/delete: PASS
+- secret key server-only: PASS
+- No DB upgrade SQL included.

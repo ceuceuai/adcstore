@@ -19,20 +19,21 @@ async function requireOwner(req:NextRequest){
  const token=bearer.toLowerCase().startsWith('bearer ')?bearer.slice(7):'';
  if(!token)throw new Error('Sesi owner tidak ditemukan.');
 
- const authClient=createSupabaseClient(url,anon,{auth:{persistSession:false,autoRefreshToken:false}});
+ // Validasi owner memakai jalur yang SAMA dengan Owner Console di browser:
+ // access token user -> RPC public.is_admin(). Jangan menebak role lewat service client.
+ const authClient=createSupabaseClient(url,anon,{
+  auth:{persistSession:false,autoRefreshToken:false},
+  global:{headers:{Authorization:`Bearer ${token}`}}
+ });
  const {data:userData,error:userError}=await authClient.auth.getUser(token);
  if(userError||!userData.user)throw new Error('Sesi owner tidak valid.');
 
- const admin=createSupabaseClient(url,service,{auth:{persistSession:false,autoRefreshToken:false}});
- const [{data:isAdmin,error:adminError},{data:ownerProfile,error:profileError}]=await Promise.all([
-  admin.from('admin_users').select('user_id').eq('user_id',userData.user.id).maybeSingle(),
-  admin.from('profiles').select('id,role').eq('id',userData.user.id).maybeSingle()
- ]);
- if(adminError)throw adminError;
- if(profileError)throw profileError;
+ const {data:isAdmin,error:roleError}=await authClient.rpc('is_admin');
+ if(roleError)throw new Error(`Gagal memeriksa role owner: ${roleError.message}`);
+ if(!isAdmin)throw new Error('Akun ini bukan owner toko.');
 
- const isOwner=!!isAdmin||ownerProfile?.role==='owner';
- if(!isOwner)throw new Error('Akses hanya untuk owner.');
+ // Secret key hanya dipakai SETELAH user lolos validasi owner.
+ const admin=createSupabaseClient(url,service,{auth:{persistSession:false,autoRefreshToken:false}});
  return {admin,ownerId:userData.user.id};
 }
 
@@ -41,7 +42,7 @@ function cleanText(v:unknown){return String(v||'').trim()}
 
 export async function GET(req:NextRequest){
  try{
-  const {admin}=await requireOwner(req);
+  const {admin,ownerId}=await requireOwner(req);
   const {data:listed,error:listError}=await admin.auth.admin.listUsers({page:1,perPage:1000});
   if(listError)throw listError;
 
@@ -82,16 +83,10 @@ export async function GET(req:NextRequest){
     };
    });
 
-  // Remove owner(s) using admin_users table, not metadata.
-  const [{data:admins},{data:ownerProfiles}]=await Promise.all([
-   admin.from('admin_users').select('user_id'),
-   admin.from('profiles').select('id').eq('role','owner')
-  ]);
-  const ownerIds=new Set<string>([
-   ...(admins||[]).map(x=>x.user_id),
-   ...(ownerProfiles||[]).map(x=>x.id)
-  ]);
-  return NextResponse.json({members:members.filter(m=>!ownerIds.has(m.id))});
+  // ADCStore memakai satu owner aktif. Jangan query admin_users dengan Secret Key:
+  // beberapa project lama tidak memberikan table privilege langsung ke key server.
+  // Owner yang sedang login sudah tervalidasi lewat RPC is_admin() di requireOwner().
+  return NextResponse.json({members:members.filter(m=>m.id!==ownerId)});
  }catch(error:any){
   return NextResponse.json({error:error?.message||'Gagal membaca member.'},{status:400});
  }
@@ -99,7 +94,7 @@ export async function GET(req:NextRequest){
 
 export async function POST(req:NextRequest){
  try{
-  const {admin}=await requireOwner(req);
+  const {admin,ownerId}=await requireOwner(req);
   const body=await req.json();
   const action=cleanText(body.action);
 
@@ -135,11 +130,7 @@ export async function POST(req:NextRequest){
    const whatsapp=cleanText(body.whatsapp);
    if(!id||!full_name)throw new Error('ID member dan nama wajib diisi.');
 
-   const [{data:admins},{data:ownerProfile}]=await Promise.all([
-    admin.from('admin_users').select('user_id').eq('user_id',id).maybeSingle(),
-    admin.from('profiles').select('id,role').eq('id',id).maybeSingle()
-   ]);
-   if(admins||ownerProfile?.role==='owner')throw new Error('Akun owner tidak boleh diedit dari menu Member.');
+   if(id===ownerId)throw new Error('Akun owner tidak boleh diedit dari menu Member.');
 
    const {error}=await admin.auth.admin.updateUserById(id,{user_metadata:{full_name,whatsapp}});
    if(error)throw error;
@@ -151,11 +142,7 @@ export async function POST(req:NextRequest){
    const id=cleanText(body.id);
    if(!id)throw new Error('ID member tidak valid.');
 
-   const [{data:admins},{data:ownerProfile}]=await Promise.all([
-    admin.from('admin_users').select('user_id').eq('user_id',id).maybeSingle(),
-    admin.from('profiles').select('id,role').eq('id',id).maybeSingle()
-   ]);
-   if(admins||ownerProfile?.role==='owner')throw new Error('Akun owner tidak boleh dihapus.');
+   if(id===ownerId)throw new Error('Akun owner tidak boleh dihapus.');
 
    const {error}=await admin.auth.admin.deleteUser(id);
    if(error)throw error;
