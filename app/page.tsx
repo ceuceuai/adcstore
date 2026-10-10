@@ -170,7 +170,7 @@ export default function Home(){
        {settings.highlight_section_subtitle&&<p className="muted">{settings.highlight_section_subtitle}</p>}
       </div>
      </div>
-     <div className="specialProductGrid">{highlighted.map(p=>productCard(p,true))}</div>
+     <div className={`specialProductGrid specialCount${Math.min(highlighted.length,4)}`}>{highlighted.map(p=>productCard(p,true))}</div>
     </div>
    </section>}
 
