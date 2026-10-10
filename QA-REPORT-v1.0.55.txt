@@ -1,0 +1,15 @@
+ADCStore v1.0.55 Member/Auth QA
+================================
+PASS: no static issues found in targeted scans.
+
+Checked flows:
+- Checkout success -> Create Member / Login CTAs
+- Member signup with checkout email prefill
+- Member login
+- Forgot password email request
+- Reset-password recovery page
+- Dashboard change password
+- Member Product Access route preserved
+- No useSearchParams introduced
+- No malformed use-client directive
+- Explicit button types scan

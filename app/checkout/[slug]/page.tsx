@@ -114,7 +114,9 @@ export default function Checkout(){
    `Total: ${rupiah(total)}`,
    `Pembayaran: ${paymentLabel()}`,
    ``,
-   `Saya akan mengirim bukti transfer/pembayaran di chat ini. Mohon konfirmasinya.`
+   `Saya akan mengirim bukti transfer/pembayaran di chat ini. Mohon konfirmasinya.`,
+   ``,
+   `Buat/Login akun member dengan email checkout: ${window.location.origin}/member/login?email=${encodeURIComponent(form.email)}`
   ].join('\n');
   return `https://wa.me/${number}?text=${encodeURIComponent(text)}`;
  }
@@ -197,9 +199,17 @@ export default function Checkout(){
       ?<div className="success3d">
        <CheckCircle2 size={64}/><h2>Pesanan berhasil dibuat</h2><p>Nomor order Anda:</p><strong>{done}</strong>
        <p className="muted">{(s.checkout_success_action||'whatsapp')==='whatsapp'&&ownerWaUrl(done)?'Membuka WhatsApp untuk konfirmasi dan kirim bukti pembayaran...':(s.checkout_success_action==='url'&&s.checkout_success_url)?'Mengarahkan ke halaman lanjutan...':'Lakukan pembayaran sesuai metode yang dipilih. Owner akan memverifikasi pembayaran Anda.'}</p>
+       <div className="checkoutMemberAccessCard">
+        <span className="eyebrow">AKSES PRODUK</span>
+        <h3>Buat akun member dengan email checkout</h3>
+        <p>Gunakan <b>{form.email}</b>. Setelah pembayaran berstatus Paid/Completed, produk otomatis muncul di Member Area.</p>
+        <div className="checkoutMemberActions">
+         <Link href={`/member/login?mode=signup&email=${encodeURIComponent(form.email)}&name=${encodeURIComponent(form.name)}`} className="btn">Buat Akun & Password</Link>
+         <Link href={`/member/login?email=${encodeURIComponent(form.email)}`} className="btn soft">Sudah Punya Akun? Login</Link>
+        </div>
+       </div>
        {(s.checkout_success_action||'whatsapp')==='whatsapp'&&ownerWaUrl(done)&&<a href={ownerWaUrl(done)} className="btn">Konfirmasi via WhatsApp</a>}
        {s.checkout_success_action==='url'&&s.checkout_success_url&&<a href={successRedirectUrl(done)} className="btn">Lanjutkan</a>}
-       <Link href="/member/login" className="btn soft">Masuk Member Area</Link>
       </div>
       :<form className="form" onSubmit={submit}>
        <div className="checkoutFormTitle"><ShoppingBag size={22}/><div><h2>Data Pembeli</h2><small>{cart.length} produk • {rupiah(total)}</small></div></div>

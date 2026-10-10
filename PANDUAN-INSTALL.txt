@@ -33,3 +33,12 @@ That single SQL includes:
 - final verification
 
 Do not run separate hotfix SQL first.
+
+MEMBER PASSWORD FLOW v1.0.55
+- Buyer checkout with an email.
+- Buyer creates Member Account using the SAME email and chooses their own password.
+- If email confirmation is enabled in Supabase Auth, buyer confirms email first.
+- Owner sets order to Paid/Completed.
+- Member logs in and opens Akses Produk.
+- Forgot Password sends a Supabase recovery email.
+- Member can change password from Member Dashboard > Keamanan.
