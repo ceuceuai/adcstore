@@ -122,38 +122,35 @@ export default function Checkout(){
  async function submit(e:FormEvent){
   e.preventDefault();
   if(!p||!cart.length||!method){setMsg('Pilih metode pembayaran dulu.');return}
+  if(!form.name.trim()||!form.email.trim()||!form.wa.trim()){setMsg('Nama, email, dan WhatsApp wajib diisi.');return}
+
   setBusy(true);setMsg('');
   const order=`ADC-${Date.now().toString().slice(-8)}`;
   const c=createClient();
 
-  const {data:orderRow,error}=await c.from('orders').insert({
-   order_number:order,
-   product_id:cart[0].id,
-   customer_name:form.name,
-   customer_email:form.email,
-   customer_whatsapp:form.wa,
-   amount:total,
-   payment_method:method,
-   status:'pending'
-  }).select('id').single();
+  const {data,error}=await c.rpc('create_checkout_order',{
+   p_order_number:order,
+   p_customer_name:form.name.trim(),
+   p_customer_email:form.email.trim().toLowerCase(),
+   p_customer_whatsapp:form.wa.trim(),
+   p_payment_method:method,
+   p_product_ids:cart.map(x=>x.id)
+  });
 
-  if(error){setBusy(false);setMsg(error.message);return}
+  if(error){
+   setBusy(false);
+   setMsg(`Checkout gagal: ${error.message}`);
+   return;
+  }
 
-  const items=cart.map(x=>({
-   order_id:orderRow.id,
-   product_id:x.id,
-   product_name:x.name,
-   price:Number(x.price||0),
-   quantity:1,
-   subtotal:Number(x.price||0)
-  }));
-  const {error:itemError}=await c.from('order_items').insert(items);
-  if(itemError){setBusy(false);setMsg(`Order dibuat, tetapi item gagal disimpan: ${itemError.message}`);return}
+  const result=Array.isArray(data)?data[0]:data;
+  const savedOrder=result?.order_number||order;
+  const savedTotal=Number(result?.total_amount||total);
 
-  await trackEvent('purchase',{product_id:cart[0].id,metadata:{order_number:order,item_count:cart.length,total}});
-  setDone(order);setBusy(false);
+  await trackEvent('purchase',{product_id:cart[0].id,metadata:{order_number:savedOrder,item_count:cart.length,total:savedTotal}});
+  setDone(savedOrder);setBusy(false);
 
-  const redirect=successRedirectUrl(order);
+  const redirect=successRedirectUrl(savedOrder);
   if(redirect)window.setTimeout(()=>{window.location.href=redirect},800);
  }
 

@@ -31,7 +31,7 @@ export type HomeBanner = { id:string; title:string|null; desktop_image_url:strin
 
 export type SocialLink = { id:string; platform:string; label:string; url:string; icon_url:string|null; is_active:boolean; sort_order:number; created_at?:string; updated_at?:string };
 
-export type ProductCategory = { id:string; name:string; slug:string; description:string|null; image_url:string|null; is_active:boolean; sort_order:number; created_at?:string; updated_at?:string };
+export type ProductCategory = { id:string; name:string; slug:string; parent_id:string|null; description:string|null; image_url:string|null; is_active:boolean; sort_order:number; created_at?:string; updated_at?:string };
 
 export type MediaAsset = {
   id:string;

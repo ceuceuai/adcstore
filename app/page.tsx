@@ -63,7 +63,7 @@ export default function Home(){
   });
  },[]);
 
- const cats=['Semua',...categories.map(x=>x.name),...Array.from(new Set(products.map(x=>x.category).filter(Boolean) as string[])).filter(x=>!categories.some(c=>c.name===x))];
+ const categoryOptions=useMemo(()=>{const roots=categories.filter(x=>!x.parent_id);const ordered:ProductCategory[]=[];for(const r of roots){ordered.push(r,...categories.filter(x=>x.parent_id===r.id))}const legacy=Array.from(new Set(products.map(x=>x.category).filter(Boolean) as string[])).filter(x=>!categories.some(c=>c.name===x)).map(name=>({id:`legacy-${name}`,name,slug:'',parent_id:null,description:null,image_url:null,is_active:true,sort_order:9999} as ProductCategory));return [...ordered,...legacy]},[categories,products]);
 
  const filtered=useMemo(()=>{
   const list=products.filter(p=>(cat==='Semua'||p.category===cat)&&(`${p.name} ${p.short_description||''} ${p.category||''}`.toLowerCase().includes(q.toLowerCase())));
@@ -182,7 +182,7 @@ export default function Home(){
     </div></div>
     <div className="filterBar">
      <input className="input" value={q} onChange={e=>{setQ(e.target.value);setPage(1)}} placeholder="Cari produk..."/>
-     <select className="input" value={cat} onChange={e=>{setCat(e.target.value);setPage(1)}}>{cats.map(c=><option key={c}>{c}</option>)}</select>
+     <select className="input" value={cat} onChange={e=>{setCat(e.target.value);setPage(1)}}><option value="Semua">Semua Kategori</option>{categoryOptions.map(c=>{const parent=c.parent_id?categories.find(x=>x.id===c.parent_id):null;return <option key={c.id} value={c.name}>{parent?`${parent.name} › ${c.name}`:c.name}</option>})}</select>
      <select className="input" value={sort} onChange={e=>{setSort(e.target.value as typeof sort);setPage(1)}}>
       <option value="newest">Terbaru</option><option value="oldest">Terlama</option><option value="low">Harga Termurah</option><option value="high">Harga Termahal</option>
      </select>
