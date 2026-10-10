@@ -1,0 +1,22 @@
+ADCStore v1.0.64 Static QA
+==========================
+PASS: targeted label/logic checks passed.
+
+Changed files:
+- components/AdminShell.tsx
+- app/page.tsx
+- app/admin/page.tsx
+- app/product/[slug]/page.tsx
+- app/checkout/[slug]/page.tsx
+- app/admin/products/page.tsx
+- app/admin/settings/page.tsx
+- app/admin/access/page.tsx
+- PANDUAN-INSTALL.txt
+- QA-REPORT-v1.0.40.txt
+
+Verified:
+- Visible Produk ADC label removed from source UI
+- /admin/products route preserved
+- products table logic preserved
+- No malformed use-client directive
+- No DB upgrade SQL included

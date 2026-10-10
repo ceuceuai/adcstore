@@ -20,7 +20,7 @@ const fallback:StoreSettings={
  hero_trust_1:'Produk siap promosi',hero_trust_2:'Link affiliate sendiri',hero_trust_3:'Tema bisa diganti',
  hero_visual_mode:'default',hero_image_url:null,hero_image_position:'right',hero_image_fit:'contain',hero_image_alt:'Hero image',
  catalog_eyebrow:'KATALOG DIGITAL',catalog_title:'Produk pilihan untuk mulai jualan',
- catalog_subtitle:'Produk ADC sudah tersedia. Pemilik toko tinggal mengatur link affiliate masing-masing.',
+ catalog_subtitle:'Produk sudah tersedia. Pemilik toko tinggal mengatur link affiliate masing-masing.',
  highlight_section_enabled:true,highlight_section_eyebrow:'PILIHAN SPESIAL',highlight_section_title:'Promo & Produk Eksklusif',
  highlight_section_subtitle:'Produk pilihan yang sedang diprioritaskan untuk Anda.',
  floating_wa_enabled:false,floating_wa_number:null,floating_wa_message:'Halo, saya butuh bantuan tentang produk ini.',

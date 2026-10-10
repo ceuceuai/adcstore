@@ -15,7 +15,7 @@ UPGRADE v1.0.15 -> v1.0.31
 Upgrade ini memperbaiki privilege/RLS penyimpanan Pengaturan; data lama tetap dipertahankan.
 
 CSV KATALOG
-Admin > Produk ADC > Import CSV.
+Admin > Produk > Import CSV.
 Download Template CSV, edit produk/link affiliate di Excel atau Google Sheets, lalu upload. Sistem menampilkan Preview + Validasi sebelum import.
 Duplicate slug dapat di-update atau dilewati.
 

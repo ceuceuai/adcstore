@@ -15,7 +15,7 @@ export default function AdminShell({children}:{children:React.ReactNode}){
  if(checking)return <div className="adminLoading">Memeriksa akses owner...</div>;
  const links=[
   {href:'/admin',label:'Dashboard',icon:LayoutDashboard},
-  {href:'/admin/products',label:'Produk ADC',icon:Package2},
+  {href:'/admin/products',label:'Produk',icon:Package2},
   {href:'/admin/categories',label:'Kategori Produk',icon:Tags},
   {href:'/admin/media',label:'Media Library',icon:LibraryBig},
   {href:'/admin/analytics',label:'Analytics',icon:BarChart3},

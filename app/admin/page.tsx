@@ -74,7 +74,7 @@ export default function Admin(){
    <section className="panel3d">
     <div className="panelTitle"><div><span className="eyebrow">QUICK ACTION</span><h2>Yang sering dipakai</h2></div></div>
     <div className="quickGrid">
-     <Link href="/admin/products" className="quick3d"><Package2/><span><b>Kelola Produk</b><small>Tambah & edit katalog ADC</small></span><ArrowUpRight/></Link>
+     <Link href="/admin/products" className="quick3d"><Package2/><span><b>Kelola Produk</b><small>Tambah & edit katalog produk</small></span><ArrowUpRight/></Link>
      <Link href="/admin/payments" className="quick3d"><CreditCard/><span><b>Atur Pembayaran</b><small>Bank, e-wallet, QRIS</small></span><ArrowUpRight/></Link>
      <Link href="/admin/access" className="quick3d"><KeyRound/><span><b>Akses Produk</b><small>HTML & tombol akses</small></span><ArrowUpRight/></Link>
      <Link href="/admin/orders" className="quick3d"><ShoppingBag/><span><b>Kelola Order</b><small>Approve pembayaran customer</small></span><ArrowUpRight/></Link>

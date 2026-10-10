@@ -2,7 +2,7 @@ ADCStore v1.0.40 - FULL UI ACTION QA REPORT
 
 Scope checked statically:
 - Owner Dashboard
-- Produk ADC
+- Produk
 - Kategori Produk
 - Media Library
 - Analytics
